@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.model.ProdutoModel;
+import sptech.school.projetovolt.service.ProdutoService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +17,15 @@ import java.util.Objects;
 public class ProdutoController {
 
     List<ProdutoModel> produtos = new ArrayList<>();
+    ProdutoService produtoService = new ProdutoService();
 
     @PostMapping("/estoque")
     public ResponseEntity<ProdutoModel> cadastrarProduto(@RequestBody ProdutoModel produtoNovo) {
         if (!Objects.isNull(produtoNovo)) {
-            produtos.add(produtoNovo);
-            return ResponseEntity.status(201).body(produtoNovo);
+            if (produtoService.existePorId(produtoNovo.getIdProduto(),produtos)){
+                produtos.add(produtoNovo);
+                return ResponseEntity.status(201).body(produtoNovo);
+            }
         }
         return ResponseEntity.status(400).build();
     }
@@ -43,7 +47,6 @@ public class ProdutoController {
     public ResponseEntity<ProdutoModel> buscarProdutoPorId(@PathVariable int id) {
         for (ProdutoModel produto : produtos) {
             if (produto.getIdProduto() == id) {
-
                 return ResponseEntity.status(200).body(produto);
             }
         }
