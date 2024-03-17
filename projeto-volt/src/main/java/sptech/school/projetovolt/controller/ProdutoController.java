@@ -1,8 +1,6 @@
 package sptech.school.projetovolt.controller;
 
 
-import com.sun.net.httpserver.HttpsServer;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.model.ProdutoModel;
@@ -10,20 +8,23 @@ import sptech.school.projetovolt.service.ProdutoService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/produtos")
 public class ProdutoController {
 
-    private List<ProdutoModel> produtos = new ArrayList<>();
-    private ProdutoService produtoService = new ProdutoService();
+    private final List<ProdutoModel> produtos = new ArrayList<>();
+    private final ProdutoService produtoService = new ProdutoService();
     private Integer id = 0;
 
     @PostMapping("/estoque")
     public ResponseEntity<ProdutoModel> cadastrarProduto(@RequestBody ProdutoModel produtoNovo) {
-        if (!Objects.isNull(produtoNovo)) {
-            if (!produtoService.existePorId(produtoNovo.getIdProduto(),produtos)){
+        if (produtoNovo.getDescProduto() != null
+                && produtoNovo.getPrecoProduto() != null
+                && produtoNovo.getNomeProduto() != null
+                && produtoNovo.getQtdEstoque() != null
+        ) {
+            if (!produtoService.existePorNome(produtoNovo.getNomeProduto(),produtos)){
                 produtoNovo.setIdProduto(++id);
                 produtos.add(produtoNovo);
                 return ResponseEntity.status(201).body(produtoNovo);
@@ -35,15 +36,19 @@ public class ProdutoController {
 
     @GetMapping("/loja")
     public ResponseEntity<List<ProdutoModel>> listarTodosProdutos(@RequestParam(required = false) String textoBusca) {
+        List<ProdutoModel> produtosEncontrados = produtos;
         if (textoBusca != null) {
-            return ResponseEntity.status(200).body(produtos
+            produtosEncontrados = produtos
                     .stream()
                     .filter(produtoModel -> produtoModel
                             .getNomeProduto()
                             .contains(textoBusca))
-                    .toList());
+                    .toList();
         }
-        return ResponseEntity.status(200).body(produtos);
+        if (!produtosEncontrados.isEmpty()) {
+            return ResponseEntity.status(200).body(produtosEncontrados);
+        }
+        return ResponseEntity.status(204).build();
     }
 
     @GetMapping("/loja/{id}")
@@ -85,7 +90,7 @@ public class ProdutoController {
         for (ProdutoModel produto : produtos) {
             if (produto.getIdProduto() == id) {
                 produtos.remove(produto);
-                return ResponseEntity.status(200).build();
+                return ResponseEntity.status(204).build();
             }
         }
         return ResponseEntity.status(404).build();
