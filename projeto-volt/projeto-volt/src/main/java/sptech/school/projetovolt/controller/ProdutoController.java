@@ -16,16 +16,19 @@ import java.util.Objects;
 @RequestMapping("/produtos")
 public class ProdutoController {
 
-    List<ProdutoModel> produtos = new ArrayList<>();
-    ProdutoService produtoService = new ProdutoService();
+    private List<ProdutoModel> produtos = new ArrayList<>();
+    private ProdutoService produtoService = new ProdutoService();
+    private Integer id = 0;
 
     @PostMapping("/estoque")
     public ResponseEntity<ProdutoModel> cadastrarProduto(@RequestBody ProdutoModel produtoNovo) {
         if (!Objects.isNull(produtoNovo)) {
-            if (produtoService.existePorId(produtoNovo.getIdProduto(),produtos)){
+            if (!produtoService.existePorId(produtoNovo.getIdProduto(),produtos)){
+                produtoNovo.setIdProduto(++id);
                 produtos.add(produtoNovo);
                 return ResponseEntity.status(201).body(produtoNovo);
             }
+            return ResponseEntity.status(409).build();
         }
         return ResponseEntity.status(400).build();
     }
@@ -57,6 +60,7 @@ public class ProdutoController {
     public ResponseEntity<ProdutoModel> alterarProdutoPorId(@PathVariable int id, @RequestBody ProdutoModel produtoAlterado) {
         for (ProdutoModel produto : produtos) {
             if (produto.getIdProduto() == id) {
+                produtoAlterado.setIdProduto(produto.getIdProduto());
                 produtos.set(produtos.indexOf(produto), produtoAlterado);
                 return ResponseEntity.status(200).body(produtoAlterado);
             }
@@ -68,6 +72,7 @@ public class ProdutoController {
     public ResponseEntity<ProdutoModel> alterarProdutoPorNome(@RequestParam String nomeProduto, @RequestBody ProdutoModel produtoAlterado) {
         for (ProdutoModel produto : produtos) {
             if (produto.getNomeProduto().equalsIgnoreCase(nomeProduto)) {
+                produtoAlterado.setIdProduto(produto.getIdProduto());
                 produtos.set(produtos.indexOf(produto), produtoAlterado);
                 return ResponseEntity.status(200).body(produtoAlterado);
             }
