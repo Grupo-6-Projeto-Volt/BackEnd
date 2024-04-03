@@ -1,6 +1,7 @@
 package sptech.school.projetovolt.controller;
 
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.model.ProdutoModel;
@@ -18,6 +19,7 @@ public class ProdutoController {
     private Integer id = 0;
 
     @PostMapping("/estoque")
+    @Operation(summary = "Responsável por cadastrar um produto no estoque")
     public ResponseEntity<ProdutoModel> cadastrarProduto(@RequestBody ProdutoModel produtoNovo) {
         if (produtoNovo.getDescProduto() != null
                 && produtoNovo.getPrecoProduto() != null
@@ -35,6 +37,7 @@ public class ProdutoController {
     }
 
     @GetMapping("/loja")
+    @Operation(summary = "Responsável por listar todos os produtos da Loja")
     public ResponseEntity<List<ProdutoModel>> listarTodosProdutos(@RequestParam(required = false) String textoBusca) {
         List<ProdutoModel> produtosEncontrados = produtos;
         if (textoBusca != null) {
@@ -52,6 +55,7 @@ public class ProdutoController {
     }
 
     @GetMapping("/loja/{id}")
+    @Operation(summary = "Responsável por buscar um produto por ID")
     public ResponseEntity<ProdutoModel> buscarProdutoPorId(@PathVariable int id) {
         for (ProdutoModel produto : produtos) {
             if (produto.getIdProduto() == id) {
@@ -62,6 +66,7 @@ public class ProdutoController {
     }
 
     @PutMapping("/estoque/{id}")
+    @Operation(summary = "Responsável por alterar um produto a partir do seu ID")
     public ResponseEntity<ProdutoModel> alterarProdutoPorId(@PathVariable int id, @RequestBody ProdutoModel produtoAlterado) {
         for (ProdutoModel produto : produtos) {
             if (produto.getIdProduto() == id) {
@@ -74,6 +79,7 @@ public class ProdutoController {
     }
 
     @PutMapping("/estoque")
+    @Operation(summary = "Responsável por alterar o nomde de um determinado produto")
     public ResponseEntity<ProdutoModel> alterarProdutoPorNome(@RequestParam String nomeProduto, @RequestBody ProdutoModel produtoAlterado) {
         for (ProdutoModel produto : produtos) {
             if (produto.getNomeProduto().equalsIgnoreCase(nomeProduto)) {
@@ -86,6 +92,7 @@ public class ProdutoController {
     }
 
     @DeleteMapping("/estoque/{id}")
+    @Operation(summary = "Responsável por deletar um determinado produto por ID")
     public ResponseEntity<ProdutoModel> apagarProdutoPorId(@PathVariable int id) {
         for (ProdutoModel produto : produtos) {
             if (produto.getIdProduto() == id) {
