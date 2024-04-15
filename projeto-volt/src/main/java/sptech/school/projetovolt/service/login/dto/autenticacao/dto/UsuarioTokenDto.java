@@ -1,16 +1,18 @@
 package sptech.school.projetovolt.service.login.dto.autenticacao.dto;
 
+import java.util.UUID;
+
 public class UsuarioTokenDto {
 
-    private Long userId;
+    private UUID userId;
     private String email;
     private String token;
 
-    public Long getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(UUID userId) {
         this.userId = userId;
     }
 
