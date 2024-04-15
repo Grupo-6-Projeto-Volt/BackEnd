@@ -1,13 +1,14 @@
 package sptech.school.projetovolt.service;
 
-import sptech.school.projetovolt.model.ProdutoModel;
+import sptech.school.projetovolt.entity.produto.Produto;
+
 
 import java.util.List;
 
 public class ProdutoService {
-    public boolean existePorNome(String nome, List<ProdutoModel> produtoModels ){
+    public boolean existePorNome(String nome, List<Produto> produtoModels ){
         return produtoModels
                 .stream()
-                .anyMatch(produtoModel -> produtoModel.getNomeProduto().equalsIgnoreCase(nome));
+                .anyMatch(produtoModel -> produtoModel.getNome().equalsIgnoreCase(nome));
     }
 }
