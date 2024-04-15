@@ -6,11 +6,13 @@ import org.springframework.web.bind.annotation.RestController;
 import sptech.school.projetovolt.entity.login.repository.LoginRepository;
 
 @RestController
-@RequestMapping("/logins")
+@RequestMapping("/login")
 public class LoginController {
 
     @Autowired
     private LoginRepository loginRepository;
+
+
 
 
 }
