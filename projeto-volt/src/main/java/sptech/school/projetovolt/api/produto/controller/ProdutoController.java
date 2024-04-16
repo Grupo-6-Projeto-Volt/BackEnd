@@ -6,35 +6,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.entity.produto.Produto;
+import sptech.school.projetovolt.entity.produto.dto.ProdutoAlteracaoDto;
+import sptech.school.projetovolt.entity.produto.dto.ProdutoConsultaDTO;
+import sptech.school.projetovolt.entity.produto.dto.ProdutoCriacaoDTO;
+import sptech.school.projetovolt.entity.produto.dto.ProdutoMapper;
 import sptech.school.projetovolt.entity.produto.repository.ProdutoRepository;
 import sptech.school.projetovolt.service.ProdutoService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/produtos")
 public class ProdutoController {
 
     @Autowired
-    private ProdutoRepository produtoRepository;
+    ProdutoRepository produtoRepository;
 
-    private final List<Produto> produtos = new ArrayList<>();
+   // private final List<Produto> produtos = new ArrayList<>();
     private final ProdutoService produtoService = new ProdutoService();
     private Integer id = 0;
 
     @PostMapping("/estoque")
     @Operation(summary = "Responsável por cadastrar um produto no estoque")
-    public ResponseEntity<Produto> cadastrarProduto(@RequestBody Produto produtoNovo) {
+    public ResponseEntity<ProdutoConsultaDTO> cadastrarProduto(@RequestBody ProdutoCriacaoDTO produtoNovo) {
         if (produtoNovo.getDescricao() != null
                 && produtoNovo.getPreco() != null
                 && produtoNovo.getNome() != null
                 && produtoNovo.getQtdEstoque() != null
         ) {
-            if (!produtoService.existePorNome(produtoNovo.getNome(),produtos)){
-                produtoNovo.setId(++id);
-                produtos.add(produtoNovo);
-                return ResponseEntity.status(201).body(produtoNovo);
+            if (produtoRepository.findByNome(produtoNovo.getNome()) == null){
+                Produto produtoSalvo = produtoRepository.save(ProdutoMapper.toEntity(produtoNovo));
+                return ResponseEntity.status(201).body(ProdutoMapper.toDto(produtoSalvo));
             }
             return ResponseEntity.status(409).build();
         }
@@ -43,55 +47,74 @@ public class ProdutoController {
 
     @GetMapping("/loja")
     @Operation(summary = "Responsável por listar todos os produtos da Loja")
-    public ResponseEntity<List<Produto>> listarTodosProdutos(@RequestParam(required = false) String textoBusca) {
-        List<Produto> produtosEncontrados = produtos;
+    public ResponseEntity<List<ProdutoConsultaDTO>> listarTodosProdutos(@RequestParam(required = false) String textoBusca) {
+        List<Produto> produtosEncontrados = produtoRepository.findAll();
+        List<ProdutoConsultaDTO> dtos = new ArrayList<>();
         if (textoBusca != null) {
-            produtosEncontrados = produtos
+            dtos = produtoRepository.findAllByNome(textoBusca)
                     .stream()
                     .filter(produtoModel -> produtoModel
                             .getNome()
                             .contains(textoBusca))
                     .toList();
+        }else {
+            for (Produto produto : produtosEncontrados) {
+                dtos.add(ProdutoMapper.toDto(produto));
+            }
         }
         if (!produtosEncontrados.isEmpty()) {
-            return ResponseEntity.status(200).body(produtosEncontrados);
+            return ResponseEntity.status(200).body(dtos);
         }
         return ResponseEntity.status(204).build();
     }
 
     @GetMapping("/loja/{id}")
     @Operation(summary = "Responsável por buscar um produto por ID")
-    public ResponseEntity<Produto> buscarProdutoPorId(@PathVariable int id) {
-        for (Produto produto : produtos) {
-            if (produto.getId() == id) {
-                return ResponseEntity.status(200).body(produto);
-            }
+    public ResponseEntity<ProdutoConsultaDTO> buscarProdutoPorId(@PathVariable int id) {
+        Optional<Produto> produtoEncontrado = produtoRepository.findById(id);
+        if(produtoEncontrado.isPresent()){
+            return ResponseEntity.status(200).body(ProdutoMapper.toDto(produtoEncontrado.get()));
         }
+
         return ResponseEntity.status(404).build();
     }
 
     @PutMapping("/estoque/{id}")
     @Operation(summary = "Responsável por alterar um produto a partir do seu ID")
-    public ResponseEntity<Produto> alterarProdutoPorId(@PathVariable int id, @RequestBody Produto produtoAlterado) {
-        for (Produto produto : produtos) {
-            if (produto.getId() == id) {
-                produtoAlterado.setId(produto.getId());
-                produtos.set(produtos.indexOf(produto), produtoAlterado);
-                return ResponseEntity.status(200).body(produtoAlterado);
-            }
+    public ResponseEntity<ProdutoConsultaDTO> alterarProdutoPorId(@PathVariable int id, @RequestBody ProdutoCriacaoDTO produtoAlterado) {
+        Optional<Produto> produtoOpt = produtoRepository.findById(id);
+
+        if(produtoOpt.isPresent()){
+            Produto produto = produtoOpt.get();
+            produtoAlterado.setNome(produto.getNome());
+            produtoAlterado.setDescricao(produto.getDescricao());
+            produtoAlterado.setCategoria(produto.getCategoria());
+            produtoAlterado.setPreco(produto.getPreco());
+            produtoAlterado.setQtdEstoque(produto.getQtdEstoque());
+            produtoAlterado.setEstadoGeral(produto.getEstadoGeral());
+            Produto novoProduto = ProdutoMapper.toEntity(produtoAlterado);
+            produtoRepository.save(novoProduto);
+
+            return ResponseEntity.status(200).body(ProdutoMapper.toDto(novoProduto));
         }
         return ResponseEntity.status(404).build();
     }
 
     @PutMapping("/estoque")
     @Operation(summary = "Responsável por alterar o nomde de um determinado produto")
-    public ResponseEntity<Produto> alterarProdutoPorNome(@RequestParam String nomeProduto, @RequestBody Produto produtoAlterado) {
-        for (Produto produto : produtos) {
-            if (produto.getNome().equalsIgnoreCase(nomeProduto)) {
-                produtoAlterado.setId(produto.getId());
-                produtos.set(produtos.indexOf(produto), produtoAlterado);
-                return ResponseEntity.status(200).body(produtoAlterado);
-            }
+    public ResponseEntity<ProdutoConsultaDTO> alterarProdutoPorNome(@RequestParam String nomeProduto, @RequestBody ProdutoAlteracaoDto produtoAlterado) {
+        Produto produtoOpt = produtoRepository.findByNomeLike(nomeProduto);
+
+        if(produtoOpt != null){
+            produtoOpt.setNome(produtoAlterado.getNome());
+            produtoOpt.setDescricao(produtoAlterado.getDescricao());
+            produtoOpt.setCategoria(produtoAlterado.getCategoria());
+            produtoOpt.setPreco(produtoAlterado.getPreco());
+            produtoOpt.setQtdEstoque(produtoAlterado.getQtdEstoque());
+            produtoOpt.setEstadoGeral(produtoAlterado.getEstadoGeral());
+            produtoRepository.save(produtoOpt);
+
+            return ResponseEntity.status(200).body(ProdutoMapper.toDto(produtoOpt));
         }
         return ResponseEntity.status(404).build();
     }
@@ -99,6 +122,7 @@ public class ProdutoController {
     @DeleteMapping("/estoque/{id}")
     @Operation(summary = "Responsável por deletar um determinado produto por ID")
     public ResponseEntity<Produto> apagarProdutoPorId(@PathVariable int id) {
+
         for (Produto produto : produtos) {
             if (produto.getId() == id) {
                 produtos.remove(produto);
@@ -107,5 +131,4 @@ public class ProdutoController {
         }
         return ResponseEntity.status(404).build();
     }
-
 }
