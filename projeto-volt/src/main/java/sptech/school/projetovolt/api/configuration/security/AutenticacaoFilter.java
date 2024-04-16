@@ -51,8 +51,9 @@ public class AutenticacaoFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            addUsernameInContext(request, response);
+            addUsernameInContext(request, username, jwtToken);
         }
+        filterChain.doFilter(request, response);
     }
 
     private void addUsernameInContext(HttpServletRequest request, String username, String jwtToken) {
