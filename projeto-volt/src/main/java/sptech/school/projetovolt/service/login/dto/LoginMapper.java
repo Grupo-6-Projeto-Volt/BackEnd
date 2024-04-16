@@ -1,7 +1,7 @@
 package sptech.school.projetovolt.service.login.dto;
 
 import sptech.school.projetovolt.entity.login.Login;
-import sptech.school.projetovolt.service.login.dto.autenticacao.dto.UsuarioTokenDto;
+import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioTokenDto;
 
 public class LoginMapper {
 

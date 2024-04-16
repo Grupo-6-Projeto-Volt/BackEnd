@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 import sptech.school.projetovolt.api.configuration.security.jwt.GerenciadorTokenJwt;
-import sptech.school.projetovolt.service.login.dto.autenticacao.AutenticacaoService;
+import sptech.school.projetovolt.service.login.autenticacao.AutenticacaoService;
 
 import java.io.IOException;
 import java.util.Objects;

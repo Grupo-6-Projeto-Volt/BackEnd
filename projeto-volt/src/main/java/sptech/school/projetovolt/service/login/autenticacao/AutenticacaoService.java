@@ -1,4 +1,4 @@
-package sptech.school.projetovolt.service.login.dto.autenticacao;
+package sptech.school.projetovolt.service.login.autenticacao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import sptech.school.projetovolt.entity.login.Login;
 import sptech.school.projetovolt.entity.login.repository.LoginRepository;
-import sptech.school.projetovolt.service.login.dto.autenticacao.dto.UsuarioDetalhesDto;
+import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioDetalhesDto;
 
 import java.util.Optional;
 

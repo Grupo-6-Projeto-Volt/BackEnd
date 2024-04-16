@@ -1,4 +1,4 @@
-package sptech.school.projetovolt.service.login.dto.autenticacao.dto;
+package sptech.school.projetovolt.service.login.autenticacao.dto;
 
 import java.util.UUID;
 

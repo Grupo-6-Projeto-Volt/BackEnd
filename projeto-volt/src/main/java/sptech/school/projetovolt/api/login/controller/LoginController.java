@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sptech.school.projetovolt.entity.login.repository.LoginRepository;
 import sptech.school.projetovolt.service.login.LoginService;
-import sptech.school.projetovolt.service.login.dto.autenticacao.dto.UsuarioLoginDto;
-import sptech.school.projetovolt.service.login.dto.autenticacao.dto.UsuarioTokenDto;
+import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioLoginDto;
+import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioTokenDto;
 
 @RestController
 @RequestMapping("/login")

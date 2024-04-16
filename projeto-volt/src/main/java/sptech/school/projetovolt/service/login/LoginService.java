@@ -11,8 +11,8 @@ import sptech.school.projetovolt.api.configuration.security.jwt.GerenciadorToken
 import sptech.school.projetovolt.entity.login.Login;
 import sptech.school.projetovolt.entity.login.repository.LoginRepository;
 import sptech.school.projetovolt.service.login.dto.LoginMapper;
-import sptech.school.projetovolt.service.login.dto.autenticacao.dto.UsuarioLoginDto;
-import sptech.school.projetovolt.service.login.dto.autenticacao.dto.UsuarioTokenDto;
+import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioLoginDto;
+import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioTokenDto;
 
 public class LoginService {
 

@@ -1,4 +1,4 @@
-package sptech.school.projetovolt.service.login.dto.autenticacao.dto;
+package sptech.school.projetovolt.service.login.autenticacao.dto;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

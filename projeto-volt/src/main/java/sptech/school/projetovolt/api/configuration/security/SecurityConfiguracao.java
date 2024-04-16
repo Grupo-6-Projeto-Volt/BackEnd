@@ -15,12 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import sptech.school.projetovolt.api.configuration.security.jwt.GerenciadorTokenJwt;
-import sptech.school.projetovolt.service.login.dto.autenticacao.AutenticacaoService;
+import sptech.school.projetovolt.service.login.autenticacao.AutenticacaoService;
 
 import java.util.Arrays;
 import java.util.List;

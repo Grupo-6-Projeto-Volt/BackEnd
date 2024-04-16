@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import sptech.school.projetovolt.service.login.dto.autenticacao.AutenticacaoService;
+import sptech.school.projetovolt.service.login.autenticacao.AutenticacaoService;
 
 public class AutenticacaoProvider implements AuthenticationProvider {
 
