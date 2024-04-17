@@ -2,6 +2,9 @@ package sptech.school.projetovolt.entity.produto;
 
 import jakarta.persistence.*;
 import lombok.*;
+import sptech.school.projetovolt.entity.tag.TagProduto;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -23,4 +26,11 @@ public class Produto {
     private Integer qtdEstoque;
     @Column(name = "estado_geral")
     private String estadoGeral;
+
+    @ManyToMany
+    @JoinTable(
+            name = "tb_classificacao_produto",
+            joinColumns = @JoinColumn(name = "fk_produto"),
+            inverseJoinColumns = @JoinColumn(name = "fk_tag_produto"))
+    private List<TagProduto> tags;
 }

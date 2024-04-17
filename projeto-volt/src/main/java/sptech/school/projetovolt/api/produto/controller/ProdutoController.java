@@ -23,25 +23,15 @@ public class ProdutoController {
 
     @Autowired
     ProdutoRepository produtoRepository;
-
-   // private final List<Produto> produtos = new ArrayList<>();
     private final ProdutoService produtoService = new ProdutoService();
-    private Integer id = 0;
 
     @PostMapping("/estoque")
     @Operation(summary = "Responsável por cadastrar um produto no estoque")
     public ResponseEntity<ProdutoConsultaDTO> cadastrarProduto(@RequestBody ProdutoCriacaoDTO produtoNovo) {
-        if (produtoNovo.getDescricao() != null
-                && produtoNovo.getPreco() != null
-                && produtoNovo.getNome() != null
-                && produtoNovo.getQtdEstoque() != null
-        ) {
             if (produtoRepository.findByNome(produtoNovo.getNome()) == null){
                 Produto produtoSalvo = produtoRepository.save(ProdutoMapper.toEntity(produtoNovo));
                 return ResponseEntity.status(201).body(ProdutoMapper.toDto(produtoSalvo));
             }
-            return ResponseEntity.status(409).build();
-        }
         return ResponseEntity.status(400).build();
     }
 
@@ -121,14 +111,14 @@ public class ProdutoController {
 
     @DeleteMapping("/estoque/{id}")
     @Operation(summary = "Responsável por deletar um determinado produto por ID")
-    public ResponseEntity<Produto> apagarProdutoPorId(@PathVariable int id) {
+    public ResponseEntity<Void> apagarProdutoPorId(@PathVariable int id) {
+        Optional<Produto> produtoOpt = produtoRepository.findById(id);
 
-        for (Produto produto : produtos) {
-            if (produto.getId() == id) {
-                produtos.remove(produto);
-                return ResponseEntity.status(204).build();
-            }
+        if(produtoOpt.isPresent()){
+            produtoRepository.delete(produtoOpt.get());
+            return ResponseEntity.status(204).build();
+        }else{
+            return ResponseEntity.status(404).build();
         }
-        return ResponseEntity.status(404).build();
     }
 }
