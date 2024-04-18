@@ -22,7 +22,7 @@ import java.util.Optional;
 public class ProdutoController {
 
     @Autowired
-    ProdutoRepository produtoRepository;
+    private ProdutoRepository produtoRepository;
     private final ProdutoService produtoService = new ProdutoService();
 
     @PostMapping("/estoque")
