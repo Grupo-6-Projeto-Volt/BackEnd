@@ -2,9 +2,12 @@ package sptech.school.projetovolt.entity.favorito;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import sptech.school.projetovolt.entity.usuario.Usuario;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name="tb_favoritos")
 public class Favorito {

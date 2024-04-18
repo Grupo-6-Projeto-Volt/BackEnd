@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import sptech.school.projetovolt.entity.produto.Produto;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_imagem_produto")
 public class ImagemProduto {
