@@ -15,7 +15,11 @@ public class Favorito {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "fk_usuario", referencedColumnName = "id")
+//    @OneToMany(cascade = CascadeType.REMOVE)
+//    @JoinColumn(name = "fk_usuario", referencedColumnName = "id")
+//    private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_usuario")
     private Usuario usuario;
 }

@@ -13,14 +13,13 @@ public class ImagemProduto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "fk_produto")
-    @OneToMany(cascade = CascadeType.MERGE,
-    orphanRemoval = true)
-    private Produto produto;
-
     @Column
     private String nome;
 
     @Column(name = "codigo_imagem")
-    private Byte[] codigoImagem;
+    private byte[] codigoImagem;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_produto")
+    private Produto produto;
 }

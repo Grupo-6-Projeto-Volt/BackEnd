@@ -71,18 +71,12 @@ public class ProdutoController {
 
     @PutMapping("/estoque/{id}")
     @Operation(summary = "Responsável por alterar um produto a partir do seu ID")
-    public ResponseEntity<ProdutoConsultaDTO> alterarProdutoPorId(@PathVariable int id, @RequestBody ProdutoCriacaoDTO produtoAlterado) {
+    public ResponseEntity<ProdutoConsultaDTO> alterarProdutoPorId(@PathVariable int id, @RequestBody ProdutoAlteracaoDto produtoAlterado) {
         Optional<Produto> produtoOpt = produtoRepository.findById(id);
 
         if(produtoOpt.isPresent()){
-            Produto produto = produtoOpt.get();
-            produtoAlterado.setNome(produto.getNome());
-            produtoAlterado.setDescricao(produto.getDescricao());
-            produtoAlterado.setCategoria(produto.getCategoria());
-            produtoAlterado.setPreco(produto.getPreco());
-            produtoAlterado.setQtdEstoque(produto.getQtdEstoque());
-            produtoAlterado.setEstadoGeral(produto.getEstadoGeral());
-            Produto novoProduto = ProdutoMapper.toEntity(produtoAlterado);
+            Produto novoProduto = ProdutoMapper.fromDtoAlteracaoToEntity(produtoAlterado);
+            novoProduto.setId(produtoOpt.get().getId());
             produtoRepository.save(novoProduto);
 
             return ResponseEntity.status(200).body(ProdutoMapper.toDto(novoProduto));
@@ -90,24 +84,24 @@ public class ProdutoController {
         return ResponseEntity.status(404).build();
     }
 
-    @PutMapping("/estoque")
-    @Operation(summary = "Responsável por alterar o nomde de um determinado produto")
-    public ResponseEntity<ProdutoConsultaDTO> alterarProdutoPorNome(@RequestParam String nomeProduto, @RequestBody ProdutoAlteracaoDto produtoAlterado) {
-        Produto produtoOpt = produtoRepository.findByNomeLike(nomeProduto);
-
-        if(produtoOpt != null){
-            produtoOpt.setNome(produtoAlterado.getNome());
-            produtoOpt.setDescricao(produtoAlterado.getDescricao());
-            produtoOpt.setCategoria(produtoAlterado.getCategoria());
-            produtoOpt.setPreco(produtoAlterado.getPreco());
-            produtoOpt.setQtdEstoque(produtoAlterado.getQtdEstoque());
-            produtoOpt.setEstadoGeral(produtoAlterado.getEstadoGeral());
-            produtoRepository.save(produtoOpt);
-
-            return ResponseEntity.status(200).body(ProdutoMapper.toDto(produtoOpt));
-        }
-        return ResponseEntity.status(404).build();
-    }
+//    @PutMapping("/estoque")
+//    @Operation(summary = "Responsável por alterar o nomde de um determinado produto")
+//    public ResponseEntity<ProdutoConsultaDTO> alterarProdutoPorNome(@RequestParam String nomeProduto, @RequestBody ProdutoAlteracaoDto produtoAlterado) {
+//        Produto produtoOpt = produtoRepository.findByNomeLike(nomeProduto);
+//
+//        if(produtoOpt != null){
+//            produtoOpt.setNome(produtoAlterado.getNome());
+//            produtoOpt.setDescricao(produtoAlterado.getDescricao());
+//            produtoOpt.setCategoria(produtoAlterado.getCategoria());
+//            produtoOpt.setPreco(produtoAlterado.getPreco());
+//            produtoOpt.setQtdEstoque(produtoAlterado.getQtdEstoque());
+//            produtoOpt.setEstadoGeral(produtoAlterado.getEstadoGeral());
+//            produtoRepository.save(produtoOpt);
+//
+//            return ResponseEntity.status(200).body(ProdutoMapper.toDto(produtoOpt));
+//        }
+//        return ResponseEntity.status(404).build();
+//    }
 
     @DeleteMapping("/estoque/{id}")
     @Operation(summary = "Responsável por deletar um determinado produto por ID")

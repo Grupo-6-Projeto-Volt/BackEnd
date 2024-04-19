@@ -29,4 +29,18 @@ public class ProdutoMapper {
 
         return entity;
     }
+
+    public static Produto fromDtoAlteracaoToEntity(ProdutoAlteracaoDto dto){
+        if(dto == null) return null;
+
+        Produto entity = new Produto();
+        entity.setNome(dto.getNome());
+        entity.setCategoria(dto.getCategoria());
+        entity.setDescricao(dto.getDescricao());
+        entity.setPreco(dto.getPreco());
+        entity.setQtdEstoque(dto.getQtdEstoque());
+        entity.setEstadoGeral(dto.getEstadoGeral());
+
+        return entity;
+    }
 }
