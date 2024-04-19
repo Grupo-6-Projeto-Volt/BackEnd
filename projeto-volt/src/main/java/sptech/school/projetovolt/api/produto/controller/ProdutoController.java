@@ -77,6 +77,7 @@ public class ProdutoController {
         if(produtoOpt.isPresent()){
             Produto novoProduto = ProdutoMapper.fromDtoAlteracaoToEntity(produtoAlterado);
             novoProduto.setId(produtoOpt.get().getId());
+
             produtoRepository.save(novoProduto);
 
             return ResponseEntity.status(200).body(ProdutoMapper.toDto(novoProduto));

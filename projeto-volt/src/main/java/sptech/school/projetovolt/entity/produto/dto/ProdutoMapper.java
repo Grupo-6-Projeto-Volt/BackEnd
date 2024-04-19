@@ -13,6 +13,7 @@ public class ProdutoMapper {
         dto.setPreco(produto.getPreco());
         dto.setCategoria(produto.getCategoria());
         dto.setQtdEstoque(produto.getQtdEstoque());
+        dto.setEstadoGeral(produto.getEstadoGeral());
 
         return dto;
     }
