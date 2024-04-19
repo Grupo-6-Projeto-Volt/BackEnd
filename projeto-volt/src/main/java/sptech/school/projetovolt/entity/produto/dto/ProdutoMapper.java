@@ -27,6 +27,7 @@ public class ProdutoMapper {
         entity.setPreco(dto.getPreco());
         entity.setCategoria(dto.getCategoria());
         entity.setQtdEstoque(dto.getQtdEstoque());
+        entity.setEstadoGeral(dto.getEstadoGeral());
 
         return entity;
     }
