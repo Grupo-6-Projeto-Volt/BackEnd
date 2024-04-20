@@ -2,12 +2,15 @@ package sptech.school.projetovolt.api.configuration.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,6 +27,9 @@ import sptech.school.projetovolt.service.login.autenticacao.AutenticacaoService;
 import java.util.Arrays;
 import java.util.List;
 
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfiguracao {
 
     private static final String ORIGENS_PERMITIDAS = "*";
@@ -47,6 +53,8 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/v3/api-docs/**"),
             new AntPathRequestMatcher("/actuator/*"),
             new AntPathRequestMatcher("/login/**"),
+            new AntPathRequestMatcher("/usuarios/**"),
+            new AntPathRequestMatcher("/produtos/**"),
             new AntPathRequestMatcher("/h2-console/**"),
             new AntPathRequestMatcher("/error/**")
     };

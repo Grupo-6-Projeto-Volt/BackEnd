@@ -6,6 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sptech.school.projetovolt.api.configuration.security.jwt.GerenciadorTokenJwt;
 import sptech.school.projetovolt.entity.login.Login;
@@ -14,6 +15,7 @@ import sptech.school.projetovolt.service.login.dto.LoginMapper;
 import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioLoginDto;
 import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioTokenDto;
 
+@Service
 public class LoginService {
 
     @Autowired

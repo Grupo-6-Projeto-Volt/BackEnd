@@ -4,15 +4,15 @@ import java.util.UUID;
 
 public class UsuarioTokenDto {
 
-    private UUID userId;
+    private String userId;
     private String email;
     private String token;
 
-    public UUID getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(UUID userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
