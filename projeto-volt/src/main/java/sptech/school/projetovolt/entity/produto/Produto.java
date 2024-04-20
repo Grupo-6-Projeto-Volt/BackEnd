@@ -5,6 +5,7 @@ import lombok.*;
 import sptech.school.projetovolt.entity.tag.TagProduto;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter

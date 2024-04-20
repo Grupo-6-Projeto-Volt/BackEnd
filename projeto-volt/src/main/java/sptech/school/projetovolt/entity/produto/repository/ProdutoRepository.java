@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ProdutoRepository extends JpaRepository<Produto, UUID> {
+public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
     ProdutoConsultaDTO findByNome(String nome);
     List<ProdutoConsultaDTO> findAllByNome(String textoBusca);
 
-    Optional<Produto> findById(int id);
+    //Optional<Produto> findById(int id);
 //    @Query(value = "SELECT p.nome, p.descricao, p.categoria" +
 //            ",p.preco, p.qtd_estoque qtdEstoque, p.estado_geral estadoGeral " +
 //            "FROM tb_produto AS p WHERE LOWER(p.nome) LIKE LOWER(:textoBusca) LIMIT 1")

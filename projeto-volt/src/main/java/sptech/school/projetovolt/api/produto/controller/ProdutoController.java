@@ -16,6 +16,7 @@ import sptech.school.projetovolt.service.ProdutoService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/produtos")
@@ -91,7 +92,7 @@ public class ProdutoController {
         Optional<Produto> produtoOpt = produtoRepository.findById(id);
 
         if(produtoOpt.isPresent()){
-            produtoRepository.delete(produtoOpt.get());
+            produtoRepository.deleteById(id);
             return ResponseEntity.status(204).build();
         }else{
             return ResponseEntity.status(404).build();
