@@ -10,4 +10,5 @@ public class ProdutoConsultaDTO {
     private Double preco;
     private Integer qtdEstoque;
     private String estadoGeral;
+    private Double desconto;
 }

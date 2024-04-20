@@ -19,4 +19,6 @@ public class ProdutoAlteracaoDto {
     private Integer qtdEstoque;
     @Size(max = 45)
     private String estadoGeral;
+    @PositiveOrZero
+    private Double desconto;
 }

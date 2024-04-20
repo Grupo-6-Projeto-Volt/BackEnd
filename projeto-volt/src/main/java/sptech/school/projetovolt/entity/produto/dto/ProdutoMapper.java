@@ -14,6 +14,7 @@ public class ProdutoMapper {
         dto.setCategoria(produto.getCategoria());
         dto.setQtdEstoque(produto.getQtdEstoque());
         dto.setEstadoGeral(produto.getEstadoGeral());
+        dto.setDesconto(dto.getDesconto());
 
         return dto;
     }
@@ -28,6 +29,7 @@ public class ProdutoMapper {
         entity.setCategoria(dto.getCategoria());
         entity.setQtdEstoque(dto.getQtdEstoque());
         entity.setEstadoGeral(dto.getEstadoGeral());
+        entity.setDesconto(dto.getDesconto());
 
         return entity;
     }
@@ -42,6 +44,7 @@ public class ProdutoMapper {
         entity.setPreco(dto.getPreco());
         entity.setQtdEstoque(dto.getQtdEstoque());
         entity.setEstadoGeral(dto.getEstadoGeral());
+        entity.setDesconto(dto.getDesconto());
 
         return entity;
     }

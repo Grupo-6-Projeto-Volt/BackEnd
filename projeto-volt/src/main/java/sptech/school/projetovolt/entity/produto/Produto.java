@@ -27,6 +27,8 @@ public class Produto {
     private Integer qtdEstoque;
     @Column(name = "estado_geral")
     private String estadoGeral;
+    @Column(name = "desconto")
+    private Double desconto;
 
     @ManyToMany
     @JoinTable(
