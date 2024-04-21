@@ -13,10 +13,7 @@ public class Usuario {
     private String nome;
     private String email;
     private String telefone;
-    private String cep;
     private Short categoria;
-    @OneToOne(mappedBy = "usuario")
-    private Login login;
 
     public Integer getId() {
         return id;
@@ -48,14 +45,6 @@ public class Usuario {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
-    }
-
-    public String getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
     }
 
     public Short getCategoria() {
