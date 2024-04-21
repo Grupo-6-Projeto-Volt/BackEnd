@@ -29,11 +29,8 @@ public class ProdutoController {
     @PostMapping("/estoque")
     @Operation(summary = "Responsável por cadastrar um produto no estoque")
     public ResponseEntity<ProdutoConsultaDTO> cadastrarProduto(@RequestBody ProdutoCriacaoDTO produtoNovo) {
-            if (produtoRepository.findByNome(produtoNovo.getNome()) == null){
                 Produto produtoSalvo = produtoRepository.save(ProdutoMapper.toEntity(produtoNovo));
                 return ResponseEntity.status(201).body(ProdutoMapper.toDto(produtoSalvo));
-            }
-        return ResponseEntity.status(400).build();
     }
 
     @GetMapping("/loja")
