@@ -12,7 +12,7 @@ public class Login {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
   
     @Column
     private String email;

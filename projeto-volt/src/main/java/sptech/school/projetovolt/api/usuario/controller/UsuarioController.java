@@ -2,7 +2,7 @@ package sptech.school.projetovolt.api.usuario.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,17 +20,13 @@ import sptech.school.projetovolt.service.usuario.dto.UsuarioCriacaoDto;
 import sptech.school.projetovolt.service.usuario.dto.UsuarioMapper;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private LoginRepository loginRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UsuarioRepository usuarioRepository;
+    private final LoginRepository loginRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping
     @SecurityRequirement(name = "Bearer")
