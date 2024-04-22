@@ -13,19 +13,16 @@ import sptech.school.projetovolt.entity.tag.repository.TagProdutoRepository;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/new/tag")
+@RequestMapping("/tags")
 public class TagProdutoController {
     @Autowired
     private TagProdutoRepository tagProdutoRepository;
 
     @PostMapping
     public ResponseEntity<TagProdutoConsultaDto> criarTag(@RequestBody TagProdutoCriacaoDto tag){
-        Optional<TagProduto> tagOpt = tagProdutoRepository.findById(TagProdutoMapper.toEntity(tag).getId());
-        if(!tagOpt.get().getTag().equalsIgnoreCase(tag.getTag())){
+
             TagProduto tagSalva = tagProdutoRepository.save(TagProdutoMapper.toEntity(tag));
             return ResponseEntity.status(201).body(TagProdutoMapper.toDto(tagSalva));
-        }
-        return ResponseEntity.status(409).build();
     }
 
     @PatchMapping("/{id}")
