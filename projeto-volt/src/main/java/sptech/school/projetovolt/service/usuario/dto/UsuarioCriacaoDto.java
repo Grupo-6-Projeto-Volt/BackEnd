@@ -1,7 +1,6 @@
 package sptech.school.projetovolt.service.usuario.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 public class UsuarioCriacaoDto {
 
@@ -14,9 +13,14 @@ public class UsuarioCriacaoDto {
     @Size(min = 10, max = 14)
     @NotBlank
     private String telefone;
-    @Size(min = 9, max = 9)
-    @NotBlank
-    private String cep;
+
+    @Min(0)
+    @Max(1)
+    private Short categoria;
+
+    @NotEmpty
+    @Size(min = 8, max = 16)
+    private String senha;
 
     public String getNome() {
         return nome;
@@ -42,11 +46,19 @@ public class UsuarioCriacaoDto {
         this.telefone = telefone;
     }
 
-    public String getCep() {
-        return cep;
+    public Short getCategoria() {
+        return categoria;
     }
 
-    public void setCep(String cep) {
-        this.cep = cep;
+    public void setCategoria(Short categoria) {
+        this.categoria = categoria;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }

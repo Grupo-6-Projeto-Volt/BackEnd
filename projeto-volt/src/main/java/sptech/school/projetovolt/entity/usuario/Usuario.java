@@ -22,11 +22,10 @@ public class Usuario {
     @Column
     private String telefone;
     @Column
-    private String cep;
-    @Column
     private Short categoria;
     @OneToOne(mappedBy = "usuario")
     private Login login;
     @OneToMany(mappedBy = "usuario")
     private List<Favorito> favoritos;
+
 }
