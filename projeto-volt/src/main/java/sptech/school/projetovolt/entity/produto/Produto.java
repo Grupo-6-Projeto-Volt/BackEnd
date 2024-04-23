@@ -29,7 +29,7 @@ public class Produto {
     @Column(name = "estado_geral")
     private String estadoGeral;
     @Column(name = "desconto")
-    private Double desconto;
+    private Integer desconto;
 
     @ManyToMany
     @JoinTable(
