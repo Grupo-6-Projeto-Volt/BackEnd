@@ -11,12 +11,10 @@ import sptech.school.projetovolt.entity.produto.dto.ProdutoConsultaDTO;
 import sptech.school.projetovolt.entity.produto.dto.ProdutoCriacaoDTO;
 import sptech.school.projetovolt.entity.produto.dto.ProdutoMapper;
 import sptech.school.projetovolt.entity.produto.repository.ProdutoRepository;
-import sptech.school.projetovolt.service.ProdutoService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/produtos")

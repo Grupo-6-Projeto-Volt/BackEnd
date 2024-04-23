@@ -1,5 +1,6 @@
 package sptech.school.projetovolt.api.configuration.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,15 +10,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import sptech.school.projetovolt.service.login.autenticacao.AutenticacaoService;
 
+@RequiredArgsConstructor
 public class AutenticacaoProvider implements AuthenticationProvider {
 
     private final AutenticacaoService usuarioAutenticacaoService;
     private final PasswordEncoder passwordEncoder;
-
-    public AutenticacaoProvider(AutenticacaoService usuarioAutenticacaoService, PasswordEncoder passwordEncoder) {
-        this.usuarioAutenticacaoService = usuarioAutenticacaoService;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public Authentication authenticate(final Authentication authentication) throws AuthenticationException {

@@ -33,7 +33,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfiguracao {
 
-    private static final String ORIGENS_PERMITIDAS = "*";
     private final AutenticacaoService autenticacaoService;
     private final AutenticacaoEntryPoint autenticacaoJwtEntryPoint;
 
