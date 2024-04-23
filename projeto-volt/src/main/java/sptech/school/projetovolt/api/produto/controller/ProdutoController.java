@@ -95,4 +95,8 @@ public class ProdutoController {
             return ResponseEntity.status(404).build();
         }
     }
+
+    private static List<ProdutoConsultaDTO> ordenarListaProdutos(Double[] coluna, List<Produto> produtos){
+        return null;
+    }
 }
