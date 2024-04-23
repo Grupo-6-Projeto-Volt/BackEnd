@@ -32,8 +32,7 @@ public class UsuarioController {
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<UsuarioConsultaDto> criarConta(@RequestBody @Valid UsuarioCriacaoDto usuarioCriado) {
 
-        String senhaCriptografada = passwordEncoder.encode(usuarioCriado.getSenha());
-        usuarioCriado.setSenha(senhaCriptografada);
+        usuarioCriado.setSenha(passwordEncoder.encode(usuarioCriado.getSenha()));
 
         Usuario usuarioEntity = UsuarioMapper.toEntity(usuarioCriado);
         Usuario usuarioSalvo = usuarioRepository.save(usuarioEntity);
@@ -43,11 +42,11 @@ public class UsuarioController {
         login.setSenha(usuarioCriado.getSenha());
         login.setUsuario(usuarioSalvo);
 
-        LoginCriacaoDto loginCriacaoDto = LoginMapper.toCadastrarLogin(login);
+        LoginCriacaoDto loginCriacaoDto = LoginMapper.toCadastrarLoginDto(login);
         Login loginEntity = LoginMapper.toLogin(loginCriacaoDto, usuarioSalvo);
         loginRepository.save(loginEntity);
 
-        UsuarioConsultaDto dto = UsuarioMapper.toDto(usuarioSalvo);
-        return ResponseEntity.status(201).body(dto);
+        UsuarioConsultaDto usuarioConsultaDto = UsuarioMapper.toUsuarioConsultaDto(usuarioSalvo);
+        return ResponseEntity.status(201).body(usuarioConsultaDto);
     }
 }

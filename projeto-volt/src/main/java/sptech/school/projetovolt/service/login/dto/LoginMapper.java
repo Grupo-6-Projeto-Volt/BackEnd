@@ -24,7 +24,7 @@ public class LoginMapper {
         return login;
     }
 
-    public static LoginCriacaoDto toCadastrarLogin (Login entity) {
+    public static LoginCriacaoDto toCadastrarLoginDto (Login entity) {
         LoginCriacaoDto loginCriacaoDto = new LoginCriacaoDto();
         loginCriacaoDto.setEmail(entity.getEmail());
         loginCriacaoDto.setSenha(entity.getSenha());

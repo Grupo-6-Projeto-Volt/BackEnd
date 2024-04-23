@@ -15,7 +15,7 @@ public class UsuarioMapper {
         return entity;
     }
 
-    public static UsuarioConsultaDto toDto(Usuario entity) {
+    public static UsuarioConsultaDto toUsuarioConsultaDto(Usuario entity) {
         if (entity == null) return null;
 
         UsuarioConsultaDto dto = new UsuarioConsultaDto();
