@@ -1,11 +1,10 @@
 package sptech.school.projetovolt.service.login;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sptech.school.projetovolt.api.configuration.security.jwt.GerenciadorTokenJwt;
@@ -16,16 +15,12 @@ import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioLoginDto;
 import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioTokenDto;
 
 @Service
+@RequiredArgsConstructor
 public class LoginService {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private LoginRepository loginRepository;
-    @Autowired
-    private GerenciadorTokenJwt gerenciadorTokenJwt;
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final LoginRepository loginRepository;
+    private final GerenciadorTokenJwt gerenciadorTokenJwt;
+    private final AuthenticationManager authenticationManager;
 
     public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto) {
         final UsernamePasswordAuthenticationToken credentials = new

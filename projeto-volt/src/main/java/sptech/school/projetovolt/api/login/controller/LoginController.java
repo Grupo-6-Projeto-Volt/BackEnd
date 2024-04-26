@@ -1,37 +1,26 @@
 package sptech.school.projetovolt.api.login.controller;
 
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.entity.login.Login;
 import sptech.school.projetovolt.entity.login.repository.LoginRepository;
-import sptech.school.projetovolt.entity.usuario.Usuario;
 import sptech.school.projetovolt.service.login.LoginService;
 import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioLoginDto;
 import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioTokenDto;
 import sptech.school.projetovolt.service.login.dto.BuscarLoginDto;
-import sptech.school.projetovolt.service.login.dto.LoginCriacaoDto;
 import sptech.school.projetovolt.service.login.dto.LoginMapper;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/login")
 public class LoginController {
 
-    @Autowired
-    private LoginRepository loginRepository;
-
-    @Autowired
-    LoginService loginService;
-
-//    @PostMapping
-//    @SecurityRequirement(name = "Bearer")
-//    public ResponseEntity<Void> inserir (@RequestBody @Valid LoginCriacaoDto loginCriacaoDto) {
-//
-//    }
+    private final LoginRepository loginRepository;
+    private final LoginService loginService;
 
     @PostMapping
     public ResponseEntity<UsuarioTokenDto> login (@RequestBody @Valid UsuarioLoginDto usuarioLoginDto) {
@@ -51,6 +40,4 @@ public class LoginController {
         return ResponseEntity.status(200).body(loginDtos);
 
     }
-
-
 }

@@ -2,7 +2,7 @@ package sptech.school.projetovolt.api.usuario.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,24 +20,19 @@ import sptech.school.projetovolt.service.usuario.dto.UsuarioCriacaoDto;
 import sptech.school.projetovolt.service.usuario.dto.UsuarioMapper;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private LoginRepository loginRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UsuarioRepository usuarioRepository;
+    private final LoginRepository loginRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<UsuarioConsultaDto> criarConta(@RequestBody @Valid UsuarioCriacaoDto usuarioCriado) {
 
-        String senhaCriptografada = passwordEncoder.encode(usuarioCriado.getSenha());
-        usuarioCriado.setSenha(senhaCriptografada);
+        usuarioCriado.setSenha(passwordEncoder.encode(usuarioCriado.getSenha()));
 
         Usuario usuarioEntity = UsuarioMapper.toEntity(usuarioCriado);
         Usuario usuarioSalvo = usuarioRepository.save(usuarioEntity);
@@ -47,11 +42,11 @@ public class UsuarioController {
         login.setSenha(usuarioCriado.getSenha());
         login.setUsuario(usuarioSalvo);
 
-        LoginCriacaoDto loginCriacaoDto = LoginMapper.toCadastrarLogin(login);
+        LoginCriacaoDto loginCriacaoDto = LoginMapper.toCadastrarLoginDto(login);
         Login loginEntity = LoginMapper.toLogin(loginCriacaoDto, usuarioSalvo);
         loginRepository.save(loginEntity);
 
-        UsuarioConsultaDto dto = UsuarioMapper.toDto(usuarioSalvo);
-        return ResponseEntity.status(201).body(dto);
+        UsuarioConsultaDto usuarioConsultaDto = UsuarioMapper.toUsuarioConsultaDto(usuarioSalvo);
+        return ResponseEntity.status(201).body(usuarioConsultaDto);
     }
 }

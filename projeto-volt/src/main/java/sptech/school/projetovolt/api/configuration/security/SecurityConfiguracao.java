@@ -1,6 +1,6 @@
 package sptech.school.projetovolt.api.configuration.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -30,15 +30,11 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfiguracao {
 
-    private static final String ORIGENS_PERMITIDAS = "*";
-
-    @Autowired
-    private AutenticacaoService autenticacaoService;
-
-    @Autowired
-    private AutenticacaoEntryPoint autenticacaoJwtEntryPoint;
+    private final AutenticacaoService autenticacaoService;
+    private final AutenticacaoEntryPoint autenticacaoJwtEntryPoint;
 
     private static final AntPathRequestMatcher[] URLS_PERMITIDAS = {
             new AntPathRequestMatcher("/swagger-ui/**"),
@@ -55,6 +51,7 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/login/**"),
             new AntPathRequestMatcher("/usuarios/**"),
             new AntPathRequestMatcher("/produtos/**"),
+            new AntPathRequestMatcher("/tags/**"),
             new AntPathRequestMatcher("/h2-console/**"),
             new AntPathRequestMatcher("/error/**")
     };
