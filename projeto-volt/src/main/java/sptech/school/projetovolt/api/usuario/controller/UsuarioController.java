@@ -5,10 +5,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.entity.login.Login;
 import sptech.school.projetovolt.entity.login.repository.LoginRepository;
 import sptech.school.projetovolt.entity.usuario.Usuario;
@@ -18,6 +15,8 @@ import sptech.school.projetovolt.service.login.dto.LoginMapper;
 import sptech.school.projetovolt.service.usuario.dto.UsuarioConsultaDto;
 import sptech.school.projetovolt.service.usuario.dto.UsuarioCriacaoDto;
 import sptech.school.projetovolt.service.usuario.dto.UsuarioMapper;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -48,5 +47,18 @@ public class UsuarioController {
 
         UsuarioConsultaDto usuarioConsultaDto = UsuarioMapper.toUsuarioConsultaDto(usuarioSalvo);
         return ResponseEntity.status(201).body(usuarioConsultaDto);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UsuarioConsultaDto>> listarContas() {
+        List<Usuario> usuarios = usuarioRepository.findAll();
+
+        if (usuarios.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
+
+        List<UsuarioConsultaDto> dtos = UsuarioMapper.toUsuarioConsultaDto(usuarios);
+
+        return ResponseEntity.status(200).body(dtos);
     }
 }

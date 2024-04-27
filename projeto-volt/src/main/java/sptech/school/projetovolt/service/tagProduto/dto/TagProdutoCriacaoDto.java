@@ -1,4 +1,4 @@
-package sptech.school.projetovolt.entity.tag.dto;
+package sptech.school.projetovolt.service.tagProduto.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

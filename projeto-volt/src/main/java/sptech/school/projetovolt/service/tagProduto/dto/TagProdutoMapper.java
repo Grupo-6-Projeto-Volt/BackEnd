@@ -1,8 +1,8 @@
-package sptech.school.projetovolt.entity.tag.dto;
+package sptech.school.projetovolt.service.tagProduto.dto;
 
-import sptech.school.projetovolt.entity.produto.dto.ProdutoConsultaDTO;
-import sptech.school.projetovolt.entity.produto.dto.ProdutoCriacaoDTO;
-import sptech.school.projetovolt.entity.tag.TagProduto;
+import sptech.school.projetovolt.entity.tagProduto.TagProduto;
+
+import java.util.List;
 
 public class TagProdutoMapper {
     public static TagProdutoConsultaDto toDto(TagProduto entity){
@@ -21,5 +21,13 @@ public class TagProdutoMapper {
         entity.setTag(dto.getTag());
 
         return entity;
+    }
+
+    public static List<TagProdutoConsultaDto> toDto(List<TagProduto> entities){
+        if (entities.isEmpty()) return null;
+
+        return entities
+                .stream()
+                .map(TagProdutoMapper::toDto).toList();
     }
 }

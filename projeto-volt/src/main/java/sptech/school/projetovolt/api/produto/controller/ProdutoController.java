@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.entity.produto.Produto;
-import sptech.school.projetovolt.entity.produto.dto.ProdutoAlteracaoDto;
-import sptech.school.projetovolt.entity.produto.dto.ProdutoConsultaDTO;
-import sptech.school.projetovolt.entity.produto.dto.ProdutoCriacaoDTO;
-import sptech.school.projetovolt.entity.produto.dto.ProdutoMapper;
+import sptech.school.projetovolt.service.produto.dto.ProdutoAlteracaoDto;
+import sptech.school.projetovolt.service.produto.dto.ProdutoConsultaDTO;
+import sptech.school.projetovolt.service.produto.dto.ProdutoCriacaoDTO;
+import sptech.school.projetovolt.service.produto.dto.ProdutoMapper;
 import sptech.school.projetovolt.entity.produto.repository.ProdutoRepository;
 import sptech.school.projetovolt.service.produto.ProdutoService;
 

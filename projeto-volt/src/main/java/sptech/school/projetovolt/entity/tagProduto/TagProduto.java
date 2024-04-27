@@ -1,4 +1,4 @@
-package sptech.school.projetovolt.entity.tag;
+package sptech.school.projetovolt.entity.tagProduto;
 
 import jakarta.persistence.*;
 import lombok.Data;
