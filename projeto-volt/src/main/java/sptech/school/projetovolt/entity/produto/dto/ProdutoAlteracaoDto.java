@@ -1,5 +1,6 @@
 package sptech.school.projetovolt.entity.produto.dto;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
@@ -20,5 +21,5 @@ public class ProdutoAlteracaoDto {
     @Size(max = 45)
     private String estadoGeral;
     @PositiveOrZero
-    private Double desconto;
+    private Integer desconto;
 }

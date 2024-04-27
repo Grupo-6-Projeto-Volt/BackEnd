@@ -96,7 +96,69 @@ public class ProdutoController {
         }
     }
 
-    private static List<ProdutoConsultaDTO> ordenarListaProdutos(Double[] coluna, List<Produto> produtos){
-        return null;
+    @GetMapping("/filtro")
+    public ResponseEntity<List<ProdutoConsultaDTO>> filtrar(@RequestParam(required = false) Double preco,
+                                                            @RequestParam(required = false) Integer desconto,
+                                                            @RequestParam(required = false) Integer qtdEsdtoque){
+        List<Produto> allProdutos = produtoRepository.findAll();
+
+        return ResponseEntity.ok(ordena(allProdutos));
+    }
+
+    private List<ProdutoConsultaDTO> ordena(List<Produto> produtos){
+        if(produtos.isEmpty()){
+            return null;
+        }else{
+            Integer[] colunaId = new Integer[produtos.size()];
+            Double[] colunaOrdenar = new Double[produtos.size()];
+            for (int i = 0; i < produtos.size(); i++) {
+                colunaOrdenar[i] = produtos.get(i).getPreco();
+                colunaId[i] = produtos.get(i).getId();
+            }
+
+
+            Integer[] ids = ordenarListaProdutos(colunaOrdenar, colunaId, 0, colunaOrdenar.length-1);
+            List<ProdutoConsultaDTO> produtosOrdenados = new ArrayList<>();
+
+            for (int i = 0; i < ids.length; i++) {
+                Optional<Produto> produtoDaVez = produtoRepository.findById(ids[i]);
+                produtosOrdenados.add(ProdutoMapper.toDto(produtoDaVez.get()));
+            }
+            return produtosOrdenados;
+        }
+    }
+    private static Integer[] ordenarListaProdutos(Number[] coluna, Integer[] ids, int inicio, int fim){
+        int i = inicio;
+        int j = fim;
+        Double  pivo = coluna[(inicio + fim) / 2].doubleValue();
+        while(i <= j){
+            while(i < fim && coluna[i].doubleValue() < pivo){
+                i++;
+            }
+            while (j > inicio && coluna[j].doubleValue() > pivo){
+                j--;
+            }
+            if(i <= j){
+                //faz a troca
+                Double aux = coluna[i].doubleValue();
+                Integer idAux = ids[i];
+                coluna[i] = coluna[j];
+                ids[i] = ids[j];
+                coluna[j] = aux;
+                ids[j] = idAux;
+                //aumenta em i e decrementa em j
+                i++;
+                j--;
+
+            }
+
+            if(inicio < j){
+                ordenarListaProdutos(coluna, ids, inicio, j);
+            }
+            if(i < fim){
+                ordenarListaProdutos(coluna, ids, i, fim);
+            }
+        }
+        return ids;
     }
 }

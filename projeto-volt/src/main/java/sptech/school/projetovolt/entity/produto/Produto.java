@@ -1,6 +1,7 @@
 package sptech.school.projetovolt.entity.produto;
 
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.*;
 import sptech.school.projetovolt.entity.tag.TagProduto;
 
@@ -29,7 +30,7 @@ public class Produto {
     @Column(name = "estado_geral")
     private String estadoGeral;
     @Column(name = "desconto")
-    private Double desconto;
+    private Integer desconto;
 
     @ManyToMany
     @JoinTable(
