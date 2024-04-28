@@ -97,9 +97,7 @@ public class ProdutoController {
     }
 
     @GetMapping("/filtro")
-    public ResponseEntity<List<ProdutoConsultaDTO>> filtrar(@RequestParam(required = false) Double preco,
-                                                            @RequestParam(required = false) Integer desconto,
-                                                            @RequestParam(required = false) Integer qtdEsdtoque){
+    public ResponseEntity<List<ProdutoConsultaDTO>> filtrar(){
         List<Produto> allProdutos = produtoRepository.findAll();
 
         return ResponseEntity.ok(ordena(allProdutos));
