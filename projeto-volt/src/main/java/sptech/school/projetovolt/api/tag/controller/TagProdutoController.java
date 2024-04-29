@@ -1,24 +1,25 @@
 package sptech.school.projetovolt.api.tag.controller;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sptech.school.projetovolt.entity.tag.TagProduto;
-import sptech.school.projetovolt.entity.tag.dto.TagProdutoConsultaDto;
-import sptech.school.projetovolt.entity.tag.dto.TagProdutoCriacaoDto;
-import sptech.school.projetovolt.entity.tag.dto.TagProdutoMapper;
-import sptech.school.projetovolt.entity.tag.repository.TagProdutoRepository;
+import sptech.school.projetovolt.entity.tagProduto.TagProduto;
+import sptech.school.projetovolt.entity.tagProduto.repository.TagProdutoRepository;
+import sptech.school.projetovolt.service.tagProduto.dto.TagProdutoConsultaDto;
+import sptech.school.projetovolt.service.tagProduto.dto.TagProdutoCriacaoDto;
+import sptech.school.projetovolt.service.tagProduto.dto.TagProdutoMapper;
 import sptech.school.projetovolt.utils.ListaObj;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/tags")
 public class TagProdutoController {
-    @Autowired
-    private TagProdutoRepository tagProdutoRepository;
+
+    private final TagProdutoRepository tagProdutoRepository;
 
     @PostMapping
     public ResponseEntity<TagProdutoConsultaDto> criarTag(@RequestBody TagProdutoCriacaoDto tag){

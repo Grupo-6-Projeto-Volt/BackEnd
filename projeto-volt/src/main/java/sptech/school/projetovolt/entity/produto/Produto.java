@@ -7,8 +7,7 @@ import sptech.school.projetovolt.entity.tagProduto.TagProduto;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "tb_produto")
 public class Produto {
