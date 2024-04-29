@@ -34,8 +34,23 @@ public class LoginMapper {
 
     public static BuscarLoginDto toBuscarLoginDto (Login entity) {
         BuscarLoginDto buscarLoginDto = new BuscarLoginDto();
+        buscarLoginDto.setId(entity.getId());
         buscarLoginDto.setEmail(entity.getEmail());
         buscarLoginDto.setSenha(entity.getSenha());
+
+        LoginUsuarioListagemDto loginUsuarioListagemDto = new LoginUsuarioListagemDto();
+        loginUsuarioListagemDto.setId(entity.getUsuario().getId());
+        loginUsuarioListagemDto.setNome(entity.getUsuario().getNome());
+        loginUsuarioListagemDto.setTelefone(entity.getUsuario().getTelefone());
+        loginUsuarioListagemDto.setEmail(entity.getUsuario().getEmail());
+
+        if (entity.getUsuario().getCategoria() == 0) {
+            loginUsuarioListagemDto.setCategoria("Admin");
+        } else {
+            loginUsuarioListagemDto.setCategoria("Cliente");
+        }
+
+        buscarLoginDto.setUsuario(loginUsuarioListagemDto);
         return buscarLoginDto;
     }
 

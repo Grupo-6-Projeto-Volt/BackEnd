@@ -16,11 +16,13 @@ import sptech.school.projetovolt.entity.usuario.Usuario;
 import sptech.school.projetovolt.entity.usuario.repository.UsuarioRepository;
 import sptech.school.projetovolt.service.login.dto.LoginCriacaoDto;
 import sptech.school.projetovolt.service.login.dto.LoginMapper;
+import sptech.school.projetovolt.service.usuario.dto.UsuarioAtualizacaoDto;
 import sptech.school.projetovolt.service.usuario.dto.UsuarioConsultaDto;
 import sptech.school.projetovolt.service.usuario.dto.UsuarioCriacaoDto;
 import sptech.school.projetovolt.service.usuario.dto.UsuarioMapper;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -66,7 +68,9 @@ public class UsuarioController {
 
         LoginCriacaoDto loginCriacaoDto = LoginMapper.toCadastrarLoginDto(login);
         Login loginEntity = LoginMapper.toLogin(loginCriacaoDto, usuarioSalvo);
-        loginRepository.save(loginEntity);
+        Login loginSalvo = loginRepository.save(loginEntity);
+
+        usuarioSalvo.setLogin(loginSalvo);
 
         UsuarioConsultaDto usuarioConsultaDto = UsuarioMapper.toUsuarioConsultaDto(usuarioSalvo);
         return ResponseEntity.status(201).body(usuarioConsultaDto);
@@ -80,8 +84,34 @@ public class UsuarioController {
             return ResponseEntity.status(204).build();
         }
 
-        List<UsuarioConsultaDto> dtos = UsuarioMapper.toUsuarioConsultaDto(usuarios);
+        return ResponseEntity.status(200).body(UsuarioMapper.toUsuarioConsultaDto(usuarios));
+    }
 
-        return ResponseEntity.status(200).body(dtos);
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioConsultaDto> buscarContaPorId(@PathVariable int id) {
+        Optional<Usuario> usuarioEncontrado = usuarioRepository.findById(id);
+
+        return usuarioEncontrado
+                .map(usuario -> ResponseEntity.status(200).body(UsuarioMapper.toUsuarioConsultaDto(usuario)))
+                .orElseGet(() -> ResponseEntity.status(404).build());
+    }
+  
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioConsultaDto> atualizarUsuario(@PathVariable int id, @RequestBody @Valid UsuarioAtualizacaoDto novoUsuario) {
+
+        Optional<Usuario> usuarioEncontrado = usuarioRepository.findById(id);
+
+        if (usuarioEncontrado.isEmpty()) {
+            return ResponseEntity.status(404).build();
+        }
+
+        Usuario entity = UsuarioMapper.toEntity(novoUsuario);
+        entity.setId(id);
+        entity.setLogin(usuarioEncontrado.get().getLogin());
+
+        Usuario usuarioSalvo = usuarioRepository.save(entity);
+        return ResponseEntity.status(200).body(UsuarioMapper.toUsuarioConsultaDto(usuarioSalvo));
+
     }
 }
