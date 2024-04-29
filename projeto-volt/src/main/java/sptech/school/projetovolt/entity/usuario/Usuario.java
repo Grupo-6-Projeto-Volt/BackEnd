@@ -15,16 +15,22 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @Column
     private String nome;
+
     @Column
     private String email;
+
     @Column
     private String telefone;
+
     @Column
     private Short categoria;
+
     @OneToOne(mappedBy = "usuario")
     private Login login;
+
     @OneToMany(mappedBy = "usuario")
     private List<Favorito> favoritos;
 
