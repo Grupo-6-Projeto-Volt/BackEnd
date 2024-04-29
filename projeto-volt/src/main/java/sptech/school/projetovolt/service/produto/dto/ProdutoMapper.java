@@ -1,4 +1,4 @@
-package sptech.school.projetovolt.entity.produto.dto;
+package sptech.school.projetovolt.service.produto.dto;
 
 import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.utils.ListaObj;

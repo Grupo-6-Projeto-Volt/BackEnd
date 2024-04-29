@@ -2,6 +2,8 @@ package sptech.school.projetovolt.service.usuario.dto;
 
 import sptech.school.projetovolt.entity.usuario.Usuario;
 
+import java.util.List;
+
 public class UsuarioMapper {
 
     public static Usuario toEntity(UsuarioCriacaoDto dto) {
@@ -31,5 +33,13 @@ public class UsuarioMapper {
             dto.setCategoria("Cliente");
         }
         return dto;
+    }
+
+    public static List<UsuarioConsultaDto> toUsuarioConsultaDto(List<Usuario> entities) {
+        if (entities.isEmpty()) return null;
+
+        return entities
+                .stream()
+                .map(UsuarioMapper::toUsuarioConsultaDto).toList();
     }
 }
