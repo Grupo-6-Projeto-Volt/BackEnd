@@ -12,6 +12,7 @@ import sptech.school.projetovolt.entity.produto.dto.ProdutoCriacaoDTO;
 import sptech.school.projetovolt.entity.produto.dto.ProdutoMapper;
 import sptech.school.projetovolt.entity.produto.repository.ProdutoRepository;
 import sptech.school.projetovolt.service.produto.ProdutoService;
+import sptech.school.projetovolt.utils.ListaObj;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,14 +97,18 @@ public class ProdutoController {
     }
 
     @GetMapping("/filtro")
-    public ResponseEntity<List<ProdutoConsultaDTO>> filtrar(){
+    public ResponseEntity<ListaObj<ProdutoConsultaDTO>> filtrar(){
         List<Produto> allProdutos = produtoRepository.findAll();
+        ListaObj<Produto> allProdutosLista = new ListaObj<>(allProdutos.size());
+        for (Produto produto : allProdutos) {
+            allProdutosLista.add(produto);
+        }
 
-        return ResponseEntity.ok(ordena(allProdutos));
+        return ResponseEntity.ok(ordena(allProdutosLista));
     }
 
-    private List<ProdutoConsultaDTO> ordena(List<Produto> produtos){
-        if(produtos.isEmpty()){
+    private ListaObj<ProdutoConsultaDTO> ordena(ListaObj<Produto> produtos){
+        if(produtos.size() == 0){
             return null;
         }else{
             Integer[] colunaId = new Integer[produtos.size()];
@@ -115,7 +120,7 @@ public class ProdutoController {
 
 
             Integer[] ids = ordenarListaProdutos(colunaOrdenar, colunaId, 0, colunaOrdenar.length-1);
-            List<ProdutoConsultaDTO> produtosOrdenados = new ArrayList<>();
+            ListaObj<ProdutoConsultaDTO> produtosOrdenados = new ListaObj<>(produtos.size());
 
             for (int i = 0; i < ids.length; i++) {
                 Optional<Produto> produtoDaVez = produtoRepository.findById(ids[i]);

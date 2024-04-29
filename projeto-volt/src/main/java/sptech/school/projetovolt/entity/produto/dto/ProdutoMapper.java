@@ -1,6 +1,7 @@
 package sptech.school.projetovolt.entity.produto.dto;
 
 import sptech.school.projetovolt.entity.produto.Produto;
+import sptech.school.projetovolt.utils.ListaObj;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +23,13 @@ public class ProdutoMapper {
         return dto;
     }
 
-    public static List<ProdutoConsultaDTO> toDto(List<Produto> produtos){
+    public static ListaObj<ProdutoConsultaDTO> toDto(ListaObj<Produto> produtos){
         if(produtos == null) return null;
 
-        List<ProdutoConsultaDTO> dtos = new ArrayList<>();
-        for (Produto produto : produtos) {
+        ListaObj<ProdutoConsultaDTO> dtos = new ListaObj<>(produtos
+                .size());
+
+        for (Produto produto : produtos.getArr()) {
             ProdutoConsultaDTO dto = new ProdutoConsultaDTO();
             dto.setNome(produto.getNome());
             dto.setDescricao(produto.getDescricao());

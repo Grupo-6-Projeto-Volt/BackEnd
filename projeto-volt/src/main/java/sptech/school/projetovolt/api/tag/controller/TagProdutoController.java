@@ -9,6 +9,7 @@ import sptech.school.projetovolt.entity.tag.dto.TagProdutoConsultaDto;
 import sptech.school.projetovolt.entity.tag.dto.TagProdutoCriacaoDto;
 import sptech.school.projetovolt.entity.tag.dto.TagProdutoMapper;
 import sptech.school.projetovolt.entity.tag.repository.TagProdutoRepository;
+import sptech.school.projetovolt.utils.ListaObj;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +27,7 @@ public class TagProdutoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TagProdutoConsultaDto>> listarTags(){
+    public ResponseEntity<ListaObj<TagProdutoConsultaDto>> listarTags(){
         List<TagProduto> tags = tagProdutoRepository.findAll();
 
         if(tags.isEmpty()){
