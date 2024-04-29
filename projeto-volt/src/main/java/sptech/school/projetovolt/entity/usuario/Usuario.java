@@ -2,7 +2,7 @@ package sptech.school.projetovolt.entity.usuario;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import sptech.school.projetovolt.entity.favorito.Favorito;
+import sptech.school.projetovolt.entity.favoritos.Favoritos;
 import sptech.school.projetovolt.entity.login.Login;
 
 import java.util.List;
@@ -32,6 +32,6 @@ public class Usuario {
     private Login login;
 
     @OneToMany(mappedBy = "usuario")
-    private List<Favorito> favoritos;
+    private List<Favoritos> favoritos;
 
 }

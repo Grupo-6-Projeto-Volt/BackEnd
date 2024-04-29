@@ -1,13 +1,10 @@
 package sptech.school.projetovolt.entity.produto.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import sptech.school.projetovolt.entity.produto.Produto;
-import sptech.school.projetovolt.entity.produto.dto.ProdutoConsultaDTO;
+import sptech.school.projetovolt.service.produto.dto.ProdutoConsultaDTO;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
     ProdutoConsultaDTO findByNome(String nome);
