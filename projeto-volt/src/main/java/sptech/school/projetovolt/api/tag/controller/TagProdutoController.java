@@ -18,6 +18,7 @@ import sptech.school.projetovolt.entity.tag.dto.TagProdutoCriacaoDto;
 import sptech.school.projetovolt.entity.tag.dto.TagProdutoMapper;
 import sptech.school.projetovolt.entity.tag.repository.TagProdutoRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -54,11 +55,31 @@ public class TagProdutoController {
             )
     )
     public ResponseEntity<TagProdutoConsultaDto> criarTag(@RequestBody TagProdutoCriacaoDto tag){
-
             TagProduto tagSalva = tagProdutoRepository.save(TagProdutoMapper.toEntity(tag));
             return ResponseEntity.status(201).body(TagProdutoMapper.toDto(tagSalva));
     }
 
+    @GetMapping
+    public ResponseEntity<List<TagProdutoConsultaDto>> listarTags(){
+        List<TagProduto> tags = tagProdutoRepository.findAll();
+
+        if(tags.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(TagProdutoMapper.toDto(tags));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TagProdutoConsultaDto> buscaTag(@PathVariable int id){
+        Optional<TagProduto> tag = tagProdutoRepository.findById(id);
+
+        if(tag.isPresent()){
+            return ResponseEntity.ok(TagProdutoMapper.toDto(tag.get()));
+        }
+
+        return ResponseEntity.notFound().build();
+    }
     @PatchMapping("/{id}")
     @Operation(
             summary = "Altera uma tag",
