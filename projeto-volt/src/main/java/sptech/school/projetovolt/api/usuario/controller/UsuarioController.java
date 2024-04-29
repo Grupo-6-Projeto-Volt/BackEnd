@@ -1,6 +1,10 @@
 package sptech.school.projetovolt.api.usuario.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +26,7 @@ import sptech.school.projetovolt.service.usuario.dto.UsuarioMapper;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/usuarios")
+@Tag(name = "Usuários", description = "Responsável pelo gerenciamento dos usuários")
 public class UsuarioController {
 
     private final UsuarioRepository usuarioRepository;
@@ -30,6 +35,24 @@ public class UsuarioController {
 
     @PostMapping
     @SecurityRequirement(name = "Bearer")
+    @Operation(
+            summary = "Cria uma conta",
+            method = "POST",
+            description = "Responsável por criar uma conta de usuário comum no sistema",
+            tags = {"Usuários"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                responseCode = "201",
+                description = "Conta criada com sucesso"
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "Erro na requisição",
+                content = @io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json"),
+                headers = @io.swagger.v3.oas.annotations.headers.Header(name = "error", description = "Erro na requisição")
+            )
+    })
     public ResponseEntity<UsuarioConsultaDto> criarConta(@RequestBody @Valid UsuarioCriacaoDto usuarioCriado) {
 
         usuarioCriado.setSenha(passwordEncoder.encode(usuarioCriado.getSenha()));
