@@ -1,8 +1,8 @@
-package sptech.school.projetovolt.entity.tag.dto;
+package sptech.school.projetovolt.service.tagProduto.dto;
 
-import sptech.school.projetovolt.entity.produto.dto.ProdutoConsultaDTO;
-import sptech.school.projetovolt.entity.produto.dto.ProdutoCriacaoDTO;
-import sptech.school.projetovolt.entity.tag.TagProduto;
+import sptech.school.projetovolt.entity.tagProduto.TagProduto;
+
+import java.util.List;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package sptech.school.projetovolt.entity.tag;
+package sptech.school.projetovolt.entity.tagProduto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;

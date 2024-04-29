@@ -1,4 +1,4 @@
-package sptech.school.projetovolt.entity.produto.dto;
+package sptech.school.projetovolt.service.produto.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;

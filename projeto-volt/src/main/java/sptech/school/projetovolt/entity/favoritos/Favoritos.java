@@ -1,7 +1,6 @@
-package sptech.school.projetovolt.entity.favorito;
+package sptech.school.projetovolt.entity.favoritos;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import sptech.school.projetovolt.entity.usuario.Usuario;
@@ -10,7 +9,7 @@ import sptech.school.projetovolt.entity.usuario.Usuario;
 @Setter
 @Entity
 @Table(name="tb_favoritos")
-public class Favorito {
+public class Favoritos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
