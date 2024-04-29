@@ -45,7 +45,9 @@ public class UsuarioController {
 
         LoginCriacaoDto loginCriacaoDto = LoginMapper.toCadastrarLoginDto(login);
         Login loginEntity = LoginMapper.toLogin(loginCriacaoDto, usuarioSalvo);
-        loginRepository.save(loginEntity);
+        Login loginSalvo = loginRepository.save(loginEntity);
+
+        usuarioSalvo.setLogin(loginSalvo);
 
         UsuarioConsultaDto usuarioConsultaDto = UsuarioMapper.toUsuarioConsultaDto(usuarioSalvo);
         return ResponseEntity.status(201).body(usuarioConsultaDto);
