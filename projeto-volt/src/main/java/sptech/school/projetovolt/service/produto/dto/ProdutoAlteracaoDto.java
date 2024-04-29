@@ -1,5 +1,7 @@
 package sptech.school.projetovolt.service.produto.dto;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.Data;

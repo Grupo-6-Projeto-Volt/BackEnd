@@ -1,6 +1,7 @@
 package sptech.school.projetovolt.entity.produto;
 
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.*;
 import sptech.school.projetovolt.entity.tagProduto.TagProduto;
 
