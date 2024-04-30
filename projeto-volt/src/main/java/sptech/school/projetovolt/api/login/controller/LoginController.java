@@ -58,7 +58,7 @@ public class LoginController {
     })
     public ResponseEntity<UsuarioTokenDto> login (@RequestBody @Valid UsuarioLoginDto usuarioLoginDto) {
         UsuarioTokenDto usuarioToken = this.loginService.autenticar(usuarioLoginDto);
-        return ResponseEntity.status(200).body(usuarioToken);
+        return ResponseEntity.ok(usuarioToken);
     }
 
     @GetMapping
@@ -67,11 +67,11 @@ public class LoginController {
         List<Login> logins = loginRepository.findAll();
 
         if (logins.isEmpty()) {
-            return ResponseEntity.status(204).build();
+            return ResponseEntity.noContent().build();
         }
 
         List<BuscarLoginDto> loginDtos = LoginMapper.toBuscarLoginDto(logins);
-        return ResponseEntity.status(200).body(loginDtos);
+        return ResponseEntity.ok(loginDtos);
 
     }
 
@@ -85,17 +85,17 @@ public class LoginController {
         Optional<Usuario> usuarioEncontrado = usuarioRepository.findById(id);
 
         if (usuarioEncontrado.isEmpty()) {
-            return ResponseEntity.status(404).build();
+            return ResponseEntity.notFound().build();
         }
 
         if (Objects.isNull(novaSenha) || novaSenha.isBlank() || novaSenha.length() < 8 || novaSenha.length() > 16) {
-            return ResponseEntity.status(400).build();
+            return ResponseEntity.badRequest().build();
         }
 
         usuarioEncontrado.get().getLogin().setSenha(passwordEncoder.encode(novaSenha));
         Login entity = loginRepository.save(usuarioEncontrado.get().getLogin());
 
-        return ResponseEntity.status(200).body(LoginMapper.toBuscarLoginDto(entity));
+        return ResponseEntity.ok(LoginMapper.toBuscarLoginDto(entity));
 
     }
 
