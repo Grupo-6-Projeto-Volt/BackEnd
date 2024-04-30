@@ -81,10 +81,10 @@ public class UsuarioController {
         List<Usuario> usuarios = usuarioRepository.findAll();
 
         if (usuarios.isEmpty()) {
-            return ResponseEntity.status(204).build();
+            return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.status(200).body(UsuarioMapper.toUsuarioConsultaDto(usuarios));
+        return ResponseEntity.ok(UsuarioMapper.toUsuarioConsultaDto(usuarios));
     }
 
     @GetMapping("/{id}")
@@ -92,26 +92,26 @@ public class UsuarioController {
         Optional<Usuario> usuarioEncontrado = usuarioRepository.findById(id);
 
         return usuarioEncontrado
-                .map(usuario -> ResponseEntity.status(200).body(UsuarioMapper.toUsuarioConsultaDto(usuario)))
-                .orElseGet(() -> ResponseEntity.status(404).build());
+                .map(usuario -> ResponseEntity.ok(UsuarioMapper.toUsuarioConsultaDto(usuario)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
   
 
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioConsultaDto> atualizarUsuario(@PathVariable int id, @RequestBody @Valid UsuarioAtualizacaoDto novoUsuario) {
 
-        Optional<Usuario> usuarioEncontrado = usuarioRepository.findById(id);
+        Optional<Usuario> usuarioEncontradoOpt = usuarioRepository.findById(id);
 
-        if (usuarioEncontrado.isEmpty()) {
-            return ResponseEntity.status(404).build();
+        if (usuarioEncontradoOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
 
         Usuario entity = UsuarioMapper.toEntity(novoUsuario);
         entity.setId(id);
-        entity.setLogin(usuarioEncontrado.get().getLogin());
+        entity.setLogin(usuarioEncontradoOpt.get().getLogin());
 
         Usuario usuarioSalvo = usuarioRepository.save(entity);
-        return ResponseEntity.status(200).body(UsuarioMapper.toUsuarioConsultaDto(usuarioSalvo));
+        return ResponseEntity.ok(UsuarioMapper.toUsuarioConsultaDto(usuarioSalvo));
 
     }
 }

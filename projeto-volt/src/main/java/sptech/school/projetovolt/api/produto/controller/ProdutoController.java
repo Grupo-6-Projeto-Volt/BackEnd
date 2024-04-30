@@ -63,6 +63,7 @@ public class ProdutoController {
     )
     public ResponseEntity<ProdutoConsultaDTO> cadastrarProduto(@RequestBody ProdutoCriacaoDTO produtoNovo) {
                 Produto produtoSalvo = produtoRepository.save(ProdutoMapper.toEntity(produtoNovo));
+
                 return ResponseEntity.status(201).body(ProdutoMapper.toDto(produtoSalvo));
     }
 
@@ -90,6 +91,7 @@ public class ProdutoController {
     public ResponseEntity<List<ProdutoConsultaDTO>> listarTodosProdutos(@RequestParam(required = false) String textoBusca) {
         List<Produto> produtosEncontrados = produtoRepository.findAll();
         List<ProdutoConsultaDTO> dtos = new ArrayList<>();
+
         if (textoBusca != null) {
             dtos = produtoRepository.findAllByNome(textoBusca)
                     .stream()
@@ -97,15 +99,16 @@ public class ProdutoController {
                             .getNome()
                             .contains(textoBusca))
                     .toList();
-        }else {
+        }
+        else {
             for (Produto produto : produtosEncontrados) {
                 dtos.add(ProdutoMapper.toDto(produto));
             }
         }
         if (!produtosEncontrados.isEmpty()) {
-            return ResponseEntity.status(200).body(dtos);
+            return ResponseEntity.ok(dtos);
         }
-        return ResponseEntity.status(204).build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/loja/{id}")
@@ -131,12 +134,13 @@ public class ProdutoController {
     })
     @Parameter(name = "id", description = "ID do produto", example = "1", required = true)
     public ResponseEntity<ProdutoConsultaDTO> buscarProdutoPorId(@PathVariable int id) {
-        Optional<Produto> produtoEncontrado = produtoRepository.findById(id);
-        if(produtoEncontrado.isPresent()){
-            return ResponseEntity.status(200).body(ProdutoMapper.toDto(produtoEncontrado.get()));
+        Optional<Produto> produtoEncontradoOpt = produtoRepository.findById(id);
+
+        if(produtoEncontradoOpt.isPresent()){
+            return ResponseEntity.ok(ProdutoMapper.toDto(produtoEncontradoOpt.get()));
         }
 
-        return ResponseEntity.status(404).build();
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/estoque/{id}")
@@ -173,7 +177,7 @@ public class ProdutoController {
             description = "Produto Alteracao DTO",
             required = true,
             content = @io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json",
-                    schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ProdutoAlteracaoDto.class))
+            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ProdutoAlteracaoDto.class))
     )
     public ResponseEntity<ProdutoConsultaDTO> alterarProdutoPorId(@PathVariable int id, @RequestBody ProdutoAlteracaoDto produtoAlterado) {
         Optional<Produto> produtoOpt = produtoRepository.findById(id);
@@ -184,9 +188,9 @@ public class ProdutoController {
 
             produtoRepository.save(novoProduto);
 
-            return ResponseEntity.status(200).body(ProdutoMapper.toDto(novoProduto));
+            return ResponseEntity.ok(ProdutoMapper.toDto(novoProduto));
         }
-        return ResponseEntity.status(404).build();
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/estoque/{id}")
@@ -215,16 +219,19 @@ public class ProdutoController {
 
         if(produtoOpt.isPresent()){
             produtoRepository.deleteById(id);
-            return ResponseEntity.status(204).build();
-        }else{
-            return ResponseEntity.status(404).build();
+            return ResponseEntity.noContent().build();
+        }
+        else{
+            return ResponseEntity.notFound().build();
         }
     }
 
     @GetMapping("/filtro")
     public ResponseEntity<ListaObj<ProdutoConsultaDTO>> filtrar(){
         List<Produto> allProdutos = produtoRepository.findAll();
+
         ListaObj<Produto> allProdutosLista = new ListaObj<>(allProdutos.size());
+
         for (Produto produto : allProdutos) {
             allProdutosLista.add(produto);
         }
@@ -235,14 +242,15 @@ public class ProdutoController {
     private ListaObj<ProdutoConsultaDTO> ordena(ListaObj<Produto> produtos){
         if(produtos.size() == 0){
             return null;
-        }else{
+        }
+        else{
             Integer[] colunaId = new Integer[produtos.size()];
             Double[] colunaOrdenar = new Double[produtos.size()];
+
             for (int i = 0; i < produtos.size(); i++) {
                 colunaOrdenar[i] = produtos.get(i).getPreco();
                 colunaId[i] = produtos.get(i).getId();
             }
-
 
             Integer[] ids = ordenarListaProdutos(colunaOrdenar, colunaId, 0, colunaOrdenar.length-1);
             ListaObj<ProdutoConsultaDTO> produtosOrdenados = new ListaObj<>(produtos.size());
@@ -254,6 +262,7 @@ public class ProdutoController {
             return produtosOrdenados;
         }
     }
+
     private static Integer[] ordenarListaProdutos(Number[] coluna, Integer[] ids, int inicio, int fim){
         int i = inicio;
         int j = fim;
@@ -282,6 +291,7 @@ public class ProdutoController {
             if(inicio < j){
                 ordenarListaProdutos(coluna, ids, inicio, j);
             }
+
             if(i < fim){
                 ordenarListaProdutos(coluna, ids, i, fim);
             }

@@ -24,6 +24,7 @@ public class TagProdutoController {
     @PostMapping
     public ResponseEntity<TagProdutoConsultaDto> criarTag(@RequestBody TagProdutoCriacaoDto tag){
             TagProduto tagSalva = tagProdutoRepository.save(TagProdutoMapper.toEntity(tag));
+
             return ResponseEntity.status(201).body(TagProdutoMapper.toDto(tagSalva));
     }
 
@@ -31,43 +32,43 @@ public class TagProdutoController {
     public ResponseEntity<ListaObj<TagProdutoConsultaDto>> listarTags(){
         List<TagProduto> tags = tagProdutoRepository.findAll();
 
-        if(tags.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
+        if(tags.isEmpty()) return ResponseEntity.noContent().build();
 
         return ResponseEntity.ok(TagProdutoMapper.toDto(tags));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TagProdutoConsultaDto> buscaTag(@PathVariable int id){
-        Optional<TagProduto> tag = tagProdutoRepository.findById(id);
+        Optional<TagProduto> tagOpt = tagProdutoRepository.findById(id);
 
-        if(tag.isPresent()){
-            return ResponseEntity.ok(TagProdutoMapper.toDto(tag.get()));
-        }
+        if(tagOpt.isPresent()) return ResponseEntity.ok(TagProdutoMapper.toDto(tagOpt.get()));
 
         return ResponseEntity.notFound().build();
     }
     @PatchMapping("/{id}")
     public ResponseEntity<TagProdutoConsultaDto> alterarTag(@PathVariable int id, @RequestParam @Valid String tag){
-        Optional<TagProduto> tagParaAlterar = tagProdutoRepository.findById(id);
-        if(tagParaAlterar.isPresent()){
-            TagProduto alterado = tagParaAlterar.get();
+        Optional<TagProduto> tagParaAlterarOpt = tagProdutoRepository.findById(id);
+
+        if(tagParaAlterarOpt.isPresent()){
+            TagProduto alterado = tagParaAlterarOpt.get();
             alterado.setTag(tag);
             tagProdutoRepository.save(alterado);
 
-            return ResponseEntity.status(200).body(TagProdutoMapper.toDto(alterado));
+            return ResponseEntity.ok(TagProdutoMapper.toDto(alterado));
         }
-        return ResponseEntity.status(404).build();
+
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarTag(@PathVariable int id){
-        Optional<TagProduto> encontrado = tagProdutoRepository.findById(id);
-        if(encontrado.isPresent()){
-            tagProdutoRepository.delete(encontrado.get());
-            return ResponseEntity.status(204).build();
+        Optional<TagProduto> encontradoOpt = tagProdutoRepository.findById(id);
+
+        if(encontradoOpt.isPresent()){
+            tagProdutoRepository.delete(encontradoOpt.get());
+            return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.status(404).build();
+
+        return ResponseEntity.notFound().build();
     }
 }
