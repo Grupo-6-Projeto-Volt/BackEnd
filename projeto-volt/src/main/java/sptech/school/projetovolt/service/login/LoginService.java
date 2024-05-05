@@ -6,8 +6,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import sptech.school.projetovolt.api.configuration.security.jwt.GerenciadorTokenJwt;
+import sptech.school.projetovolt.entity.exception.NotFoundException;
 import sptech.school.projetovolt.entity.login.Login;
 import sptech.school.projetovolt.entity.login.repository.LoginRepository;
 import sptech.school.projetovolt.service.login.dto.LoginMapper;
@@ -30,7 +30,7 @@ public class LoginService {
 
         Login usuarioAutenticado = loginRepository.findByEmail(usuarioLoginDto.getEmail())
                 .orElseThrow(
-                        () -> new ResponseStatusException(404, "Email do usuário não cadastrado", null)
+                        () -> new NotFoundException("Login " + usuarioLoginDto.getEmail())
                 );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
