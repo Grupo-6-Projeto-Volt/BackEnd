@@ -7,8 +7,17 @@ import sptech.school.projetovolt.service.produto.dto.ProdutoConsultaDTO;
 import java.util.List;
 
 public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
+
+    /*
+    * FIXME: findByNome e FindAllByNome fazem a mesma coisa, a não ser que exista um caso específico em
+    *  que estas sejam aplicaveis separadamente.
+    * */
     ProdutoConsultaDTO findByNome(String nome);
-    List<ProdutoConsultaDTO> findAllByNome(String textoBusca);
+    List<Produto> findAllByNome(String textoBusca);
+
+    List<Produto> findByOrderByPrecoDesc();
+
+    List<Produto> findByOrderByPreco();
 
     //Optional<Produto> findById(int id);
 //    @Query(value = "SELECT p.nome, p.descricao, p.categoria" +

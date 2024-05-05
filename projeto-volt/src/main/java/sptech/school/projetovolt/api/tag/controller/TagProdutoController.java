@@ -22,7 +22,7 @@ public class TagProdutoController {
     private final TagProdutoService tagProdutoService;
 
     @PostMapping
-    public ResponseEntity<TagProdutoConsultaDto> criarTag(@RequestBody TagProdutoCriacaoDto novaTag){
+    public ResponseEntity<TagProdutoConsultaDto> criarTag(@RequestBody @Valid TagProdutoCriacaoDto novaTag){
         TagProduto tagCriada = tagProdutoService.criarTag(TagProdutoMapper.toEntity(novaTag));
         return ResponseEntity
                 .created(URI.create("/tags/" + tagCriada.getId()))

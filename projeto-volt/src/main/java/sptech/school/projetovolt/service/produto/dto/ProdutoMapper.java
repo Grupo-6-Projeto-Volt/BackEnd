@@ -23,28 +23,38 @@ public class ProdutoMapper {
         return dto;
     }
 
-    public static ListaObj<ProdutoConsultaDTO> toDto(ListaObj<Produto> produtos){
+    public static List<ProdutoConsultaDTO> toDto(List<Produto> produtos) {
         if(produtos == null) return null;
-
-        ListaObj<ProdutoConsultaDTO> dtos = new ListaObj<>(produtos
-                .size());
-
-        for (Produto produto : produtos.getArr()) {
-            ProdutoConsultaDTO dto = new ProdutoConsultaDTO();
-            dto.setNome(produto.getNome());
-            dto.setDescricao(produto.getDescricao());
-            dto.setPreco(produto.getPreco());
-            dto.setCategoria(produto.getCategoria());
-            dto.setQtdEstoque(produto.getQtdEstoque());
-            dto.setEstadoGeral(produto.getEstadoGeral());
-            dto.setDesconto(produto.getDesconto());
-
-            dtos.add(dto);
-        }
-
-
-        return dtos;
+        return produtos.stream().map(ProdutoMapper::toDto).toList();
     }
+
+    /*
+    * FIXME: Método não necessário, visto que a listaObj não se aplica à nossa API, mas sim à API externa.
+    *  Remover esse método após a migração dessa função, se necessário, para a API externa.
+    * */
+
+//    public static ListaObj<ProdutoConsultaDTO> toDto(ListaObj<Produto> produtos){
+//        if(produtos == null) return null;
+//
+//        ListaObj<ProdutoConsultaDTO> dtos = new ListaObj<>(produtos
+//                .size());
+//
+//        for (Produto produto : produtos.getArr()) {
+//            ProdutoConsultaDTO dto = new ProdutoConsultaDTO();
+//            dto.setNome(produto.getNome());
+//            dto.setDescricao(produto.getDescricao());
+//            dto.setPreco(produto.getPreco());
+//            dto.setCategoria(produto.getCategoria());
+//            dto.setQtdEstoque(produto.getQtdEstoque());
+//            dto.setEstadoGeral(produto.getEstadoGeral());
+//            dto.setDesconto(produto.getDesconto());
+//
+//            dtos.add(dto);
+//        }
+//
+//
+//        return dtos;
+//    }
 
     public static Produto toEntity(ProdutoCriacaoDTO dto){
         if(dto == null) return null;
