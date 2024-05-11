@@ -71,4 +71,15 @@ public class LoginService {
 
     }
 
+    public Login atualizarSenha(String id, String senha) {
+        if (loginRepository.existsBySenha(senha)) {
+            throw new ConflictException("Login " + id);
+        }
+
+        Login login = encontrarLoginPorId(id);
+        login.setSenha(senha);
+        return loginRepository.save(login);
+
+    }
+
 }

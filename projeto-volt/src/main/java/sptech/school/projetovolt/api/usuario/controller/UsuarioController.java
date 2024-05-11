@@ -10,12 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import sptech.school.projetovolt.entity.login.Login;
-import sptech.school.projetovolt.entity.login.repository.LoginRepository;
 import sptech.school.projetovolt.entity.usuario.Usuario;
-import sptech.school.projetovolt.entity.usuario.repository.UsuarioRepository;
-import sptech.school.projetovolt.service.login.dto.LoginCriacaoDto;
-import sptech.school.projetovolt.service.login.dto.LoginMapper;
 import sptech.school.projetovolt.service.usuario.UsuarioService;
 import sptech.school.projetovolt.service.usuario.dto.UsuarioAtualizacaoDto;
 import sptech.school.projetovolt.service.usuario.dto.UsuarioConsultaDto;
@@ -24,7 +19,6 @@ import sptech.school.projetovolt.service.usuario.dto.UsuarioMapper;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
