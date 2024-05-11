@@ -11,9 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.entity.login.Login;
-import sptech.school.projetovolt.entity.login.repository.LoginRepository;
-import sptech.school.projetovolt.entity.usuario.Usuario;
-import sptech.school.projetovolt.entity.usuario.repository.UsuarioRepository;
 import sptech.school.projetovolt.service.login.LoginService;
 import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioLoginDto;
 import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioTokenDto;
@@ -21,9 +18,6 @@ import sptech.school.projetovolt.service.login.dto.BuscarLoginDto;
 import sptech.school.projetovolt.service.login.dto.LoginMapper;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
