@@ -42,7 +42,7 @@ public class TagProdutoService {
     }
 
     public void deletarTagPorId (Integer id) {
-        TagProduto tagEncontrada = buscarTagPorId(id);
+        buscarTagPorId(id);
         tagProdutoRepository.deleteById(id);
     }
 

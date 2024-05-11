@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface LoginRepository extends JpaRepository<Login, UUID> {
 
     Optional<Login> findByEmail(String email);
+    boolean existsByEmail(String email);
+    boolean existsBySenha(String senha);
 }
