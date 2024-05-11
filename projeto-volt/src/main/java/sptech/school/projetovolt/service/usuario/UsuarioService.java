@@ -38,10 +38,16 @@ public class UsuarioService {
         buscarUsuarioPorId(id);
         usuario.setId(id);
 
-        Login loginAlterado = loginService.atualizarEmail(usuario.getLogin().getId(), usuario.getEmail());
+        Login loginAlterado = loginService.alterarEmail(usuario.getLogin().getId(), usuario.getEmail());
         usuario.setLogin(loginAlterado);
 
         return usuarioRepository.save(usuario);
+    }
+
+    public Usuario alterarEmail(Integer id, String email) {
+        Usuario usuarioEncontrado = buscarUsuarioPorId(id);
+        usuarioEncontrado.setEmail(email);
+        return usuarioRepository.save(usuarioEncontrado);
     }
 
 }
