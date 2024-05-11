@@ -25,7 +25,6 @@ import java.util.UUID;
 public class LoginService {
 
     private final LoginRepository loginRepository;
-    private final UsuarioService usuarioService;
     private final GerenciadorTokenJwt gerenciadorTokenJwt;
     private final AuthenticationManager authenticationManager;
 
@@ -63,7 +62,7 @@ public class LoginService {
 
     public Login encontrarLoginPorId(String id) {
         return loginRepository
-                .findById(UUID.fromString(id))
+                .findById(id)
                 .orElseThrow(() -> new NotFoundException("Login " + id));
     }
 
@@ -71,13 +70,8 @@ public class LoginService {
         if (loginRepository.existsByEmail(email)) {
             throw new ConflictException("Login " + email);
         }
-
         Login login = encontrarLoginPorId(id);
         login.setEmail(email);
-
-        Usuario usuarioAtualizado = usuarioService.alterarEmail(login.getUsuario().getId(), email);
-        login.setUsuario(usuarioAtualizado);
-
         return loginRepository.save(login);
     }
 

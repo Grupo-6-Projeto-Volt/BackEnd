@@ -35,10 +35,10 @@ public class UsuarioService {
     }
 
     public Usuario atualizarUsuario(Integer id, Usuario usuario) {
-        buscarUsuarioPorId(id);
-        usuario.setId(id);
+        Usuario usuarioEncontrado = buscarUsuarioPorId(id);
+        usuario.setId(usuarioEncontrado.getId());
 
-        Login loginAlterado = loginService.alterarEmail(usuario.getLogin().getId(), usuario.getEmail());
+        Login loginAlterado = loginService.alterarEmail(usuarioEncontrado.getLogin().getId(), usuario.getEmail());
         usuario.setLogin(loginAlterado);
 
         return usuarioRepository.save(usuario);
