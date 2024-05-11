@@ -1,4 +1,4 @@
-package sptech.school.projetovolt.entity.imagemProduto.produto;
+package sptech.school.projetovolt.entity.imagemProduto;
 
 import jakarta.persistence.*;
 import lombok.*;

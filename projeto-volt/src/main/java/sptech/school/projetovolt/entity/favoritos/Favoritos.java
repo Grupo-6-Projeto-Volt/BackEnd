@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import sptech.school.projetovolt.entity.listaFavoritos.ListaFavorita;
 import sptech.school.projetovolt.entity.usuario.Usuario;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -21,4 +24,7 @@ public class Favoritos {
     @ManyToOne
     @JoinColumn(name = "fk_usuario")
     private Usuario usuario;
+
+    @OneToMany(mappedBy = "favoritos")
+    private List<ListaFavorita> listaFavorita;
 }
