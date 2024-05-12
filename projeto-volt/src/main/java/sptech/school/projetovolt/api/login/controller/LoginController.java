@@ -11,9 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.entity.login.Login;
-import sptech.school.projetovolt.entity.login.repository.LoginRepository;
-import sptech.school.projetovolt.entity.usuario.Usuario;
-import sptech.school.projetovolt.entity.usuario.repository.UsuarioRepository;
 import sptech.school.projetovolt.service.login.LoginService;
 import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioLoginDto;
 import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioTokenDto;
@@ -21,9 +18,6 @@ import sptech.school.projetovolt.service.login.dto.BuscarLoginDto;
 import sptech.school.projetovolt.service.login.dto.LoginMapper;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,8 +25,6 @@ import java.util.UUID;
 @Tag(name = "Login", description = "Responsável pelos logins dos usuários e autenticação")
 public class LoginController {
 
-    private final LoginRepository loginRepository;
-    private final UsuarioRepository usuarioRepository;
     private final LoginService loginService;
     private final PasswordEncoder passwordEncoder;
 
@@ -57,58 +49,42 @@ public class LoginController {
 
     })
     public ResponseEntity<UsuarioTokenDto> login (@RequestBody @Valid UsuarioLoginDto usuarioLoginDto) {
-        UsuarioTokenDto usuarioToken = this.loginService.autenticar(usuarioLoginDto);
+        UsuarioTokenDto usuarioToken = loginService.autenticar(usuarioLoginDto);
         return ResponseEntity.ok(usuarioToken);
     }
 
     @GetMapping
     @Operation(hidden = true)
-    public ResponseEntity<List<BuscarLoginDto>> listar () {
-        List<Login> logins = loginRepository.findAll();
-
+    public ResponseEntity<List<BuscarLoginDto>> listarLogins () {
+        List<Login> logins = loginService.listarLogins();
         if (logins.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-
-        List<BuscarLoginDto> loginDtos = LoginMapper.toBuscarLoginDto(logins);
-        return ResponseEntity.ok(loginDtos);
-
+        return ResponseEntity.ok(LoginMapper.toBuscarLoginDto(logins));
     }
 
     @PatchMapping("/alterar-senha/{id}")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<BuscarLoginDto> alterarSenhaPorIdUsuario(
-            @PathVariable int id,
+    public ResponseEntity<BuscarLoginDto> alterarSenha(
+            @PathVariable String id,
             @RequestParam String novaSenha
     ) {
-
-        Optional<Usuario> usuarioEncontrado = usuarioRepository.findById(id);
-
-        if (usuarioEncontrado.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        if (Objects.isNull(novaSenha) || novaSenha.isBlank() || novaSenha.length() < 8 || novaSenha.length() > 16) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        usuarioEncontrado.get().getLogin().setSenha(passwordEncoder.encode(novaSenha));
-        Login entity = loginRepository.save(usuarioEncontrado.get().getLogin());
-
-        return ResponseEntity.ok(LoginMapper.toBuscarLoginDto(entity));
-
+        return ResponseEntity
+                .ok(LoginMapper
+                        .toBuscarLoginDto(loginService
+                                .alterarSenha(id, passwordEncoder.encode(novaSenha))));
     }
 
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deletarContaPorIdUsuario(@PathVariable int id) {
-//        Optional<Usuario> usuarioEncontrado = usuarioRepository.findById(id);
-//
-//        if (usuarioEncontrado.isEmpty()) {
-//            return ResponseEntity.status(404).build();
-//        }
-//
-//        loginRepository.delete(usuarioEncontrado.get().getLogin());
-//        return ResponseEntity.status(204).build();
-//
-//    }
+    @PatchMapping("/alterar-email/{id}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<BuscarLoginDto> alterarEmail(
+            @PathVariable String id,
+            @RequestParam String novoEmail
+    ) {
+        return ResponseEntity
+                .ok(LoginMapper
+                        .toBuscarLoginDto(loginService
+                                .alterarEmail(id, novoEmail)));
+    }
+
 }
