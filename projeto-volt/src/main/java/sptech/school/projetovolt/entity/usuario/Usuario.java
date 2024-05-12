@@ -3,7 +3,7 @@ package sptech.school.projetovolt.entity.usuario;
 import jakarta.persistence.*;
 import lombok.Data;
 import sptech.school.projetovolt.entity.clickProduto.ClickProduto;
-import sptech.school.projetovolt.entity.favoritos.Favoritos;
+import sptech.school.projetovolt.entity.favoritos.Favorito;
 import sptech.school.projetovolt.entity.login.Login;
 import sptech.school.projetovolt.entity.produtoChamado.ProdutoChamado;
 
@@ -34,7 +34,7 @@ public class Usuario {
     private Login login;
 
     @OneToMany(mappedBy = "usuario")
-    private List<Favoritos> favoritos;
+    private List<Favorito> favoritos;
 
     @OneToMany(mappedBy = "usuario")
     private List<ClickProduto> clickProdutos;

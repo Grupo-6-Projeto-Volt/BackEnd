@@ -2,10 +2,10 @@ package sptech.school.projetovolt.entity.listaFavoritos;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import sptech.school.projetovolt.entity.favoritos.Favoritos;
+import sptech.school.projetovolt.entity.favoritos.Favorito;
 import sptech.school.projetovolt.entity.produto.Produto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -17,11 +17,11 @@ public class ListaFavorita {
     private Integer id;
 
     @Column(name = "dt_hora_insercao")
-    private LocalDate dtHoraInsercao;
+    private LocalDateTime dtHoraInsercao = LocalDateTime.now();
 
     @ManyToOne
-    @JoinColumn(name = "fk_favoritos")
-    private Favoritos favoritos;
+//    @JoinColumn(name = "fk_favoritos")
+    private Favorito favoritos;
 
     @ManyToOne
     @JoinColumn(name = "fk_produto")
