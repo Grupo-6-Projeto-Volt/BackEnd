@@ -3,13 +3,11 @@ package sptech.school.projetovolt.api.produto.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.entity.produto.Produto;
@@ -17,14 +15,9 @@ import sptech.school.projetovolt.service.produto.dto.ProdutoAlteracaoDto;
 import sptech.school.projetovolt.service.produto.dto.ProdutoConsultaDTO;
 import sptech.school.projetovolt.service.produto.dto.ProdutoCriacaoDTO;
 import sptech.school.projetovolt.service.produto.dto.ProdutoMapper;
-import sptech.school.projetovolt.entity.produto.repository.ProdutoRepository;
 import sptech.school.projetovolt.service.produto.ProdutoService;
-import sptech.school.projetovolt.utils.ListaObj;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,8 +25,7 @@ import java.util.Optional;
 @Tag(name = "Produtos", description = "Responsável pelo gerenciamento dos produtos")
 public class ProdutoController {
 
-    private final ProdutoRepository produtoRepository;
-    private final ProdutoService produtoService = new ProdutoService();
+    private final ProdutoService produtoService;
 
     @PostMapping("/estoque")
     @Operation(
@@ -61,10 +53,9 @@ public class ProdutoController {
             content = @io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json",
                     schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ProdutoCriacaoDTO.class))
     )
-    public ResponseEntity<ProdutoConsultaDTO> cadastrarProduto(@RequestBody ProdutoCriacaoDTO produtoNovo) {
-                Produto produtoSalvo = produtoRepository.save(ProdutoMapper.toEntity(produtoNovo));
-
-                return ResponseEntity.status(201).body(ProdutoMapper.toDto(produtoSalvo));
+    public ResponseEntity<ProdutoConsultaDTO> cadastrarProduto(@RequestBody @Valid ProdutoCriacaoDTO produtoNovo) {
+        Produto produtoSalvo = produtoService.cadastrarProduto(ProdutoMapper.toEntity(produtoNovo));
+        return ResponseEntity.status(201).body(ProdutoMapper.toDto(produtoSalvo));
     }
 
     @GetMapping("/loja")
@@ -89,26 +80,14 @@ public class ProdutoController {
     })
     @Parameter(name = "textoBusca", description = "Texto para busca de produtos", example = "Iphone", required = false)
     public ResponseEntity<List<ProdutoConsultaDTO>> listarTodosProdutos(@RequestParam(required = false) String textoBusca) {
-        List<Produto> produtosEncontrados = produtoRepository.findAll();
-        List<ProdutoConsultaDTO> dtos = new ArrayList<>();
+        List<Produto> produtosEncontrados = produtoService.listarProdutos(textoBusca);
 
-        if (textoBusca != null) {
-            dtos = produtoRepository.findAllByNome(textoBusca)
-                    .stream()
-                    .filter(produtoModel -> produtoModel
-                            .getNome()
-                            .contains(textoBusca))
-                    .toList();
+        if (produtosEncontrados.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
-        else {
-            for (Produto produto : produtosEncontrados) {
-                dtos.add(ProdutoMapper.toDto(produto));
-            }
-        }
-        if (!produtosEncontrados.isEmpty()) {
-            return ResponseEntity.ok(dtos);
-        }
-        return ResponseEntity.noContent().build();
+
+        return ResponseEntity.ok(ProdutoMapper.toDto(produtosEncontrados));
+
     }
 
     @GetMapping("/loja/{id}")
@@ -134,13 +113,8 @@ public class ProdutoController {
     })
     @Parameter(name = "id", description = "ID do produto", example = "1", required = true)
     public ResponseEntity<ProdutoConsultaDTO> buscarProdutoPorId(@PathVariable int id) {
-        Optional<Produto> produtoEncontradoOpt = produtoRepository.findById(id);
-
-        if(produtoEncontradoOpt.isPresent()){
-            return ResponseEntity.ok(ProdutoMapper.toDto(produtoEncontradoOpt.get()));
-        }
-
-        return ResponseEntity.notFound().build();
+        Produto produtoEncontrado = produtoService.buscarProdutoPorId(id);
+        return ResponseEntity.ok(ProdutoMapper.toDto(produtoEncontrado));
     }
 
     @PutMapping("/estoque/{id}")
@@ -179,18 +153,9 @@ public class ProdutoController {
             content = @io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json",
             schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ProdutoAlteracaoDto.class))
     )
-    public ResponseEntity<ProdutoConsultaDTO> alterarProdutoPorId(@PathVariable int id, @RequestBody ProdutoAlteracaoDto produtoAlterado) {
-        Optional<Produto> produtoOpt = produtoRepository.findById(id);
-
-        if(produtoOpt.isPresent()){
-            Produto novoProduto = ProdutoMapper.fromDtoAlteracaoToEntity(produtoAlterado);
-            novoProduto.setId(produtoOpt.get().getId());
-
-            produtoRepository.save(novoProduto);
-
-            return ResponseEntity.ok(ProdutoMapper.toDto(novoProduto));
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<ProdutoConsultaDTO> alterarProdutoPorId(@PathVariable int id, @RequestBody @Valid ProdutoAlteracaoDto produtoAlterado) {
+        Produto produtoAtualizado = produtoService.alterarProdutoPorId(id, ProdutoMapper.fromDtoAlteracaoToEntity(produtoAlterado));
+        return ResponseEntity.ok(ProdutoMapper.toDto(produtoAtualizado));
     }
 
     @DeleteMapping("/estoque/{id}")
@@ -215,87 +180,83 @@ public class ProdutoController {
     })
     @Parameter(name = "id", description = "ID do produto", example = "1", required = true)
     public ResponseEntity<Void> apagarProdutoPorId(@PathVariable int id) {
-        Optional<Produto> produtoOpt = produtoRepository.findById(id);
+         produtoService.deletarProdutoPorId(id);
+         return ResponseEntity.noContent().build();
+    }
 
-        if(produtoOpt.isPresent()){
-            produtoRepository.deleteById(id);
+    @GetMapping("/filtro/filtrar-por-preco")
+    public ResponseEntity<List<ProdutoConsultaDTO>> filtrarPorPreco(@RequestParam String direcao){
+        List<Produto> produtosEncontrados = produtoService.filtrarPorPreco(direcao);
+
+        if (produtosEncontrados.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        else{
-            return ResponseEntity.notFound().build();
-        }
+
+        return ResponseEntity.ok(ProdutoMapper.toDto(produtosEncontrados));
     }
 
-    @GetMapping("/filtro")
-    public ResponseEntity<ListaObj<ProdutoConsultaDTO>> filtrar(){
-        List<Produto> allProdutos = produtoRepository.findAll();
+/*
+    FIXME: ordenar por preço pode ser feito através de comando do banco, não sendo necessária
+     a listaObj para realizar tal operação. Utilizar a listaObj na API externa.
+* */
 
-        ListaObj<Produto> allProdutosLista = new ListaObj<>(allProdutos.size());
-
-        for (Produto produto : allProdutos) {
-            allProdutosLista.add(produto);
-        }
-
-        return ResponseEntity.ok(ordena(allProdutosLista));
-    }
-
-    private ListaObj<ProdutoConsultaDTO> ordena(ListaObj<Produto> produtos){
-        if(produtos.size() == 0){
-            return null;
-        }
-        else{
-            Integer[] colunaId = new Integer[produtos.size()];
-            Double[] colunaOrdenar = new Double[produtos.size()];
-
-            for (int i = 0; i < produtos.size(); i++) {
-                colunaOrdenar[i] = produtos.get(i).getPreco();
-                colunaId[i] = produtos.get(i).getId();
-            }
-
-            Integer[] ids = ordenarListaProdutos(colunaOrdenar, colunaId, 0, colunaOrdenar.length-1);
-            ListaObj<ProdutoConsultaDTO> produtosOrdenados = new ListaObj<>(produtos.size());
-
-            for (int i = 0; i < ids.length; i++) {
-                Optional<Produto> produtoDaVez = produtoRepository.findById(ids[i]);
-                produtosOrdenados.add(ProdutoMapper.toDto(produtoDaVez.get()));
-            }
-            return produtosOrdenados;
-        }
-    }
-
-    private static Integer[] ordenarListaProdutos(Number[] coluna, Integer[] ids, int inicio, int fim){
-        int i = inicio;
-        int j = fim;
-        Double  pivo = coluna[(inicio + fim) / 2].doubleValue();
-        while(i <= j){
-            while(i < fim && coluna[i].doubleValue() < pivo){
-                i++;
-            }
-            while (j > inicio && coluna[j].doubleValue() > pivo){
-                j--;
-            }
-            if(i <= j){
-                //faz a troca
-                Double aux = coluna[i].doubleValue();
-                Integer idAux = ids[i];
-                coluna[i] = coluna[j];
-                ids[i] = ids[j];
-                coluna[j] = aux;
-                ids[j] = idAux;
-                //aumenta em i e decrementa em j
-                i++;
-                j--;
-
-            }
-
-            if(inicio < j){
-                ordenarListaProdutos(coluna, ids, inicio, j);
-            }
-
-            if(i < fim){
-                ordenarListaProdutos(coluna, ids, i, fim);
-            }
-        }
-        return ids;
-    }
+//    private ListaObj<ProdutoConsultaDTO> ordena(ListaObj<Produto> produtos){
+//
+//        if (produtos.size() == 0) return null;
+//
+//        Integer[] colunaId = new Integer[produtos.size()];
+//        Double[] colunaOrdenar = new Double[produtos.size()];
+//
+//        for (int i = 0; i < produtos.size(); i++) {
+//            colunaOrdenar[i] = produtos.get(i).getPreco();
+//            colunaId[i] = produtos.get(i).getId();
+//        }
+//
+//        Integer[] ids = ordenarListaProdutos(colunaOrdenar, colunaId, 0, colunaOrdenar.length-1);
+//        ListaObj<ProdutoConsultaDTO> produtosOrdenados = new ListaObj<>(produtos.size());
+//
+//        for (Integer id : ids) {
+//            Produto produtoDaVez = produtoService.buscarProdutoPorId(id);
+//            produtosOrdenados.add(ProdutoMapper.toDto(produtoDaVez));
+//        }
+//
+//        return produtosOrdenados;
+//    }
+//
+//    private static Integer[] ordenarListaProdutos(Number[] coluna, Integer[] ids, int inicio, int fim){
+//
+//        int i = inicio;
+//        int j = fim;
+//        double pivo = coluna[(inicio + fim) / 2].doubleValue();
+//
+//        while(i <= j){
+//            while(i < fim && coluna[i].doubleValue() < pivo){
+//                i++;
+//            }
+//            while (j > inicio && coluna[j].doubleValue() > pivo){
+//                j--;
+//            }
+//            if(i <= j){
+//                double aux = coluna[i].doubleValue();
+//                Integer idAux = ids[i];
+//
+//                coluna[i] = coluna[j];
+//                ids[i] = ids[j];
+//                coluna[j] = aux;
+//                ids[j] = idAux;
+//                i++;
+//                j--;
+//
+//            }
+//
+//            if(inicio < j){
+//                ordenarListaProdutos(coluna, ids, inicio, j);
+//            }
+//
+//            if(i < fim){
+//                ordenarListaProdutos(coluna, ids, i, fim);
+//            }
+//        }
+//        return ids;
+//    }
 }
