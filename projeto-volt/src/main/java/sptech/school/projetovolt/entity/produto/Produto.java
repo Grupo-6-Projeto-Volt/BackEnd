@@ -1,13 +1,18 @@
 package sptech.school.projetovolt.entity.produto;
 
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import lombok.*;
+
+import lombok.Getter;
+import lombok.Setter;
+import sptech.school.projetovolt.entity.classificacaoProduto.ClassificacaoProduto;
+import sptech.school.projetovolt.entity.clickProduto.ClickProduto;
+import sptech.school.projetovolt.entity.favoritos.Favoritos;
 import sptech.school.projetovolt.entity.tagProduto.TagProduto;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_produto")
 public class Produto {
@@ -36,4 +41,13 @@ public class Produto {
             joinColumns = @JoinColumn(name = "fk_produto"),
             inverseJoinColumns = @JoinColumn(name = "fk_tag_produto"))
     private List<TagProduto> tags;
+
+    @OneToMany(mappedBy = "produto")
+    private List<Favoritos> favoritos;
+
+    @OneToMany(mappedBy = "produto")
+    private List<ClickProduto> clickProdutos;
+
+    @OneToMany(mappedBy = "produto")
+    private List<ClassificacaoProduto> classificacaoProdutos;
 }

@@ -1,10 +1,13 @@
-package sptech.school.projetovolt.entity.imagemProduto.produto;
+package sptech.school.projetovolt.entity.imagemProduto;
 
 import jakarta.persistence.*;
-import lombok.*;
+
+import lombok.Getter;
+import lombok.Setter;
 import sptech.school.projetovolt.entity.produto.Produto;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_imagem_produto")
 public class ImagemProduto {

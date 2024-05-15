@@ -1,13 +1,17 @@
 package sptech.school.projetovolt.entity.usuario;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import sptech.school.projetovolt.entity.clickProduto.ClickProduto;
 import sptech.school.projetovolt.entity.favoritos.Favoritos;
 import sptech.school.projetovolt.entity.login.Login;
+import sptech.school.projetovolt.entity.produtoChamado.ProdutoChamado;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_usuario")
 public class Usuario {
@@ -33,5 +37,11 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario")
     private List<Favoritos> favoritos;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<ClickProduto> clickProdutos;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<ProdutoChamado> produtoChamados;
 
 }
