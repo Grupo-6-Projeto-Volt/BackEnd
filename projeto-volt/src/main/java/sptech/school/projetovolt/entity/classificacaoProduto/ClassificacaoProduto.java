@@ -1,11 +1,13 @@
 package sptech.school.projetovolt.entity.classificacaoProduto;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.entity.tagProduto.TagProduto;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_classificacao_produto")
 public class ClassificacaoProduto {

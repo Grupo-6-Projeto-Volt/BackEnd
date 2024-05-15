@@ -2,13 +2,14 @@ package sptech.school.projetovolt.entity.tagProduto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import sptech.school.projetovolt.entity.classificacaoProduto.ClassificacaoProduto;
-import sptech.school.projetovolt.entity.produto.Produto;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_tag_produto")
 @Schema(name = "Tag Produto", description = "Entidade que representa uma tag de um produto")

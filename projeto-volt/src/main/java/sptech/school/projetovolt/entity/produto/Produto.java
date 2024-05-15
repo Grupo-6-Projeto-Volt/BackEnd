@@ -1,7 +1,9 @@
 package sptech.school.projetovolt.entity.produto;
 
 import jakarta.persistence.*;
-import lombok.*;
+
+import lombok.Getter;
+import lombok.Setter;
 import sptech.school.projetovolt.entity.classificacaoProduto.ClassificacaoProduto;
 import sptech.school.projetovolt.entity.clickProduto.ClickProduto;
 import sptech.school.projetovolt.entity.favoritos.Favoritos;
@@ -9,7 +11,8 @@ import sptech.school.projetovolt.entity.tagProduto.TagProduto;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_produto")
 public class Produto {
