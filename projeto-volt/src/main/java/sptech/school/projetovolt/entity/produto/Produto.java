@@ -7,6 +7,7 @@ import lombok.Setter;
 import sptech.school.projetovolt.entity.classificacaoProduto.ClassificacaoProduto;
 import sptech.school.projetovolt.entity.clickProduto.ClickProduto;
 import sptech.school.projetovolt.entity.favoritos.Favoritos;
+import sptech.school.projetovolt.entity.imagem.produto.ImagemProduto;
 import sptech.school.projetovolt.entity.tagProduto.TagProduto;
 
 import java.util.List;
@@ -20,18 +21,25 @@ public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @Column
     private String nome;
+
     @Column
     private String descricao;
+
     @Column
     private String categoria;
+
     @Column
     private Double preco;
+
     @Column(name = "qtd_estoque")
     private Integer qtdEstoque;
+
     @Column(name = "estado_geral")
     private String estadoGeral;
+
     @Column(name = "desconto")
     private Integer desconto;
 
@@ -50,4 +58,8 @@ public class Produto {
 
     @OneToMany(mappedBy = "produto")
     private List<ClassificacaoProduto> classificacaoProdutos;
+
+    @OneToOne(mappedBy = "produto")
+    private List<ImagemProduto> imagemProduto;
+
 }
