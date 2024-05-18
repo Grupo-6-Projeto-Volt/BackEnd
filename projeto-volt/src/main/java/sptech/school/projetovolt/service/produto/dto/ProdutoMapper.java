@@ -3,7 +3,6 @@ package sptech.school.projetovolt.service.produto.dto;
 import sptech.school.projetovolt.entity.imagemproduto.ImagemProduto;
 import sptech.school.projetovolt.entity.produto.Produto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProdutoMapper {
