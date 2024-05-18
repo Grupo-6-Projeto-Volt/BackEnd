@@ -1,12 +1,12 @@
 package sptech.school.projetovolt.entity.favoritos.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import sptech.school.projetovolt.entity.favoritos.Favorito;
+import org.springframework.data.jpa.repository.Query;
+import sptech.school.projetovolt.entity.favoritos.Favoritos;
 
-<<<<<<< HEAD
-public interface FavoritosRepository extends JpaRepository<Favorito, Integer> {
-=======
+import java.util.List;
+
 public interface FavoritosRepository extends JpaRepository<Favoritos, Integer> {
-
->>>>>>> 9cb0cb033d3efb9d3a9d1e9e56dcee43d9072ee3
+    @Query(value = "SELECT * FROM tb_favoritos WHERE fk_usuario = :idUsuario", nativeQuery = true)
+    List<Favoritos> findAllByFkUsuario(Integer idUsuario);
 }
