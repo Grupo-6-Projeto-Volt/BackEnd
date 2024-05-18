@@ -10,5 +10,5 @@ public class ImagemAtualizacaoDto {
     private String nome;
 
     @NotBlank
-    private byte[] codigoImagem;
+    private String codigoImagem;
 }

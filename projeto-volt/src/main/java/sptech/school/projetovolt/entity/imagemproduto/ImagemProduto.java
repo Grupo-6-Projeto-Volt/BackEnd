@@ -19,7 +19,7 @@ public class ImagemProduto {
     private String nome;
 
     @Column(name = "codigo_imagem")
-    private byte[] codigoImagem;
+    private String codigoImagem;
 
     @ManyToOne
     @JoinColumn(name = "fk_produto")

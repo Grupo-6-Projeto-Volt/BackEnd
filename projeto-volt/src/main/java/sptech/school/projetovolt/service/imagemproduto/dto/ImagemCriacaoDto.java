@@ -13,7 +13,7 @@ public class ImagemCriacaoDto {
     private String nome;
 
     @NotBlank
-    private byte[] codigoImagem;
+    private String codigoImagem;
 
     @Min(1)
     @NotNull

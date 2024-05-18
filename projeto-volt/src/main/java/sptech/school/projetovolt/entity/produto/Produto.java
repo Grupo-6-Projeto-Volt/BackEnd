@@ -59,7 +59,7 @@ public class Produto {
     @OneToMany(mappedBy = "produto")
     private List<ClassificacaoProduto> classificacaoProdutos;
 
-    @OneToOne(mappedBy = "produto")
-    private List<ImagemProduto> imagemProduto;
+    @OneToMany(mappedBy = "produto")
+    private List<ImagemProduto> imagensProduto;
 
 }

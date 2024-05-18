@@ -35,6 +35,7 @@ public class ImagemProdutoService {
 
     public ImagemProduto atualizarImagemPorId(Integer id, ImagemProduto novaImagem) {
         ImagemProduto imagemEncontrada = buscarImagemPorId(id);
+        novaImagem.setId(imagemEncontrada.getId());
         novaImagem.setProduto(imagemEncontrada.getProduto());
         return imagemProdutoRepository.save(novaImagem);
     }

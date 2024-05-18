@@ -9,14 +9,15 @@ import sptech.school.projetovolt.service.imagemproduto.ImagemProdutoService;
 import sptech.school.projetovolt.service.imagemproduto.dto.ImagemAtualizacaoDto;
 import sptech.school.projetovolt.service.imagemproduto.dto.ImagemConsultaDto;
 import sptech.school.projetovolt.service.imagemproduto.dto.ImagemCriacaoDto;
-import sptech.school.projetovolt.service.imagemproduto.dto.ImagemProdutoMapper;
 
 import java.net.URI;
 import java.util.List;
 
+import static sptech.school.projetovolt.service.imagemproduto.dto.ImagemProdutoMapper.*;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/imagemProdutos")
+@RequestMapping("/imagem-produtos")
 public class imagemProdutoController {
 
     private final ImagemProdutoService imagemProdutoService;
@@ -24,10 +25,10 @@ public class imagemProdutoController {
     @PostMapping
     public ResponseEntity<ImagemConsultaDto> adicionarImagem(@RequestBody @Valid ImagemCriacaoDto novaImagem) {
         ImagemProduto imagemCriada = imagemProdutoService
-                .adicionarImagem(ImagemProdutoMapper.toEntity(novaImagem), novaImagem.getIdProduto());
+                .adicionarImagem(toEntity(novaImagem), novaImagem.getIdProduto());
         return ResponseEntity
                 .created(URI.create("/imagemProdutos/" + imagemCriada.getId()))
-                .body(ImagemProdutoMapper.toDto(imagemCriada));
+                .body(toDto(imagemCriada));
     }
 
     @GetMapping
@@ -36,13 +37,13 @@ public class imagemProdutoController {
 
         if (imagensEncontradas.isEmpty()) { return ResponseEntity.noContent().build(); }
 
-        return ResponseEntity.ok(ImagemProdutoMapper.toDto(imagensEncontradas));
+        return ResponseEntity.ok(toDto(imagensEncontradas));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ImagemConsultaDto> buscarImagemPorId(@PathVariable Integer id) {
         ImagemProduto imagemEncontrada = imagemProdutoService.buscarImagemPorId(id);
-        return ResponseEntity.ok(ImagemProdutoMapper.toDto(imagemEncontrada));
+        return ResponseEntity.ok(toDto(imagemEncontrada));
     }
 
     @PutMapping("/{id}")
@@ -51,10 +52,10 @@ public class imagemProdutoController {
             @RequestBody @Valid ImagemAtualizacaoDto novaImagem)
     {
         ImagemProduto imagemAtualizada = imagemProdutoService
-               .atualizarImagemPorId(id, ImagemProdutoMapper.toEntity(novaImagem));
+               .atualizarImagemPorId(id, toEntity(novaImagem));
 
         return ResponseEntity
-               .ok(ImagemProdutoMapper.toDto(imagemAtualizada));
+               .ok(toDto(imagemAtualizada));
     }
 
     @DeleteMapping("/{id}")

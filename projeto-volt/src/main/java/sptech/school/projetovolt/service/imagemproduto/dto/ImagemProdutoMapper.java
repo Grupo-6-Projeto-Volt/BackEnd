@@ -35,7 +35,7 @@ public class ImagemProdutoMapper {
         dto.setId(entity.getId());
         dto.setNome(entity.getNome());
         dto.setCodigoImagem(entity.getCodigoImagem());
-        dto.setProduto(ImagemProdutoMapper.toProdutoDto(entity.getProduto()));
+        dto.setProduto(toProdutoDto(entity.getProduto()));
 
         return dto;
     }
@@ -50,12 +50,12 @@ public class ImagemProdutoMapper {
         ImagemConsultaDto.Produto dto = new ImagemConsultaDto.Produto();
         dto.setId(entity.getId());
         dto.setNome(entity.getNome());
-        dto.setCategoria(dto.getCategoria());
-        dto.setDescricao(dto.getDescricao());
-        dto.setPreco(dto.getPreco());
-        dto.setQtdEstoque(dto.getQtdEstoque());
-        dto.setEstadoGeral(dto.getEstadoGeral());
-        dto.setDesconto(dto.getDesconto());
+        dto.setCategoria(entity.getCategoria());
+        dto.setDescricao(entity.getDescricao());
+        dto.setPreco(entity.getPreco());
+        dto.setQtdEstoque(entity.getQtdEstoque());
+        dto.setEstadoGeral(entity.getEstadoGeral());
+        dto.setDesconto(entity.getDesconto());
         return dto;
     }
 
