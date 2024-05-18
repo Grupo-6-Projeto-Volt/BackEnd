@@ -1,4 +1,4 @@
-package sptech.school.projetovolt.service.imagem.produto.dto;
+package sptech.school.projetovolt.service.imagemproduto.dto;
 
 import lombok.Data;
 

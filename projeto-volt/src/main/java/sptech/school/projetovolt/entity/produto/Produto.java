@@ -7,7 +7,7 @@ import lombok.Setter;
 import sptech.school.projetovolt.entity.classificacaoProduto.ClassificacaoProduto;
 import sptech.school.projetovolt.entity.clickProduto.ClickProduto;
 import sptech.school.projetovolt.entity.favoritos.Favoritos;
-import sptech.school.projetovolt.entity.imagem.produto.ImagemProduto;
+import sptech.school.projetovolt.entity.imagemproduto.ImagemProduto;
 import sptech.school.projetovolt.entity.tagProduto.TagProduto;
 
 import java.util.List;
