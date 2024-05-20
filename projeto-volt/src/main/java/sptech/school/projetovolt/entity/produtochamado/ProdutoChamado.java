@@ -1,4 +1,4 @@
-package sptech.school.projetovolt.entity.produtoChamado;
+package sptech.school.projetovolt.entity.produtochamado;
 
 import jakarta.persistence.*;
 import lombok.Getter;
