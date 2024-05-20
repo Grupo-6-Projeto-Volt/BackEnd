@@ -27,7 +27,7 @@ public class imagemProdutoController {
         ImagemProduto imagemCriada = imagemProdutoService
                 .adicionarImagem(toEntity(novaImagem), novaImagem.getIdProduto());
         return ResponseEntity
-                .created(URI.create("/imagemProdutos/" + imagemCriada.getId()))
+                .created(URI.create("/imagem-produtos/" + imagemCriada.getId()))
                 .body(toDto(imagemCriada));
     }
 

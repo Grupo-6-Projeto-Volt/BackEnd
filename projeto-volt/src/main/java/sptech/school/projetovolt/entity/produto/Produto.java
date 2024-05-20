@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
-import sptech.school.projetovolt.entity.classificacaoProduto.ClassificacaoProduto;
+import sptech.school.projetovolt.entity.classificacaoproduto.ClassificacaoProduto;
 import sptech.school.projetovolt.entity.clickProduto.ClickProduto;
 import sptech.school.projetovolt.entity.favoritos.Favoritos;
 import sptech.school.projetovolt.entity.imagemproduto.ImagemProduto;

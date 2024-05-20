@@ -2,6 +2,7 @@ package sptech.school.projetovolt.service.produto.dto;
 
 import sptech.school.projetovolt.entity.imagemproduto.ImagemProduto;
 import sptech.school.projetovolt.entity.produto.Produto;
+import sptech.school.projetovolt.entity.tagProduto.TagProduto;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class ProdutoMapper {
         dto.setEstadoGeral(produto.getEstadoGeral());
         dto.setDesconto(produto.getDesconto());
         dto.setImagensProduto(toImagemProdutoDto(produto.getImagensProduto()));
+        dto.setTagsProduto(toTagProdutoDto(produto.getTags()));
 
         return dto;
     }
@@ -71,5 +73,19 @@ public class ProdutoMapper {
 
     public static List<ProdutoConsultaDTO.ImagemProduto> toImagemProdutoDto(List<ImagemProduto> entities) {
         return entities.stream().map(ProdutoMapper::toImagemProdutoDto).toList();
+    }
+
+    public static ProdutoConsultaDTO.TagProduto toTagProdutoDto(TagProduto entity) {
+        if (entity == null) return null;
+
+        ProdutoConsultaDTO.TagProduto dto = new ProdutoConsultaDTO.TagProduto();
+        dto.setId(entity.getId());
+        dto.setTag(entity.getTag());
+
+        return dto;
+    }
+
+    public static List<ProdutoConsultaDTO.TagProduto> toTagProdutoDto(List<TagProduto> entities) {
+        return entities.stream().map(ProdutoMapper::toTagProdutoDto).toList();
     }
 }
