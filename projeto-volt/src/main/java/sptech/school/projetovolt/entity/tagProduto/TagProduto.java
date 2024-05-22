@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import sptech.school.projetovolt.entity.classificacaoProduto.ClassificacaoProduto;
+import sptech.school.projetovolt.entity.classificacaoproduto.ClassificacaoProduto;
 
 import java.util.List;
 
