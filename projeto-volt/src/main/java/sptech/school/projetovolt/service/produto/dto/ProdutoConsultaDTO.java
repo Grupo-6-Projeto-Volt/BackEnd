@@ -3,6 +3,8 @@ package sptech.school.projetovolt.service.produto.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Schema(name = "Produto Consulta DTO", description = "DTO para consulta de um produto")
 public class ProdutoConsultaDTO {
@@ -27,4 +29,21 @@ public class ProdutoConsultaDTO {
 
     @Schema(description = "Desconto do produto (Ex: 10 = 10%)")
     private Integer desconto;
+
+    private List<ImagemProduto> imagensProduto;
+    private List<TagProduto> tagsProduto;
+
+    @Data
+    public static class ImagemProduto {
+        private Integer id;
+        private String nome;
+        private String codigoImagem;
+    }
+
+    @Data
+    public static class TagProduto {
+        private Integer id;
+        private String tag;
+    }
+
 }
