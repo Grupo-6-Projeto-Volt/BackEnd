@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Schema(name = "Produto Chamado Consulta DTO", description = "DTO para consulta de um chamado de produto")
@@ -13,10 +14,10 @@ public class ProdutoChamadoConsultaDto {
     private Short statusChamado;
 
     @Schema(description = "Momento da abertura do chamado")
-    private LocalDate dataHoraAbertura;
+    private LocalDateTime dataHoraAbertura;
 
     @Schema(description = "Momento do fechamento do chamado")
-    private LocalDate dataHoraFechamento;
+    private LocalDateTime dataHoraFechamento;
 
     @Schema(description = "Produto relacionado ao chamado")
     private ProdutoDto produtoDto;

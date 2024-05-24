@@ -9,7 +9,7 @@ import sptech.school.projetovolt.service.produto.ProdutoService;
 import sptech.school.projetovolt.service.usuario.UsuarioService;
 import sptech.school.projetovolt.utils.StatusChamado;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +27,7 @@ public class ProdutoChamadoService {
         produtoChamado.setUsuario(usuarioService.buscarUsuarioPorId(idUsuario));
         produtoChamado.setProduto(produtoService.buscarProdutoPorId(idProduto));
         produtoChamado.setStatusChamado(StatusChamado.EM_ANDAMENTO.getId());
-        produtoChamado.setDataHoraAbertura(LocalDate.now());
+        produtoChamado.setDataHoraAbertura(LocalDateTime.now());
 
         return produtoChamadoRepository.save(produtoChamado);
     }
@@ -38,29 +38,31 @@ public class ProdutoChamadoService {
         return produtoChamados;
     }
 
-    public ProdutoChamado cancelarProdutoChamado(Integer id) {
+    public ProdutoChamado buscarProdutoChamadoPorId(Integer id) {
         Optional<ProdutoChamado> produtoChamadoOpt = produtoChamadoRepository.findById(id);
 
         if (produtoChamadoOpt.isEmpty()) {
             throw new NotFoundException("Produto");
         }
 
-        produtoChamadoOpt.get().setStatusChamado(StatusChamado.CANCELADA.getId());
-        produtoChamadoOpt.get().setDataHoraAbertura(LocalDate.now());
+        return produtoChamadoOpt.get();
+    }
 
-        return produtoChamadoRepository.save(produtoChamadoOpt.get());
+    public ProdutoChamado cancelarProdutoChamado(Integer id) {
+        ProdutoChamado produtoChamado = buscarProdutoChamadoPorId(id);
+
+        produtoChamado.setStatusChamado(StatusChamado.CANCELADA.getId());
+        produtoChamado.setDataHoraFechamento(LocalDateTime.now());
+
+        return produtoChamadoRepository.save(produtoChamado);
     }
 
     public ProdutoChamado concluirProdutoChamado(Integer id) {
-        Optional<ProdutoChamado> produtoChamadoOpt = produtoChamadoRepository.findById(id);
+        ProdutoChamado produtoChamado = buscarProdutoChamadoPorId(id);
 
-        if (produtoChamadoOpt.isEmpty()) {
-            throw new NotFoundException("Produto");
-        }
+        produtoChamado.setStatusChamado(StatusChamado.CONCLUIDA.getId());
+        produtoChamado.setDataHoraFechamento(LocalDateTime.now());
 
-        produtoChamadoOpt.get().setStatusChamado(StatusChamado.CONCLUIDA.getId());
-        produtoChamadoOpt.get().setDataHoraAbertura(LocalDate.now());
-
-        return produtoChamadoRepository.save(produtoChamadoOpt.get());
+        return produtoChamadoRepository.save(produtoChamado);
     }
 }
