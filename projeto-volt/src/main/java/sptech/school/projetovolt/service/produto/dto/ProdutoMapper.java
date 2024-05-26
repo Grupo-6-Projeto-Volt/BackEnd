@@ -1,9 +1,9 @@
 package sptech.school.projetovolt.service.produto.dto;
 
+import sptech.school.projetovolt.entity.imagemproduto.ImagemProduto;
 import sptech.school.projetovolt.entity.produto.Produto;
-import sptech.school.projetovolt.utils.ListaObj;
+import sptech.school.projetovolt.entity.tagProduto.TagProduto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProdutoMapper {
@@ -19,6 +19,8 @@ public class ProdutoMapper {
         dto.setQtdEstoque(produto.getQtdEstoque());
         dto.setEstadoGeral(produto.getEstadoGeral());
         dto.setDesconto(produto.getDesconto());
+        dto.setImagensProduto(toImagemProdutoDto(produto.getImagensProduto()));
+        dto.setTagsProduto(toTagProdutoDto(produto.getTags()));
 
         return dto;
     }
@@ -27,34 +29,6 @@ public class ProdutoMapper {
         if(produtos == null) return null;
         return produtos.stream().map(ProdutoMapper::toDto).toList();
     }
-
-    /*
-    * FIXME: Método não necessário, visto que a listaObj não se aplica à nossa API, mas sim à API externa.
-    *  Remover esse método após a migração dessa função, se necessário, para a API externa.
-    * */
-
-//    public static ListaObj<ProdutoConsultaDTO> toDto(ListaObj<Produto> produtos){
-//        if(produtos == null) return null;
-//
-//        ListaObj<ProdutoConsultaDTO> dtos = new ListaObj<>(produtos
-//                .size());
-//
-//        for (Produto produto : produtos.getArr()) {
-//            ProdutoConsultaDTO dto = new ProdutoConsultaDTO();
-//            dto.setNome(produto.getNome());
-//            dto.setDescricao(produto.getDescricao());
-//            dto.setPreco(produto.getPreco());
-//            dto.setCategoria(produto.getCategoria());
-//            dto.setQtdEstoque(produto.getQtdEstoque());
-//            dto.setEstadoGeral(produto.getEstadoGeral());
-//            dto.setDesconto(produto.getDesconto());
-//
-//            dtos.add(dto);
-//        }
-//
-//
-//        return dtos;
-//    }
 
     public static Produto toEntity(ProdutoCriacaoDTO dto){
         if(dto == null) return null;
@@ -84,5 +58,34 @@ public class ProdutoMapper {
         entity.setDesconto(dto.getDesconto());
 
         return entity;
+    }
+
+    public static ProdutoConsultaDTO.ImagemProduto toImagemProdutoDto(ImagemProduto entity) {
+        if (entity == null) return null;
+
+        ProdutoConsultaDTO.ImagemProduto dto = new ProdutoConsultaDTO.ImagemProduto();
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
+        dto.setCodigoImagem(entity.getCodigoImagem());
+
+        return dto;
+    }
+
+    public static List<ProdutoConsultaDTO.ImagemProduto> toImagemProdutoDto(List<ImagemProduto> entities) {
+        return entities.stream().map(ProdutoMapper::toImagemProdutoDto).toList();
+    }
+
+    public static ProdutoConsultaDTO.TagProduto toTagProdutoDto(TagProduto entity) {
+        if (entity == null) return null;
+
+        ProdutoConsultaDTO.TagProduto dto = new ProdutoConsultaDTO.TagProduto();
+        dto.setId(entity.getId());
+        dto.setTag(entity.getTag());
+
+        return dto;
+    }
+
+    public static List<ProdutoConsultaDTO.TagProduto> toTagProdutoDto(List<TagProduto> entities) {
+        return entities.stream().map(ProdutoMapper::toTagProdutoDto).toList();
     }
 }
