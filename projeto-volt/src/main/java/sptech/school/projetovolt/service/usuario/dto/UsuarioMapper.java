@@ -56,4 +56,16 @@ public class UsuarioMapper {
     public static List<UsuarioConsultaDto> toUsuarioConsultaDto(List<Usuario> entities) {
         return entities.stream().map(UsuarioMapper::toUsuarioConsultaDto).toList();
     }
+
+    //Para listar usuário ao consultar os clicks
+    public static UsuarioClickConsultaDTO toUsuarioClickDTO(Usuario usuario){
+        if(usuario == null) return null;
+
+        UsuarioClickConsultaDTO dto = new UsuarioClickConsultaDTO();
+        dto.setNome(usuario.getNome());
+        dto.setEmail(usuario.getEmail());
+        dto.setTelefone(usuario.getTelefone());
+
+        return dto;
+    }
 }

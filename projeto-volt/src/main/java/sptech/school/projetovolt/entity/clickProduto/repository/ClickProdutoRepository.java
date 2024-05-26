@@ -8,7 +8,11 @@ import sptech.school.projetovolt.service.clickproduto.dto.ClickProdutoMaisClicad
 import java.util.List;
 
 public interface ClickProdutoRepository extends JpaRepository<ClickProduto, Integer> {
-    @Query(value = "SELECT count(c.fk_produto) AS \"qtdClicks\" ,p.nome AS \"nomeProduto\" FROM tb_click_produto AS c JOIN tb_produto AS p ON p.id=c.fk_produto GROUP BY c.fk_produto ORDER BY qtdClicks DESC;"
-    , nativeQuery = true)
-    List<ClickProdutoMaisClicadosDTO> produtosMaisClicados();
+    @Query(value = "SELECT * FROM tb_click_produto AS cp ORDER BY cp.data_hora_click",
+    nativeQuery = true)
+    List<ClickProduto> findAllOrderByDataHoraClick();
+
+    @Query(value = "SELECT * FROM tb_click_produto WHERE fk_produto=:idProduto",
+    nativeQuery = true)
+    List<ClickProduto> findAllByIdProduto(int idProduto);
 }

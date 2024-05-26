@@ -9,13 +9,19 @@ import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.entity.produto.repository.ProdutoRepository;
 import sptech.school.projetovolt.entity.usuario.Usuario;
 import sptech.school.projetovolt.entity.usuario.repository.UsuarioRepository;
+import sptech.school.projetovolt.entity.vwmaisclicados.VwMaisClicados;
+import sptech.school.projetovolt.entity.vwmaisclicados.repository.VwMaisClicadosRepository;
+import sptech.school.projetovolt.service.clickproduto.dto.ClickProdutoConsultaDTO;
+import sptech.school.projetovolt.service.clickproduto.dto.ClickProdutoMaisClicadosDTO;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ClickProdutoService {
     private final ClickProdutoRepository repository;
+    private final VwMaisClicadosRepository vwRepository;
     private final UsuarioRepository usuarioRepository;
     private final ProdutoRepository produtoRepository;
 
@@ -35,5 +41,15 @@ public class ClickProdutoService {
         return repository.save(novoClick);
     }
 
+    public List<VwMaisClicados> listarMaisClicados(){
+        return vwRepository.produtosMaisClicados();
+    }
 
+    public List<ClickProduto> listarOrdenadoPorData(){
+        return repository.findAllOrderByDataHoraClick();
+    }
+
+    public List<ClickProduto> listarPorProduto(Integer idProduto){
+        return repository.findAllByIdProduto(idProduto);
+    }
 }
