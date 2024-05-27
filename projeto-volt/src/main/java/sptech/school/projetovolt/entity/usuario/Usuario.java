@@ -6,7 +6,7 @@ import lombok.Setter;
 import sptech.school.projetovolt.entity.clickProduto.ClickProduto;
 import sptech.school.projetovolt.entity.favoritos.Favoritos;
 import sptech.school.projetovolt.entity.login.Login;
-import sptech.school.projetovolt.entity.produtoChamado.ProdutoChamado;
+import sptech.school.projetovolt.entity.produtochamado.ProdutoChamado;
 
 import java.util.List;
 
