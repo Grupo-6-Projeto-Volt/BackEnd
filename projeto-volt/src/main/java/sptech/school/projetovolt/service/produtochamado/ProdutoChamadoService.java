@@ -2,6 +2,7 @@ package sptech.school.projetovolt.service.produtochamado;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import sptech.school.projetovolt.entity.exception.ConflitoStatusChamadoException;
 import sptech.school.projetovolt.entity.exception.NotFoundException;
 import sptech.school.projetovolt.entity.produtochamado.ProdutoChamado;
 import sptech.school.projetovolt.entity.produtochamado.repository.ProdutoChamadoRepository;
@@ -51,6 +52,10 @@ public class ProdutoChamadoService {
     public ProdutoChamado cancelarProdutoChamado(Integer id) {
         ProdutoChamado produtoChamado = buscarProdutoChamadoPorId(id);
 
+        if (!produtoChamado.getStatusChamado().equals(StatusChamado.EM_ANDAMENTO.getId())) {
+            throw new ConflitoStatusChamadoException();
+        }
+
         produtoChamado.setStatusChamado(StatusChamado.CANCELADA.getId());
         produtoChamado.setDataHoraFechamento(LocalDateTime.now());
 
@@ -59,6 +64,10 @@ public class ProdutoChamadoService {
 
     public ProdutoChamado concluirProdutoChamado(Integer id) {
         ProdutoChamado produtoChamado = buscarProdutoChamadoPorId(id);
+
+        if (!produtoChamado.getStatusChamado().equals(StatusChamado.EM_ANDAMENTO.getId())) {
+            throw new ConflitoStatusChamadoException();
+        }
 
         produtoChamado.setStatusChamado(StatusChamado.CONCLUIDA.getId());
         produtoChamado.setDataHoraFechamento(LocalDateTime.now());
