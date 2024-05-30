@@ -74,4 +74,12 @@ public class ProdutoChamadoService {
 
         return produtoChamadoRepository.save(produtoChamado);
     }
+
+    public List<ProdutoChamado> listarChamadosOrdenadosPorDataAberturaAsc() {
+        return produtoChamadoRepository.findByOrderByDataHoraAberturaAsc();
+    }
+
+    public List<ProdutoChamado> listarChamadosOrdenadosPorDataAberturaDesc() {
+        return produtoChamadoRepository.findByOrderByDataHoraAberturaDesc();
+    }
 }

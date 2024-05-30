@@ -187,6 +187,28 @@ public class ProdutoChamadoController {
 
         return ResponseEntity.ok(dto);
     }
+
+    @GetMapping("/filtro/buscar-por-data-abertura-asc")
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarChamadosOrdenadosPorDataAberturaAsc() {
+        List<ProdutoChamado> produtoChamados = produtoChamadoService.listarChamadosOrdenadosPorDataAberturaAsc();
+
+        if (produtoChamados.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(ProdutoChamadoMapper.toDto(produtoChamados));
+    }
+
+    @GetMapping("/filtro/buscar-por-data-abertura-desc")
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarChamadosOrdenadosPorDataAberturaDesc() {
+        List<ProdutoChamado> produtoChamados = produtoChamadoService.listarChamadosOrdenadosPorDataAberturaDesc();
+
+        if (produtoChamados.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(ProdutoChamadoMapper.toDto(produtoChamados));
+    }
 }
 
 
