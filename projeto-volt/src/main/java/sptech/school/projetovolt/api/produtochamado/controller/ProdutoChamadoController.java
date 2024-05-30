@@ -17,8 +17,11 @@ import sptech.school.projetovolt.service.produtochamado.ProdutoChamadoService;
 import sptech.school.projetovolt.service.produtochamado.dto.ProdutoChamadoConsultaDto;
 import sptech.school.projetovolt.service.produtochamado.dto.ProdutoChamadoCriacaoDto;
 import sptech.school.projetovolt.service.produtochamado.dto.ProdutoChamadoMapper;
+import sptech.school.projetovolt.utils.FilaObj;
+import sptech.school.projetovolt.utils.StatusChamado;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -36,7 +39,7 @@ public class ProdutoChamadoController {
             description = "Responsável por criar um chamado para compra de um produto",
             tags = {"ProdutoChamado"}
     )
-    @ApiResponses( value = {
+    @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
                     description = "Chamado de produto cadastrado com sucesso"
@@ -56,9 +59,9 @@ public class ProdutoChamadoController {
                     schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ProdutoChamadoCriacaoDto.class))
     )
     @Parameters(value = {
-            @Parameter( name = "idUsuario", description = "ID do usuário relacionado", example = "1", required = true),
-            @Parameter( name = "idProduto", description = "ID do produto relacionado", example = "1", required = true)
-})
+            @Parameter(name = "idUsuario", description = "ID do usuário relacionado", example = "1", required = true),
+            @Parameter(name = "idProduto", description = "ID do produto relacionado", example = "1", required = true)
+    })
     public ResponseEntity<ProdutoChamadoConsultaDto> criarProdutoChamado(@RequestParam Integer idUsuario, @RequestParam Integer idProduto) {
 
         ProdutoChamado produtoChamadoSalvo = produtoChamadoService.salvarProdutoChamado(idUsuario, idProduto);
@@ -77,7 +80,7 @@ public class ProdutoChamadoController {
             description = "Responsável por listar todos os chamados de produtos criados na loja",
             tags = {"ProdutosChamado"}
     )
-    @ApiResponses( value = {
+    @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
                     description = "Chamados de produtos retornados com sucesso",
@@ -101,14 +104,15 @@ public class ProdutoChamadoController {
 
         return ResponseEntity.ok(dtos);
     }
+
     @GetMapping("/{id}")
     @Operation(
             summary = "Lista um chamado de produto da Loja",
             method = "GET",
             description = "Responsável por buscar por ID o chamado de produto desejado cadastrado na loja",
-        tags = {"ProdutosChamados"}
+            tags = {"ProdutosChamados"}
     )
-    @ApiResponses( value = {
+    @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
                     description = "Chamado de produto retornado com sucesso",
@@ -137,7 +141,7 @@ public class ProdutoChamadoController {
             description = "Responsável por alterar status como cancelado de um chamado desejado através de um ID",
             tags = {"ProdutosChamados"}
     )
-    @ApiResponses( value = {
+    @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
                     description = "Chamado de produto cancelado com sucesso",
@@ -166,7 +170,7 @@ public class ProdutoChamadoController {
             description = "Responsável por alterar status como concluido de um chamado desejado através de um ID",
             tags = {"ProdutosChamados"}
     )
-    @ApiResponses( value = {
+    @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
                     description = "Chamado de produto finalizado com sucesso",
@@ -186,6 +190,30 @@ public class ProdutoChamadoController {
         ProdutoChamadoConsultaDto dto = ProdutoChamadoMapper.toDto(produtoChamadoConcluido);
 
         return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping("/listar-em-andamento")
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarEmAndamento() {
+        FilaObj<ProdutoChamado> filaObj = produtoChamadoService.listarEmAndamento();
+
+        if (filaObj.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        List<ProdutoChamado> produtoChamados = new ArrayList<>();
+
+        while (!filaObj.isEmpty()) {
+            ProdutoChamado produtoChamadoDaVez = filaObj.peek();
+            if (produtoChamadoDaVez.getStatusChamado().equals(StatusChamado.EM_ANDAMENTO.getId())) {
+                produtoChamados.add(filaObj.poll());
+            } else {
+                filaObj.poll();
+            }
+        }
+
+        List<ProdutoChamadoConsultaDto> dtos = ProdutoChamadoMapper.toDto(produtoChamados);
+
+        return ResponseEntity.ok(dtos);
     }
 }
 
