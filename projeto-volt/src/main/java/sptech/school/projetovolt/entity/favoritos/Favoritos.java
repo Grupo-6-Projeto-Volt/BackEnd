@@ -8,11 +8,12 @@ import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.entity.usuario.Usuario;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "tb_lista_favoritos")
+@Table(name = "tb_favoritos")
 public class Favoritos {
 
     @Id
@@ -20,7 +21,7 @@ public class Favoritos {
     private Integer id;
 
     @Column(name = "dt_hora_insercao")
-    private LocalDate dtHoraInsercao;
+    private LocalDateTime dtHoraInsercao;
 
     @ManyToOne
     @JoinColumn(name = "fk_produto")

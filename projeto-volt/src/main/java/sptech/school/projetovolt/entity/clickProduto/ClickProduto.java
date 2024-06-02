@@ -6,7 +6,7 @@ import lombok.Setter;
 import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.entity.usuario.Usuario;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -19,7 +19,7 @@ public class ClickProduto {
     private Integer id;
 
     @Column(name = "data_hora_click")
-    private LocalDate dataHoraClick;
+    private LocalDateTime dataHoraClick;
 
     @Column(name = "possivel_compra")
     private Short possivelCompra;

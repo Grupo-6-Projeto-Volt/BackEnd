@@ -1,4 +1,4 @@
-package sptech.school.projetovolt.entity.produtoChamado;
+package sptech.school.projetovolt.entity.produtochamado;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,6 +7,7 @@ import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.entity.usuario.Usuario;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -22,10 +23,10 @@ public class ProdutoChamado {
     private Short statusChamado;
 
     @Column(name = "data_hora_abertura")
-    private LocalDate dataHoraAbertura;
+    private LocalDateTime dataHoraAbertura;
 
     @Column(name = "data_hora_fechamento")
-    private LocalDate dataHoraFechamento;
+    private LocalDateTime dataHoraFechamento;
 
     @ManyToOne
     @JoinColumn(name = "fk_usuario")

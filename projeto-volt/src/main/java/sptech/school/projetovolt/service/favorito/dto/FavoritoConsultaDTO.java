@@ -1,0 +1,15 @@
+package sptech.school.projetovolt.service.favorito.dto;
+
+import lombok.Data;
+import sptech.school.projetovolt.service.produto.dto.ProdutoConsultaDTO;
+import sptech.school.projetovolt.service.usuario.dto.UsuarioConsultaDto;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Data
+public class FavoritoConsultaDTO {
+    private UsuarioConsultaDto usuario;
+    private ProdutoConsultaDTO produto;
+    private LocalDateTime dtHoraInsercao;
+}
