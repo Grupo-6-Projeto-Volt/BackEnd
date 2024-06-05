@@ -187,10 +187,19 @@ public class ProdutoChamadoController {
 
         return ResponseEntity.ok(dto);
     }
+    @PatchMapping("/restaurar/{id}")
+    public ResponseEntity<ProdutoChamadoConsultaDto> restaurarProdutoChamado(@PathVariable Integer id) {
+        return ResponseEntity
+                .ok(ProdutoChamadoMapper
+                        .toDto(produtoChamadoService.restaurarProdutoChamado(id)));
+    }
 
     @GetMapping("/filtro/buscar-por-data-abertura-asc")
-    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarChamadosOrdenadosPorDataAberturaAsc() {
-        List<ProdutoChamado> produtoChamados = produtoChamadoService.listarChamadosOrdenadosPorDataAberturaAsc();
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarChamadosOrdenadosPorDataAberturaAsc(
+            @RequestParam Integer status
+    ) {
+        List<ProdutoChamado> produtoChamados = produtoChamadoService
+                .listarChamadosAbertosOrdenadosPorDataAberturaAsc(status);
 
         if (produtoChamados.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -200,8 +209,39 @@ public class ProdutoChamadoController {
     }
 
     @GetMapping("/filtro/buscar-por-data-abertura-desc")
-    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarChamadosOrdenadosPorDataAberturaDesc() {
-        List<ProdutoChamado> produtoChamados = produtoChamadoService.listarChamadosOrdenadosPorDataAberturaDesc();
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarChamadosOrdenadosPorDataAberturaDesc(
+            @RequestParam Integer status
+    ) {
+        List<ProdutoChamado> produtoChamados = produtoChamadoService
+                .listarChamadosAbertosOrdenadosPorDataAberturaDesc(status);
+
+        if (produtoChamados.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(ProdutoChamadoMapper.toDto(produtoChamados));
+    }
+
+    @GetMapping("/filtro/buscar-leads-por-nome-asc")
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarLeadsOrdenadosPorNomeAsc(
+            @RequestParam Integer status
+    ) {
+        List<ProdutoChamado> produtoChamados = produtoChamadoService
+                .listarLeadsOrdenadosPorNomeAsc(status);
+
+        if (produtoChamados.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(ProdutoChamadoMapper.toDto(produtoChamados));
+    }
+
+    @GetMapping("/filtro/buscar-leads-por-nome-desc")
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarLeadsOrdenadosPorNomeDesc(
+            @RequestParam Integer status
+    ) {
+        List<ProdutoChamado> produtoChamados = produtoChamadoService
+                .listarLeadsOrdenadosPorNomeDesc(status);
 
         if (produtoChamados.isEmpty()) {
             return ResponseEntity.noContent().build();

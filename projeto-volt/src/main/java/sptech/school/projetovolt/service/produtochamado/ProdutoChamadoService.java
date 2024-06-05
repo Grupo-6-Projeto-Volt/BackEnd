@@ -75,11 +75,28 @@ public class ProdutoChamadoService {
         return produtoChamadoRepository.save(produtoChamado);
     }
 
-    public List<ProdutoChamado> listarChamadosOrdenadosPorDataAberturaAsc() {
-        return produtoChamadoRepository.findByOrderByDataHoraAberturaAsc();
+    public ProdutoChamado restaurarProdutoChamado(Integer id) {
+        ProdutoChamado produtoChamado = buscarProdutoChamadoPorId(id);
+
+        produtoChamado.setStatusChamado(StatusChamado.EM_ANDAMENTO.getId());
+        produtoChamado.setDataHoraFechamento(null);
+
+        return produtoChamadoRepository.save(produtoChamado);
     }
 
-    public List<ProdutoChamado> listarChamadosOrdenadosPorDataAberturaDesc() {
-        return produtoChamadoRepository.findByOrderByDataHoraAberturaDesc();
+    public List<ProdutoChamado> listarChamadosAbertosOrdenadosPorDataAberturaAsc(Integer status) {
+        return produtoChamadoRepository.findByStatusChamadoOrderByDataHoraAberturaAsc(status);
+    }
+
+    public List<ProdutoChamado> listarChamadosAbertosOrdenadosPorDataAberturaDesc(Integer status) {
+        return produtoChamadoRepository.findByStatusChamadoOrderByDataHoraAberturaDesc(status);
+    }
+
+    public List<ProdutoChamado> listarLeadsOrdenadosPorNomeAsc(Integer status) {
+        return produtoChamadoRepository.findByStatusChamadoNotOrderByUsuarioNomeAsc(status);
+    }
+
+    public List<ProdutoChamado> listarLeadsOrdenadosPorNomeDesc(Integer status) {
+        return produtoChamadoRepository.findByStatusChamadoNotOrderByUsuarioNomeDesc(status);
     }
 }
