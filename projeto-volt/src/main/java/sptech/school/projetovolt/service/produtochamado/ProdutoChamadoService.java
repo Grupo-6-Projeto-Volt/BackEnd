@@ -6,6 +6,9 @@ import sptech.school.projetovolt.entity.exception.ConflitoStatusChamadoException
 import sptech.school.projetovolt.entity.exception.NotFoundException;
 import sptech.school.projetovolt.entity.produtochamado.ProdutoChamado;
 import sptech.school.projetovolt.entity.produtochamado.repository.ProdutoChamadoRepository;
+import sptech.school.projetovolt.entity.vwchamadosgraficos.VwChamadosGraficos;
+import sptech.school.projetovolt.entity.vwchamadosgraficos.repository.VwChamadosGraficosRepository;
+import sptech.school.projetovolt.entity.vwmaisclicados.repository.VwMaisClicadosRepository;
 import sptech.school.projetovolt.service.produto.ProdutoService;
 import sptech.school.projetovolt.service.usuario.UsuarioService;
 import sptech.school.projetovolt.utils.StatusChamado;
@@ -21,7 +24,7 @@ public class ProdutoChamadoService {
     private final ProdutoChamadoRepository produtoChamadoRepository;
     private final UsuarioService usuarioService;
     private final ProdutoService produtoService;
-
+    private final VwChamadosGraficosRepository vwChamadosGraficosRepository;
     public ProdutoChamado salvarProdutoChamado(Integer idUsuario, Integer idProduto) {
 
         ProdutoChamado produtoChamado = new ProdutoChamado();
@@ -81,5 +84,9 @@ public class ProdutoChamadoService {
 
     public List<ProdutoChamado> listarChamadosOrdenadosPorDataAberturaDesc() {
         return produtoChamadoRepository.findByOrderByDataHoraAberturaDesc();
+    }
+
+    public List<VwChamadosGraficos> capturarChamadosCanceladosConcluidos(){
+        return vwChamadosGraficosRepository.chamadosGraficoColuna();
     }
 }

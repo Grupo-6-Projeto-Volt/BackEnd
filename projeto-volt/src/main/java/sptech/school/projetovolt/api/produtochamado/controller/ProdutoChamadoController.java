@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.entity.produtochamado.ProdutoChamado;
+import sptech.school.projetovolt.entity.vwchamadosgraficos.VwChamadosGraficos;
+import sptech.school.projetovolt.service.chamadosgraficos.dto.ChamadosGraficosDto;
 import sptech.school.projetovolt.service.produto.dto.ProdutoCriacaoDTO;
 import sptech.school.projetovolt.service.produtochamado.ProdutoChamadoService;
 import sptech.school.projetovolt.service.produtochamado.dto.ProdutoChamadoConsultaDto;
@@ -208,6 +210,16 @@ public class ProdutoChamadoController {
         }
 
         return ResponseEntity.ok(ProdutoChamadoMapper.toDto(produtoChamados));
+    }
+
+    @GetMapping("/capturar-dados")
+    public ResponseEntity<List<ChamadosGraficosDto>> listarChamadosCanceladosConcluidos(){
+        List<VwChamadosGraficos> chamadosRecentes = produtoChamadoService.capturarChamadosCanceladosConcluidos();
+
+        if(chamadosRecentes.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(ProdutoChamadoMapper.toDtos(chamadosRecentes));
     }
 }
 

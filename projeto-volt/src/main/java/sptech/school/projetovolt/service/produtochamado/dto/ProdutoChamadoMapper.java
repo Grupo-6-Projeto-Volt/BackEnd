@@ -1,7 +1,10 @@
 package sptech.school.projetovolt.service.produtochamado.dto;
 
 import sptech.school.projetovolt.entity.produtochamado.ProdutoChamado;
+import sptech.school.projetovolt.entity.vwchamadosgraficos.VwChamadosGraficos;
+import sptech.school.projetovolt.service.chamadosgraficos.dto.ChamadosGraficosDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProdutoChamadoMapper {
@@ -41,6 +44,20 @@ public class ProdutoChamadoMapper {
         return entities
                 .stream()
                 .map(ProdutoChamadoMapper::toDto).toList();
+    }
+    public static List<ChamadosGraficosDto> toDtos(List<VwChamadosGraficos> entities){
+        if(entities == null) return null;
+        List<ChamadosGraficosDto> dtos = new ArrayList<>();
+        for (VwChamadosGraficos entity : entities) {
+        ChamadosGraficosDto dto = new ChamadosGraficosDto();
+        dto.setQuantidade(entity.getQtd());
+        dto.setDia(entity.getDia());
+        dto.setMes(entity.getMes());
+        dto.setStatus(entity.getStatus());
+        dtos.add(dto);
+        }
+
+        return dtos;
     }
 
 }
