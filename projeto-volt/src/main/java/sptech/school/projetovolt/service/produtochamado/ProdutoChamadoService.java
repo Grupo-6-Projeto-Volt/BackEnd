@@ -24,7 +24,6 @@ public class ProdutoChamadoService {
     private final ProdutoChamadoRepository produtoChamadoRepository;
     private final UsuarioService usuarioService;
     private final ProdutoService produtoService;
-    private final VwChamadosGraficosRepository vwChamadosGraficosRepository;
     public ProdutoChamado salvarProdutoChamado(Integer idUsuario, Integer idProduto) {
 
         ProdutoChamado produtoChamado = new ProdutoChamado();
@@ -85,8 +84,7 @@ public class ProdutoChamadoService {
     public List<ProdutoChamado> listarChamadosOrdenadosPorDataAberturaDesc() {
         return produtoChamadoRepository.findByOrderByDataHoraAberturaDesc();
     }
-
-    public List<VwChamadosGraficos> capturarChamadosCanceladosConcluidos(){
-        return vwChamadosGraficosRepository.chamadosGraficoColuna();
+    public Double obterFaturamento(){
+        return produtoChamadoRepository.faturamento();
     }
 }

@@ -1,6 +1,7 @@
 package sptech.school.projetovolt.entity.produto.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.service.produto.dto.ProdutoConsultaDTO;
 

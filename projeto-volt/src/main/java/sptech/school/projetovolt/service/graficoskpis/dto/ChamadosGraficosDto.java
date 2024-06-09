@@ -1,4 +1,4 @@
-package sptech.school.projetovolt.service.chamadosgraficos.dto;
+package sptech.school.projetovolt.service.graficoskpis.dto;
 
 import lombok.Getter;
 import lombok.Setter;
