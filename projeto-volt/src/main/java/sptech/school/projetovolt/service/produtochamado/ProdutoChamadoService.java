@@ -8,6 +8,7 @@ import sptech.school.projetovolt.entity.produtochamado.ProdutoChamado;
 import sptech.school.projetovolt.entity.produtochamado.repository.ProdutoChamadoRepository;
 import sptech.school.projetovolt.service.produto.ProdutoService;
 import sptech.school.projetovolt.service.usuario.UsuarioService;
+import sptech.school.projetovolt.utils.FilaObj;
 import sptech.school.projetovolt.utils.StatusChamado;
 
 import java.time.LocalDateTime;
@@ -103,4 +104,16 @@ public class ProdutoChamadoService {
     public List<ProdutoChamado> listarLeadsOrdenadosPorNomeDesc() {
         return produtoChamadoRepository.buscarLeadsPorNomeDecrescente();
     }
+
+    public FilaObj<ProdutoChamado> listarEmAndamento() {
+        List<ProdutoChamado> produtoChamados = produtoChamadoRepository.findAll();
+
+        FilaObj<ProdutoChamado> filaObj = new FilaObj<>(produtoChamados.size());
+        for (ProdutoChamado produtoChamadoDaVez : produtoChamados) {
+                filaObj.insert(produtoChamadoDaVez);
+        }
+
+        return filaObj;
+    }
+  
 }

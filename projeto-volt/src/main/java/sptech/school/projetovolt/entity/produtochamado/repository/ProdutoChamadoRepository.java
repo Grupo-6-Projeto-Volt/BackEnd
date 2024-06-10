@@ -6,9 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import sptech.school.projetovolt.entity.produtochamado.ProdutoChamado;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.List;    
 
 public interface ProdutoChamadoRepository extends JpaRepository<ProdutoChamado, Integer> {
+
+    List<ProdutoChamado> findTop5ByOrderByDataHoraAberturaDesc();
+    List<ProdutoChamado> findByStatusChamado(Short status);
+  
     List<ProdutoChamado> findByStatusChamadoOrderByDataHoraAberturaAsc(Integer status);
     List<ProdutoChamado> findByStatusChamadoOrderByDataHoraAberturaDesc(Integer status);
 
