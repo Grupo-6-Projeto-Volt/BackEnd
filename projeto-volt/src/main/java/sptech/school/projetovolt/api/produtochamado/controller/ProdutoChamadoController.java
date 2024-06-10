@@ -19,6 +19,7 @@ import sptech.school.projetovolt.service.produtochamado.dto.ProdutoChamadoCriaca
 import sptech.school.projetovolt.service.produtochamado.dto.ProdutoChamadoMapper;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -222,12 +223,25 @@ public class ProdutoChamadoController {
         return ResponseEntity.ok(ProdutoChamadoMapper.toDto(produtoChamados));
     }
 
-    @GetMapping("/filtro/buscar-leads-por-nome-asc")
-    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarLeadsOrdenadosPorNomeAsc(
-            @RequestParam Integer status
+    @GetMapping("/buscar-novos-chamados")
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> buscarNovosChamados(
+            @RequestParam Integer status,
+            @RequestParam LocalDateTime dataHora
     ) {
         List<ProdutoChamado> produtoChamados = produtoChamadoService
-                .listarLeadsOrdenadosPorNomeAsc(status);
+                .buscarNovosChamados(status, dataHora);
+
+        if (produtoChamados.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(ProdutoChamadoMapper.toDto(produtoChamados));
+    }
+
+    @GetMapping("/filtro/buscar-leads-por-nome-asc")
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarLeadsOrdenadosPorNomeAsc() {
+        List<ProdutoChamado> produtoChamados = produtoChamadoService
+                .listarLeadsOrdenadosPorNomeAsc();
 
         if (produtoChamados.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -237,11 +251,9 @@ public class ProdutoChamadoController {
     }
 
     @GetMapping("/filtro/buscar-leads-por-nome-desc")
-    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarLeadsOrdenadosPorNomeDesc(
-            @RequestParam Integer status
-    ) {
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarLeadsOrdenadosPorNomeDesc() {
         List<ProdutoChamado> produtoChamados = produtoChamadoService
-                .listarLeadsOrdenadosPorNomeDesc(status);
+                .listarLeadsOrdenadosPorNomeDesc();
 
         if (produtoChamados.isEmpty()) {
             return ResponseEntity.noContent().build();

@@ -92,11 +92,15 @@ public class ProdutoChamadoService {
         return produtoChamadoRepository.findByStatusChamadoOrderByDataHoraAberturaDesc(status);
     }
 
-    public List<ProdutoChamado> listarLeadsOrdenadosPorNomeAsc(Integer status) {
-        return produtoChamadoRepository.findByStatusChamadoNotOrderByUsuarioNomeAsc(status);
+    public List<ProdutoChamado> buscarNovosChamados(Integer status, LocalDateTime dataHora) {
+        return produtoChamadoRepository.findByStatusChamadoAndDataHoraAberturaAfterOrderByDataHoraAberturaDesc(status, dataHora);
     }
 
-    public List<ProdutoChamado> listarLeadsOrdenadosPorNomeDesc(Integer status) {
-        return produtoChamadoRepository.findByStatusChamadoNotOrderByUsuarioNomeDesc(status);
+    public List<ProdutoChamado> listarLeadsOrdenadosPorNomeAsc() {
+        return produtoChamadoRepository.buscarLeadsPorNomeCrescente();
+    }
+
+    public List<ProdutoChamado> listarLeadsOrdenadosPorNomeDesc() {
+        return produtoChamadoRepository.buscarLeadsPorNomeDecrescente();
     }
 }
