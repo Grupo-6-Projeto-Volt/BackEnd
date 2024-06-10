@@ -21,6 +21,7 @@ import sptech.school.projetovolt.utils.FilaObj;
 import sptech.school.projetovolt.utils.StatusChamado;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -191,6 +192,79 @@ public class ProdutoChamadoController {
 
         return ResponseEntity.ok(dto);
     }
+  
+    @PatchMapping("/restaurar/{id}")
+    public ResponseEntity<ProdutoChamadoConsultaDto> restaurarProdutoChamado(@PathVariable Integer id) {
+        return ResponseEntity
+                .ok(ProdutoChamadoMapper
+                        .toDto(produtoChamadoService.restaurarProdutoChamado(id)));
+    }
+
+    @GetMapping("/filtro/buscar-por-data-abertura-asc")
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarChamadosOrdenadosPorDataAberturaAsc(
+            @RequestParam Integer status
+    ) {
+        List<ProdutoChamado> produtoChamados = produtoChamadoService
+                .listarChamadosAbertosOrdenadosPorDataAberturaAsc(status);
+
+        if (produtoChamados.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(ProdutoChamadoMapper.toDto(produtoChamados));
+    }
+
+    @GetMapping("/filtro/buscar-por-data-abertura-desc")
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarChamadosOrdenadosPorDataAberturaDesc(
+            @RequestParam Integer status
+    ) {
+        List<ProdutoChamado> produtoChamados = produtoChamadoService
+                .listarChamadosAbertosOrdenadosPorDataAberturaDesc(status);
+
+        if (produtoChamados.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(ProdutoChamadoMapper.toDto(produtoChamados));
+    }
+
+    @GetMapping("/buscar-novos-chamados")
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> buscarNovosChamados(
+            @RequestParam Integer status,
+            @RequestParam LocalDateTime dataHora
+    ) {
+        List<ProdutoChamado> produtoChamados = produtoChamadoService
+                .buscarNovosChamados(status, dataHora);
+
+        if (produtoChamados.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(ProdutoChamadoMapper.toDto(produtoChamados));
+    }
+
+    @GetMapping("/filtro/buscar-leads-por-nome-asc")
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarLeadsOrdenadosPorNomeAsc() {
+        List<ProdutoChamado> produtoChamados = produtoChamadoService
+                .listarLeadsOrdenadosPorNomeAsc();
+
+        if (produtoChamados.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(ProdutoChamadoMapper.toDto(produtoChamados));
+    }
+
+    @GetMapping("/filtro/buscar-leads-por-nome-desc")
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarLeadsOrdenadosPorNomeDesc() {
+        List<ProdutoChamado> produtoChamados = produtoChamadoService
+                .listarLeadsOrdenadosPorNomeDesc();
+
+        if (produtoChamados.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(ProdutoChamadoMapper.toDto(produtoChamados));
 
     @GetMapping("/listar-em-andamento")
     public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarEmAndamento() {
