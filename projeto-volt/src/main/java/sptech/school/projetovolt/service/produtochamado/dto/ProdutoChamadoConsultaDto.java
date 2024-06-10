@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 @Schema(name = "Produto Chamado Consulta DTO", description = "DTO para consulta de um chamado de produto")
 public class ProdutoChamadoConsultaDto {
 
+    @Schema(description = "Id do chamado")
+    private Integer id;
+
     @Schema(description = "Status do chamado")
     private Short statusChamado;
 

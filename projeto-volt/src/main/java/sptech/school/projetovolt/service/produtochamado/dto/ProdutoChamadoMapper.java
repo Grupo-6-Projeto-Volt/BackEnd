@@ -10,6 +10,7 @@ public class ProdutoChamadoMapper {
         if (produtoChamado == null) return null;
 
         ProdutoChamadoConsultaDto dto = new ProdutoChamadoConsultaDto();
+        dto.setId(produtoChamado.getId());
         dto.setStatusChamado(produtoChamado.getStatusChamado());
         dto.setDataHoraAbertura(produtoChamado.getDataHoraAbertura());
         dto.setDataHoraFechamento(produtoChamado.getDataHoraFechamento());;

@@ -8,6 +8,7 @@ import sptech.school.projetovolt.entity.produtochamado.ProdutoChamado;
 import sptech.school.projetovolt.entity.produtochamado.repository.ProdutoChamadoRepository;
 import sptech.school.projetovolt.service.produto.ProdutoService;
 import sptech.school.projetovolt.service.usuario.UsuarioService;
+import sptech.school.projetovolt.utils.FilaObj;
 import sptech.school.projetovolt.utils.StatusChamado;
 
 import java.time.LocalDateTime;
@@ -74,4 +75,45 @@ public class ProdutoChamadoService {
 
         return produtoChamadoRepository.save(produtoChamado);
     }
+
+    public ProdutoChamado restaurarProdutoChamado(Integer id) {
+        ProdutoChamado produtoChamado = buscarProdutoChamadoPorId(id);
+
+        produtoChamado.setStatusChamado(StatusChamado.EM_ANDAMENTO.getId());
+        produtoChamado.setDataHoraFechamento(null);
+
+        return produtoChamadoRepository.save(produtoChamado);
+    }
+
+    public List<ProdutoChamado> listarChamadosAbertosOrdenadosPorDataAberturaAsc(Integer status) {
+        return produtoChamadoRepository.findByStatusChamadoOrderByDataHoraAberturaAsc(status);
+    }
+
+    public List<ProdutoChamado> listarChamadosAbertosOrdenadosPorDataAberturaDesc(Integer status) {
+        return produtoChamadoRepository.findByStatusChamadoOrderByDataHoraAberturaDesc(status);
+    }
+
+    public List<ProdutoChamado> buscarNovosChamados(Integer status, LocalDateTime dataHora) {
+        return produtoChamadoRepository.findByStatusChamadoAndDataHoraAberturaAfterOrderByDataHoraAberturaDesc(status, dataHora);
+    }
+
+    public List<ProdutoChamado> listarLeadsOrdenadosPorNomeAsc() {
+        return produtoChamadoRepository.buscarLeadsPorNomeCrescente();
+    }
+
+    public List<ProdutoChamado> listarLeadsOrdenadosPorNomeDesc() {
+        return produtoChamadoRepository.buscarLeadsPorNomeDecrescente();
+    }
+
+    public FilaObj<ProdutoChamado> listarEmAndamento() {
+        List<ProdutoChamado> produtoChamados = produtoChamadoRepository.findAll();
+
+        FilaObj<ProdutoChamado> filaObj = new FilaObj<>(produtoChamados.size());
+        for (ProdutoChamado produtoChamadoDaVez : produtoChamados) {
+                filaObj.insert(produtoChamadoDaVez);
+        }
+
+        return filaObj;
+    }
+  
 }
