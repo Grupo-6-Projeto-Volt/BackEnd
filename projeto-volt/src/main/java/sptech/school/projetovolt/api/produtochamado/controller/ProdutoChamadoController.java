@@ -265,7 +265,7 @@ public class ProdutoChamadoController {
         }
 
         return ResponseEntity.ok(ProdutoChamadoMapper.toDto(produtoChamados));
-
+    }
     @GetMapping("/listar-em-andamento")
     public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarEmAndamento() {
         FilaObj<ProdutoChamado> filaObj = produtoChamadoService.listarEmAndamento();
