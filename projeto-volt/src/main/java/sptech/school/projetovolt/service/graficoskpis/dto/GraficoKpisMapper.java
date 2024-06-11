@@ -30,7 +30,7 @@ public class GraficoKpisMapper {
         List<CategoriasGraficosDto> dtos = new ArrayList<>();
         for (VwCategoriasAcessos entity : entities) {
             CategoriasGraficosDto dto = new CategoriasGraficosDto();
-            dto.setAcessos(entity.getAcesssos());
+            dto.setAcessos(entity.getAcessos());
             dto.setCategoria(entity.getCategoria());
             dtos.add(dto);
         }
@@ -42,6 +42,7 @@ public class GraficoKpisMapper {
         List<ProdutosAcessadosDto> dtos = new ArrayList<>();
         for (VwProdutosMaisAcessados entity : entities) {
             ProdutosAcessadosDto dto = new ProdutosAcessadosDto();
+            dto.setId(entity.getId());
             dto.setNome(entity.getNome());
             dto.setAcessos(entity.getAcessos());
             dto.setQuantidade(entity.getQtd());

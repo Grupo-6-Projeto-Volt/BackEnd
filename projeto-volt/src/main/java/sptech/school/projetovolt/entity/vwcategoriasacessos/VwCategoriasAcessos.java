@@ -13,7 +13,7 @@ public class VwCategoriasAcessos {
     @Id
     private Integer id;
     @Column
-    private int acesssos;
+    private int acessos;
     @Column
     private String categoria;
 }
