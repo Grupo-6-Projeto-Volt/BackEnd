@@ -85,7 +85,7 @@ public class ClickProdutoController {
         }
         return ResponseEntity.ok(GraficoKpisMapper.toProdutosAcessadosDto(produtosMaisAcessados));
     }
-    @GetMapping("capturar-dados/taxa-de-retorno")
+    @GetMapping("/capturar-dados/taxa-de-retorno")
     public ResponseEntity<TaxaRetornoDto> capturarTaxaDeRetorno(){
         List<VwTaxaRetorno> taxaRetorno = graficoKpisService.capturarTaxaDeRetorno();
         List<Usuario> qtdUsuario = usuarioService.listarUsuarios();

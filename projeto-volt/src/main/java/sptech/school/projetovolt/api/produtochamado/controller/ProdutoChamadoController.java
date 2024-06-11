@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.entity.produtochamado.ProdutoChamado;
@@ -37,7 +36,6 @@ public class ProdutoChamadoController {
 
     private final ProdutoChamadoService produtoChamadoService;
     private final GraficoKpisService graficoKpisService;
-
     @PostMapping
     @Operation(
             summary = "Cria um chamado para compra de um produto",
@@ -261,35 +259,71 @@ public class ProdutoChamadoController {
     }
 
     @GetMapping("/capturar-dados/chamados")
-    public ResponseEntity<List<ChamadosGraficosDto>> listarChamadosCanceladosConcluidos(){
+    public ResponseEntity<List<ChamadosGraficosDto>> listarChamadosCanceladosConcluidos() {
         List<VwChamadosGraficos> chamadosRecentes = graficoKpisService.capturarChamadosCanceladosConcluidos();
 
-        if(chamadosRecentes.isEmpty()){
+        if (chamadosRecentes.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(GraficoKpisMapper.toChamadosGraficosDto(chamadosRecentes));
     }
 
     @GetMapping("/capturar-dados/acessos-ultimos-dias")
-    public ResponseEntity<UltimosAcessosDto> listarAcessosNosUltimosSeteDias(){
+    public ResponseEntity<UltimosAcessosDto> listarAcessosNosUltimosSeteDias() {
         List<VwUltimosAcessosSeteDias> ultimosAcessosSeteDias = graficoKpisService.capturarAcessosUltimosSeteDias();
 
-        if(ultimosAcessosSeteDias.isEmpty()){
+        if (ultimosAcessosSeteDias.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(GraficoKpisMapper.toUltimosAcessosDto(ultimosAcessosSeteDias));
     }
 
     @GetMapping("/capturar-dados/faturamento")
-    public ResponseEntity<FaturamentoDto> obterFaturamento(){
+    public ResponseEntity<FaturamentoDto> obterFaturamento() {
         Double faturamento = produtoChamadoService.obterFaturamento();
-        if(faturamento == null){
+        if (faturamento == null) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(GraficoKpisMapper.toFaturamentoDto(faturamento));
     }
 
+    @GetMapping("/capturar-dados/matriz")
+    public void obterMatriz() {
+        List<VwCategoriasAcessos> categoriasAcessos = graficoKpisService.capturarCategoriasMaisAcessadas();
+        List<VwProdutosMaisAcessados> produtosMaisAcessados = graficoKpisService.capturarProdutosMaisAcessados();
 
+        if (categoriasAcessos.isEmpty() || produtosMaisAcessados.isEmpty()) {
+            System.out.println("As listas estão vazias!");
+        }
+
+        int[][] matrizAcessos = new int[produtosMaisAcessados.size()][categoriasAcessos.size()];
+        VwProdutosMaisAcessados[] produtosComMaisAcessos = new VwProdutosMaisAcessados[categoriasAcessos.size()];
+
+        for (int i = 0; i < produtosComMaisAcessos.length; i++) {
+            VwProdutosMaisAcessados produtoTop = null;
+            if (produtoTop == null || produtoTop.getAcessos() < produtosMaisAcessados.get(i).getAcessos()) {
+                produtoTop = produtosMaisAcessados.get(i);
+            }
+            produtosComMaisAcessos[i] = produtoTop;
+        }
+        for (int i = 0; i < matrizAcessos.length; i++) {
+            for (int j = 0; j < matrizAcessos[0].length; j++) {
+                matrizAcessos[i][j] = produtosMaisAcessados.get(i).getAcessos() + produtosComMaisAcessos[j].getAcessos();
+            }
+        }
+        System.out.printf("%-20s", "Categorias/Produtos");
+        for (VwProdutosMaisAcessados produtos : produtosComMaisAcessos) {
+            System.out.printf("%20s", produtos.getNome());
+        }
+        System.out.println();
+        for (int j = 0; j < matrizAcessos[0].length; j++) {
+            System.out.printf("%-20s", categoriasAcessos.get(j).getCategoria());
+            for (int i = 0; i < matrizAcessos[0].length; i++) {
+                System.out.printf("%15d", matrizAcessos[j][i]);
+            }
+            System.out.println();
+        }
+    }
     @GetMapping("/filtro/buscar-leads-por-nome-desc")
     public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarLeadsOrdenadosPorNomeDesc() {
         List<ProdutoChamado> produtoChamados = produtoChamadoService
@@ -325,5 +359,4 @@ public class ProdutoChamadoController {
         return ResponseEntity.ok(dtos);
     }
 }
-
 

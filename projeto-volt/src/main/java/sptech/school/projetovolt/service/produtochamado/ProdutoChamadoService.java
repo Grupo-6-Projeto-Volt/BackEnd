@@ -120,4 +120,7 @@ public class ProdutoChamadoService {
     public Double obterFaturamento(){
         return produtoChamadoRepository.faturamento();
     }
+    public List<ProdutoChamado> obterProdutoComChamadoConcluidoCancelado(){
+        return produtoChamadoRepository.listarProdutosComChamadosCanceladosConcluidos();
+    }
 }

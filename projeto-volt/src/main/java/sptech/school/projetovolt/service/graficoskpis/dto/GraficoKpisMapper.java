@@ -42,6 +42,7 @@ public class GraficoKpisMapper {
         List<ProdutosAcessadosDto> dtos = new ArrayList<>();
         for (VwProdutosMaisAcessados entity : entities) {
             ProdutosAcessadosDto dto = new ProdutosAcessadosDto();
+            dto.setId(entity.getId());
             dto.setNome(entity.getNome());
             dto.setAcessos(entity.getAcessos());
             dto.setQuantidade(entity.getQtd());
