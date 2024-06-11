@@ -15,9 +15,6 @@ public interface ProdutoChamadoRepository extends JpaRepository<ProdutoChamado, 
     @Query(value = "SELECT SUM(tb_produto.preco) FROM tb_produto_chamado JOIN tb_produto" +
             " ON fk_produto = tb_produto.id WHERE status_chamado = 2", nativeQuery = true)
     Double faturamento();
-
-    List<ProdutoChamado> findTop5ByOrderByDataHoraAberturaDesc();
-    List<ProdutoChamado> findByStatusChamado(Short status);
   
     List<ProdutoChamado> findByStatusChamadoOrderByDataHoraAberturaAsc(Integer status);
     List<ProdutoChamado> findByStatusChamadoOrderByDataHoraAberturaDesc(Integer status);
