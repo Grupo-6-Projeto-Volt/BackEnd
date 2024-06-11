@@ -6,13 +6,17 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.persistence.Entity;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.entity.produtochamado.ProdutoChamado;
-import sptech.school.projetovolt.service.produto.dto.ProdutoCriacaoDTO;
+import sptech.school.projetovolt.entity.vwcategoriasacessos.VwCategoriasAcessos;
+import sptech.school.projetovolt.entity.vwchamadosgraficos.VwChamadosGraficos;
+import sptech.school.projetovolt.entity.vwprodutosmaisacessados.VwProdutosMaisAcessados;
+import sptech.school.projetovolt.entity.vwultimosacessossetedias.VwUltimosAcessosSeteDias;
+import sptech.school.projetovolt.service.graficoskpis.GraficoKpisService;
+import sptech.school.projetovolt.service.graficoskpis.dto.*;
 import sptech.school.projetovolt.service.produtochamado.ProdutoChamadoService;
 import sptech.school.projetovolt.service.produtochamado.dto.ProdutoChamadoConsultaDto;
 import sptech.school.projetovolt.service.produtochamado.dto.ProdutoChamadoCriacaoDto;
@@ -32,6 +36,7 @@ import java.util.List;
 public class ProdutoChamadoController {
 
     private final ProdutoChamadoService produtoChamadoService;
+    private final GraficoKpisService graficoKpisService;
 
     @PostMapping
     @Operation(
@@ -254,6 +259,36 @@ public class ProdutoChamadoController {
 
         return ResponseEntity.ok(ProdutoChamadoMapper.toDto(produtoChamados));
     }
+
+    @GetMapping("/capturar-dados/chamados")
+    public ResponseEntity<List<ChamadosGraficosDto>> listarChamadosCanceladosConcluidos(){
+        List<VwChamadosGraficos> chamadosRecentes = graficoKpisService.capturarChamadosCanceladosConcluidos();
+
+        if(chamadosRecentes.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(GraficoKpisMapper.toChamadosGraficosDto(chamadosRecentes));
+    }
+
+    @GetMapping("/capturar-dados/acessos-ultimos-dias")
+    public ResponseEntity<UltimosAcessosDto> listarAcessosNosUltimosSeteDias(){
+        List<VwUltimosAcessosSeteDias> ultimosAcessosSeteDias = graficoKpisService.capturarAcessosUltimosSeteDias();
+
+        if(ultimosAcessosSeteDias.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(GraficoKpisMapper.toUltimosAcessosDto(ultimosAcessosSeteDias));
+    }
+
+    @GetMapping("/capturar-dados/faturamento")
+    public ResponseEntity<FaturamentoDto> obterFaturamento(){
+        Double faturamento = produtoChamadoService.obterFaturamento();
+        if(faturamento == null){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(GraficoKpisMapper.toFaturamentoDto(faturamento));
+    }
+
 
     @GetMapping("/filtro/buscar-leads-por-nome-desc")
     public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarLeadsOrdenadosPorNomeDesc() {

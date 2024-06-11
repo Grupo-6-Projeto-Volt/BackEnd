@@ -11,9 +11,9 @@ public class VwChamadosGraficos {
     @Column
     private int qtd;
     @Column
-    private Integer dia;
+    private int dia;
     @Column
-    private Integer mes;
+    private int mes;
     @Id
     private Integer id;
     @Column
