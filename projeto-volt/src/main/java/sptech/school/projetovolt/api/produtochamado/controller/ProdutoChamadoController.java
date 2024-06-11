@@ -20,8 +20,12 @@ import sptech.school.projetovolt.service.produtochamado.ProdutoChamadoService;
 import sptech.school.projetovolt.service.produtochamado.dto.ProdutoChamadoConsultaDto;
 import sptech.school.projetovolt.service.produtochamado.dto.ProdutoChamadoCriacaoDto;
 import sptech.school.projetovolt.service.produtochamado.dto.ProdutoChamadoMapper;
+import sptech.school.projetovolt.utils.FilaObj;
+import sptech.school.projetovolt.utils.StatusChamado;
 
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -191,10 +195,20 @@ public class ProdutoChamadoController {
 
         return ResponseEntity.ok(dto);
     }
+  
+    @PatchMapping("/restaurar/{id}")
+    public ResponseEntity<ProdutoChamadoConsultaDto> restaurarProdutoChamado(@PathVariable Integer id) {
+        return ResponseEntity
+                .ok(ProdutoChamadoMapper
+                        .toDto(produtoChamadoService.restaurarProdutoChamado(id)));
+    }
 
     @GetMapping("/filtro/buscar-por-data-abertura-asc")
-    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarChamadosOrdenadosPorDataAberturaAsc() {
-        List<ProdutoChamado> produtoChamados = produtoChamadoService.listarChamadosOrdenadosPorDataAberturaAsc();
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarChamadosOrdenadosPorDataAberturaAsc(
+            @RequestParam Integer status
+    ) {
+        List<ProdutoChamado> produtoChamados = produtoChamadoService
+                .listarChamadosAbertosOrdenadosPorDataAberturaAsc(status);
 
         if (produtoChamados.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -204,8 +218,38 @@ public class ProdutoChamadoController {
     }
 
     @GetMapping("/filtro/buscar-por-data-abertura-desc")
-    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarChamadosOrdenadosPorDataAberturaDesc() {
-        List<ProdutoChamado> produtoChamados = produtoChamadoService.listarChamadosOrdenadosPorDataAberturaDesc();
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarChamadosOrdenadosPorDataAberturaDesc(
+            @RequestParam Integer status
+    ) {
+        List<ProdutoChamado> produtoChamados = produtoChamadoService
+                .listarChamadosAbertosOrdenadosPorDataAberturaDesc(status);
+
+        if (produtoChamados.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(ProdutoChamadoMapper.toDto(produtoChamados));
+    }
+
+    @GetMapping("/buscar-novos-chamados")
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> buscarNovosChamados(
+            @RequestParam Integer status,
+            @RequestParam LocalDateTime dataHora
+    ) {
+        List<ProdutoChamado> produtoChamados = produtoChamadoService
+                .buscarNovosChamados(status, dataHora);
+
+        if (produtoChamados.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(ProdutoChamadoMapper.toDto(produtoChamados));
+    }
+
+    @GetMapping("/filtro/buscar-leads-por-nome-asc")
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarLeadsOrdenadosPorNomeAsc() {
+        List<ProdutoChamado> produtoChamados = produtoChamadoService
+                .listarLeadsOrdenadosPorNomeAsc();
 
         if (produtoChamados.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -248,22 +292,22 @@ public class ProdutoChamadoController {
         List<VwCategoriasAcessos> categoriasAcessos = graficoKpisService.capturarCategoriasMaisAcessadas();
         List<VwProdutosMaisAcessados> produtosMaisAcessados = graficoKpisService.capturarProdutosMaisAcessados();
 
-        if(categoriasAcessos.isEmpty() || produtosMaisAcessados.isEmpty()){
+        if (categoriasAcessos.isEmpty() || produtosMaisAcessados.isEmpty()) {
             System.out.println("As listas estão vazias!");
         }
 
         int[][] matrizAcessos = new int[produtosMaisAcessados.size()][categoriasAcessos.size()];
         VwProdutosMaisAcessados[] produtosComMaisAcessos = new VwProdutosMaisAcessados[categoriasAcessos.size()];
 
-        for (int i = 0; i < produtosComMaisAcessos.length; i++){
+        for (int i = 0; i < produtosComMaisAcessos.length; i++) {
             VwProdutosMaisAcessados produtoTop = null;
-            if(produtoTop == null || produtoTop.getAcessos() < produtosMaisAcessados.get(i).getAcessos()){
+            if (produtoTop == null || produtoTop.getAcessos() < produtosMaisAcessados.get(i).getAcessos()) {
                 produtoTop = produtosMaisAcessados.get(i);
             }
             produtosComMaisAcessos[i] = produtoTop;
         }
-        for(int i = 0; i < matrizAcessos.length; i++){
-            for (int j = 0; j <matrizAcessos[0].length ; j++){
+        for (int i = 0; i < matrizAcessos.length; i++) {
+            for (int j = 0; j < matrizAcessos[0].length; j++) {
                 matrizAcessos[i][j] = produtosMaisAcessados.get(i).getAcessos() + produtosComMaisAcessos[j].getAcessos();
             }
         }
@@ -279,6 +323,40 @@ public class ProdutoChamadoController {
             }
             System.out.println();
         }
+    }
+    @GetMapping("/filtro/buscar-leads-por-nome-desc")
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarLeadsOrdenadosPorNomeDesc() {
+        List<ProdutoChamado> produtoChamados = produtoChamadoService
+                .listarLeadsOrdenadosPorNomeDesc();
+
+        if (produtoChamados.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(ProdutoChamadoMapper.toDto(produtoChamados));
+    }
+    @GetMapping("/listar-em-andamento")
+    public ResponseEntity<List<ProdutoChamadoConsultaDto>> listarEmAndamento() {
+        FilaObj<ProdutoChamado> filaObj = produtoChamadoService.listarEmAndamento();
+
+        if (filaObj.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        List<ProdutoChamado> produtoChamados = new ArrayList<>();
+
+        while (!filaObj.isEmpty()) {
+            ProdutoChamado produtoChamadoDaVez = filaObj.peek();
+            if (produtoChamadoDaVez.getStatusChamado().equals(StatusChamado.EM_ANDAMENTO.getId())) {
+                produtoChamados.add(filaObj.poll());
+            } else {
+                filaObj.poll();
+            }
+        }
+
+        List<ProdutoChamadoConsultaDto> dtos = ProdutoChamadoMapper.toDto(produtoChamados);
+
+        return ResponseEntity.ok(dtos);
     }
 }
 
