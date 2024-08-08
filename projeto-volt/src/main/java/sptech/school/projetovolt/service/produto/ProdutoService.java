@@ -21,7 +21,7 @@ public class ProdutoService {
 
     public List<Produto> listarProdutos (String textoBusca) {
         if (textoBusca != null) {
-            return produtoRepository.findAllByNome(textoBusca)
+            return produtoRepository.findAllByNomeContainsIgnoreCase(textoBusca)
                     .stream()
                     .filter(produtoModel -> produtoModel
                             .getNome()

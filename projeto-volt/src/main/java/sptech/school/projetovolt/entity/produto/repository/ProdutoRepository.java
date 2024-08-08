@@ -16,6 +16,8 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
     ProdutoConsultaDTO findByNome(String nome);
     List<Produto> findAllByNome(String textoBusca);
 
+    List<Produto> findAllByNomeContainsIgnoreCase(String textoBusca);
+
     List<Produto> findByOrderByPrecoDesc();
 
     List<Produto> findByOrderByPreco();
