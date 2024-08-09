@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import sptech.school.projetovolt.entity.exception.NotFoundException;
 import sptech.school.projetovolt.entity.login.Login;
@@ -106,28 +105,6 @@ class UsuarioServiceTest {
 
             assertThrows(NotFoundException.class, () -> usuarioService.buscarUsuarioPorId(1));
         }
-    }
-
-    @Nested
-    @DisplayName("Método atualizarUsuario")
-    class AtualizarUsuario {
-
-        // FIXME: Caso de teste com falha
-//        @Test
-//        @DisplayName("Deve atualizar usuário com sucesso")
-//        void deveAtualizarUsuarioComSucesso() {
-//            when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
-//            when(loginService.alterarEmail(String.valueOf(anyInt()), anyString())).thenReturn(login);
-//            when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuario);
-//
-//            Usuario usuarioAtualizado = usuarioService.atualizarUsuario(1, usuario);
-//
-//            assertNotNull(usuarioAtualizado);
-//            assertEquals(usuario.getId(), usuarioAtualizado.getId());
-//            verify(usuarioRepository, times(1)).findById(1);
-//            verify(loginService, times(1)).alterarEmail(String.valueOf(anyInt()), anyString());
-//            verify(usuarioRepository, times(1)).save(any(Usuario.class));
-//        }
     }
 
     @Nested
