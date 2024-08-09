@@ -6,12 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import sptech.school.projetovolt.api.configuration.security.jwt.GerenciadorTokenJwt;
 import sptech.school.projetovolt.entity.exception.ConflictException;
 import sptech.school.projetovolt.entity.exception.NotFoundException;
@@ -20,7 +18,6 @@ import sptech.school.projetovolt.entity.login.repository.LoginRepository;
 import sptech.school.projetovolt.entity.usuario.Usuario;
 import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioLoginDto;
 import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioTokenDto;
-import sptech.school.projetovolt.service.login.dto.LoginMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -79,66 +76,11 @@ class LoginServiceTest {
             verify(repository, times(1)).findByEmail(usuarioLoginDto.getEmail());
             verify(gerenciadorTokenJwt, times(1)).generateToken(authentication);
         }
-
-        // FIXME: Cenário de teste com erro
-//        @Test
-//        @DisplayName("Autenticar com email não encontrado")
-//        void autenticarComEmailNaoEncontrado() {
-//            // GIVEN
-//            UsuarioLoginDto usuarioLoginDto = new UsuarioLoginDto();
-//            usuarioLoginDto.setEmail("email@test.com");
-//            usuarioLoginDto.setSenha("senha");
-//
-//            UsernamePasswordAuthenticationToken credentials =
-//                    new UsernamePasswordAuthenticationToken(usuarioLoginDto.getEmail(), usuarioLoginDto.getSenha());
-//
-//            // WHEN
-//            when(authenticationManager.authenticate(credentials)).thenThrow(new NotFoundException("Login " + usuarioLoginDto.getEmail()));
-//            when(repository.findByEmail(usuarioLoginDto.getEmail())).thenReturn(Optional.empty());
-//
-//            // THEN
-//            NotFoundException exception = assertThrows(NotFoundException.class, () -> service.autenticar(usuarioLoginDto));
-//
-//            // ASSERT
-//            assertEquals("Erro 404: Login %s não encontrado!".formatted(usuarioLoginDto.getEmail()), exception.getMessage());
-//        }
     }
 
     @Nested
     @DisplayName("Método Criar Login")
     class CriarLogin {
-
-// FIXME: Cenário de teste com erro
-
-//        @Test
-//        @DisplayName("Criar login com dados válidos")
-//        void criarLoginDadosValidos() {
-//            // GIVEN
-//            Usuario usuario = new Usuario();
-//            usuario.setEmail("email@test.com");
-//            String senha = "senha";
-//
-//            Login login = new Login();
-//
-//            login.setEmail(usuario.getEmail());
-//            login.setSenha(senha);
-//            login.setUsuario(usuario);
-//
-//            // WHEN
-//            when(repository.existsByEmail(usuario.getEmail())).thenReturn(false);
-//            when(repository.existsBySenha(senha)).thenReturn(false);
-//            when(repository.save(login)).thenReturn(login);
-//
-//            // THEN
-//            Login resposta = service.criarLogin(usuario, senha);
-//
-//            // ASSERT
-//            assertNotNull(resposta);
-//            assertEquals(login.getEmail(), resposta.getEmail());
-//            verify(repository, times(1)).existsByEmail(usuario.getEmail());
-//            verify(repository, times(1)).existsBySenha(senha);
-//            verify(repository, times(1)).save(login);
-//        }
 
         @Test
         @DisplayName("Criar login com email já existente")
@@ -259,7 +201,7 @@ class LoginServiceTest {
         }
 
         @Test
-        @DisplayName("Alterar email com email já existente")
+        @DisplayName("Alterar e-mail já existente no banco")
         void alterarEmailExistente() {
             // GIVEN
             String id = "1";
