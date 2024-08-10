@@ -32,6 +32,10 @@ public class ProdutoService {
         return produtoRepository.findAll();
     }
 
+    public List<Produto> buscarOfertas(){
+        return produtoRepository.findByDescontoNotNull();
+    }
+
     public Produto buscarProdutoPorId (int id) {
         return produtoRepository
                 .findById(id)
