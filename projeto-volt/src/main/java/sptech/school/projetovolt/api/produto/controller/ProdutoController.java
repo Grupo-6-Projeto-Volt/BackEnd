@@ -183,7 +183,14 @@ public class ProdutoController {
          produtoService.deletarProdutoPorId(id);
          return ResponseEntity.noContent().build();
     }
-
+    @GetMapping("/ofertas")
+    public ResponseEntity<List<ProdutoConsultaDTO>> buscarOfertas(){
+        List<Produto> produtos = produtoService.buscarOfertas();
+        if(produtos.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(ProdutoMapper.toDto(produtos));
+    }
     @GetMapping("/filtro/filtrar-por-preco")
     public ResponseEntity<List<ProdutoConsultaDTO>> filtrarPorPreco(@RequestParam String direcao){
         List<Produto> produtosEncontrados = produtoService.filtrarPorPreco(direcao);
