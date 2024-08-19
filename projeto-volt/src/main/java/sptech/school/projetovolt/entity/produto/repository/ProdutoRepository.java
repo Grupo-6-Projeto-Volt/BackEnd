@@ -22,6 +22,8 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
 
     List<Produto> findByOrderByPreco();
 
+    @Query(value = "SELECT * FROM tb_produto p WHERE p.desconto is not null and p.desconto > 0", nativeQuery = true)
+    List<Produto> findByDescontoNotNull();
     //Optional<Produto> findById(int id);
 //    @Query(value = "SELECT p.nome, p.descricao, p.categoria" +
 //            ",p.preco, p.qtd_estoque qtdEstoque, p.estado_geral estadoGeral " +
