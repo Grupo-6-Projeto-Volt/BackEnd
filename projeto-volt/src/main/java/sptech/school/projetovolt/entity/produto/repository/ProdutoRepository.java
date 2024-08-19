@@ -16,6 +16,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
     ProdutoConsultaDTO findByNome(String nome);
     List<Produto> findAllByNome(String textoBusca);
 
+    @Query(value = "SELECT * FROM produto WHERE nome COLLATE utf8_general_ci LIKE %:textoBusca%", nativeQuery = true)
     List<Produto> findAllByNomeContainsIgnoreCase(String textoBusca);
 
     List<Produto> findByOrderByPrecoDesc();
