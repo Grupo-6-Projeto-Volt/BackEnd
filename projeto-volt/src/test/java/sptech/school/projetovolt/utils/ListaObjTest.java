@@ -94,18 +94,6 @@ class ListaObjTest {
         assertFalse(lista.set("E", "F"));
     }
 
-    // TODO: Corrigir o metodo cont
-//    @Test
-//    @DisplayName("Contar ocorrências de um elemento na lista")
-//    void count() {
-//        lista.add("A");
-//        lista.add("B");
-//        lista.add("A");
-//        assertEquals(2, lista.count("A"));
-//        assertEquals(1, lista.count("B"));
-//        assertEquals(0, lista.count("C"));
-//    }
-
     @Test
     @DisplayName("Adicionar elemento no início da lista")
     void addOnZero() {
