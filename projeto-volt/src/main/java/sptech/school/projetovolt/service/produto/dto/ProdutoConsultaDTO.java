@@ -3,6 +3,7 @@ package sptech.school.projetovolt.service.produto.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -29,6 +30,12 @@ public class ProdutoConsultaDTO {
 
     @Schema(description = "Desconto do produto (Ex: 10 = 10%)")
     private Integer desconto;
+
+    @Schema(description = "Data de inicio do desconto")
+    private LocalDate dataInicioDesconto;
+
+    @Schema(description = "Data de fim do desconto")
+    private LocalDate dataFimDesconto;
 
     private List<ImagemProduto> imagensProduto;
     private List<TagProduto> tagsProduto;

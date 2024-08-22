@@ -31,4 +31,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
 //            ",p.preco, p.qtd_estoque qtdEstoque, p.estado_geral estadoGeral " +
 //            "FROM tb_produto AS p WHERE LOWER(p.nome) LIKE LOWER(:textoBusca) LIMIT 1")
 //    Produto findByNomeLike(String textoBusca);
+
+    List<Produto> findByOrderByDesconto();
+    List<Produto> findByOrderByDescontoDesc();
 }

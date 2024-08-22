@@ -82,9 +82,7 @@ public class ProdutoController {
     public ResponseEntity<List<ProdutoConsultaDTO>> listarTodosProdutos(@RequestParam(required = false) String textoBusca) {
         List<Produto> produtosEncontrados = produtoService.listarProdutos(textoBusca);
 
-        if (produtosEncontrados.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
+        if (produtosEncontrados.isEmpty()) return ResponseEntity.noContent().build();
 
         return ResponseEntity.ok(ProdutoMapper.toDto(produtosEncontrados));
 
@@ -183,87 +181,33 @@ public class ProdutoController {
          produtoService.deletarProdutoPorId(id);
          return ResponseEntity.noContent().build();
     }
+
     @GetMapping("/ofertas")
     public ResponseEntity<List<ProdutoConsultaDTO>> buscarOfertas(){
         List<Produto> produtos = produtoService.buscarOfertas();
-        if(produtos.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
+
+        if(produtos.isEmpty()) return ResponseEntity.noContent().build();
+
         return ResponseEntity.ok(ProdutoMapper.toDto(produtos));
     }
+
     @GetMapping("/filtro/filtrar-por-preco")
     public ResponseEntity<List<ProdutoConsultaDTO>> filtrarPorPreco(@RequestParam String direcao){
         List<Produto> produtosEncontrados = produtoService.filtrarPorPreco(direcao);
 
-        if (produtosEncontrados.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
+        if (produtosEncontrados.isEmpty()) return ResponseEntity.noContent().build();
 
         return ResponseEntity.ok(ProdutoMapper.toDto(produtosEncontrados));
     }
 
-/*
-    FIXME: ordenar por preço pode ser feito através de comando do banco, não sendo necessária
-     a listaObj para realizar tal operação. Utilizar a listaObj na API externa.
-* */
+    @GetMapping("/filtro/filtrar-por-desconto")
+    public ResponseEntity<List<ProdutoConsultaDTO>> filtrarPorDesconto(@RequestParam String direcao){
+        List<Produto> produtosEncontrados = produtoService.filtrarPorDesconto(direcao);
 
-//    private ListaObj<ProdutoConsultaDTO> ordena(ListaObj<Produto> produtos){
-//
-//        if (produtos.size() == 0) return null;
-//
-//        Integer[] colunaId = new Integer[produtos.size()];
-//        Double[] colunaOrdenar = new Double[produtos.size()];
-//
-//        for (int i = 0; i < produtos.size(); i++) {
-//            colunaOrdenar[i] = produtos.get(i).getPreco();
-//            colunaId[i] = produtos.get(i).getId();
-//        }
-//
-//        Integer[] ids = ordenarListaProdutos(colunaOrdenar, colunaId, 0, colunaOrdenar.length-1);
-//        ListaObj<ProdutoConsultaDTO> produtosOrdenados = new ListaObj<>(produtos.size());
-//
-//        for (Integer id : ids) {
-//            Produto produtoDaVez = produtoService.buscarProdutoPorId(id);
-//            produtosOrdenados.add(ProdutoMapper.toDto(produtoDaVez));
-//        }
-//
-//        return produtosOrdenados;
-//    }
-//
-//    private static Integer[] ordenarListaProdutos(Number[] coluna, Integer[] ids, int inicio, int fim){
-//
-//        int i = inicio;
-//        int j = fim;
-//        double pivo = coluna[(inicio + fim) / 2].doubleValue();
-//
-//        while(i <= j){
-//            while(i < fim && coluna[i].doubleValue() < pivo){
-//                i++;
-//            }
-//            while (j > inicio && coluna[j].doubleValue() > pivo){
-//                j--;
-//            }
-//            if(i <= j){
-//                double aux = coluna[i].doubleValue();
-//                Integer idAux = ids[i];
-//
-//                coluna[i] = coluna[j];
-//                ids[i] = ids[j];
-//                coluna[j] = aux;
-//                ids[j] = idAux;
-//                i++;
-//                j--;
-//
-//            }
-//
-//            if(inicio < j){
-//                ordenarListaProdutos(coluna, ids, inicio, j);
-//            }
-//
-//            if(i < fim){
-//                ordenarListaProdutos(coluna, ids, i, fim);
-//            }
-//        }
-//        return ids;
-//    }
+        if (produtosEncontrados.isEmpty()) return ResponseEntity.noContent().build();
+
+        return ResponseEntity.ok(ProdutoMapper.toDto(produtosEncontrados));
+    }
+
+
 }

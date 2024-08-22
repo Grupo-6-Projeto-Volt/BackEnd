@@ -3,10 +3,10 @@ package sptech.school.projetovolt.service.produto.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Data
 @Schema(name = "Produto Alteracao DTO", description = "DTO para alteração de um produto")
@@ -38,4 +38,12 @@ public class ProdutoAlteracaoDto {
     @PositiveOrZero
     @Schema(description = "Desconto do produto (10 = 10%)", example = "10")
     private Integer desconto;
+
+    @FutureOrPresent
+    @Schema(description = "Data de ínico do desconto")
+    private LocalDate dataInicioDesconto;
+
+    @FutureOrPresent
+    @Schema(description = "Data de fim do desconto")
+    private LocalDate dataFimDesconto;
 }

@@ -60,4 +60,11 @@ public class ProdutoService {
         return produtoRepository.findByOrderByPrecoDesc();
     }
 
+    public List<Produto> filtrarPorDesconto (String direcao) {
+        if (direcao == null || direcao.equalsIgnoreCase("asc")) {
+            return produtoRepository.findByOrderByDesconto();
+        }
+        return produtoRepository.findByOrderByDescontoDesc();
+    }
+
 }
