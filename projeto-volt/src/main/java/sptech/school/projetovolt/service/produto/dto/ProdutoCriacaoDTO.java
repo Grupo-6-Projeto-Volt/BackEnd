@@ -1,10 +1,13 @@
 package sptech.school.projetovolt.service.produto.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Data
 @Schema(name = "Produto Criacao DTO", description = "DTO para criação de um produto")
@@ -40,4 +43,12 @@ public class ProdutoCriacaoDTO {
     @PositiveOrZero
     @Schema(description = "Desconto do produto (Ex: 10 = 10%)", example = "10")
     private Integer desconto;
+
+    @FutureOrPresent
+    @Schema(description = "Data de inicio do desconto")
+    private LocalDate dataInicioDesconto;
+
+    @FutureOrPresent
+    @Schema(description = "Data de fim do desconto")
+    private LocalDate dataFimDesconto;
 }

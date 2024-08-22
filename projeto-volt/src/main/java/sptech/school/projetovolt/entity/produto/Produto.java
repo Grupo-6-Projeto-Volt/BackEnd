@@ -10,6 +10,7 @@ import sptech.school.projetovolt.entity.favoritos.Favoritos;
 import sptech.school.projetovolt.entity.imagemproduto.ImagemProduto;
 import sptech.school.projetovolt.entity.tagProduto.TagProduto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -42,6 +43,12 @@ public class Produto {
 
     @Column(name = "desconto")
     private Integer desconto;
+
+    @Column(name = "data_inicio_desconto")
+    private LocalDate dataInicioDesconto;
+
+    @Column(name = "data_fim_desconto")
+    private LocalDate dataFimDesconto;
 
     @ManyToMany
     @JoinTable(

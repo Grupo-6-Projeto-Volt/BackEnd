@@ -19,6 +19,8 @@ public class ProdutoMapper {
         dto.setQtdEstoque(produto.getQtdEstoque());
         dto.setEstadoGeral(produto.getEstadoGeral());
         dto.setDesconto(produto.getDesconto());
+        dto.setDataInicioDesconto(produto.getDataInicioDesconto());
+        dto.setDataFimDesconto(produto.getDataFimDesconto());
         dto.setImagensProduto(toImagemProdutoDto(produto.getImagensProduto()));
         dto.setTagsProduto(toTagProdutoDto(produto.getTags()));
 
@@ -41,6 +43,8 @@ public class ProdutoMapper {
         entity.setQtdEstoque(dto.getQtdEstoque());
         entity.setEstadoGeral(dto.getEstadoGeral());
         entity.setDesconto(dto.getDesconto());
+        entity.setDataInicioDesconto(dto.getDataInicioDesconto());
+        entity.setDataFimDesconto(dto.getDataFimDesconto());
 
         return entity;
     }
@@ -56,6 +60,8 @@ public class ProdutoMapper {
         entity.setQtdEstoque(dto.getQtdEstoque());
         entity.setEstadoGeral(dto.getEstadoGeral());
         entity.setDesconto(dto.getDesconto());
+        entity.setDataInicioDesconto(dto.getDataInicioDesconto());
+        entity.setDataFimDesconto(dto.getDataFimDesconto());
 
         return entity;
     }
