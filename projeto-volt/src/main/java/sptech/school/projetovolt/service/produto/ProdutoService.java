@@ -7,6 +7,7 @@ import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.entity.produto.repository.ProdutoRepository;
 import sptech.school.projetovolt.service.produto.dto.ProdutoMapper;
 
+import java.text.Normalizer;
 import java.util.List;
 
 @Service
@@ -21,7 +22,7 @@ public class ProdutoService {
 
     public List<Produto> listarProdutos (String textoBusca) {
         if (textoBusca != null) {
-            return produtoRepository.findAllByNomeContainsIgnoreCase(textoBusca)
+            return produtoRepository.findAllByNomeContainsIgnoreCase(Normalizer.normalize(textoBusca, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}", ""))
                     .stream()
                     .filter(produtoModel -> produtoModel
                             .getNome()
