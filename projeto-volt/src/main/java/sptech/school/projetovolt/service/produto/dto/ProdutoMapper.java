@@ -15,12 +15,12 @@ public class ProdutoMapper {
         dto.setNome(produto.getNome());
         dto.setDescricao(produto.getDescricao());
         dto.setPreco(produto.getPreco());
-        dto.setCategoria(produto.getCategoria());
         dto.setQtdEstoque(produto.getQtdEstoque());
         dto.setEstadoGeral(produto.getEstadoGeral());
         dto.setDesconto(produto.getDesconto());
         dto.setDataInicioDesconto(produto.getDataInicioDesconto());
         dto.setDataFimDesconto(produto.getDataFimDesconto());
+        dto.setCategoria(produto.getCategoria().getNome());
         dto.setImagensProduto(toImagemProdutoDto(produto.getImagensProduto()));
         dto.setTagsProduto(toTagProdutoDto(produto.getTags()));
 
@@ -39,7 +39,6 @@ public class ProdutoMapper {
         entity.setNome(dto.getNome());
         entity.setDescricao(dto.getDescricao());
         entity.setPreco(dto.getPreco());
-        entity.setCategoria(dto.getCategoria());
         entity.setQtdEstoque(dto.getQtdEstoque());
         entity.setEstadoGeral(dto.getEstadoGeral());
         entity.setDesconto(dto.getDesconto());
@@ -54,7 +53,6 @@ public class ProdutoMapper {
 
         Produto entity = new Produto();
         entity.setNome(dto.getNome());
-        entity.setCategoria(dto.getCategoria());
         entity.setDescricao(dto.getDescricao());
         entity.setPreco(dto.getPreco());
         entity.setQtdEstoque(dto.getQtdEstoque());
@@ -94,4 +92,5 @@ public class ProdutoMapper {
     public static List<ProdutoConsultaDTO.TagProduto> toTagProdutoDto(List<TagProduto> entities) {
         return entities.stream().map(ProdutoMapper::toTagProdutoDto).toList();
     }
+
 }

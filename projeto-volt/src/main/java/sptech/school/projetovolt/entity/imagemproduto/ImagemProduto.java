@@ -21,6 +21,9 @@ public class ImagemProduto {
     @Column(name = "codigo_imagem")
     private String codigoImagem;
 
+    @Column(name = "indice_vt")
+    private Integer indiceVt;
+
     @ManyToOne
     @JoinColumn(name = "fk_produto")
     private Produto produto;

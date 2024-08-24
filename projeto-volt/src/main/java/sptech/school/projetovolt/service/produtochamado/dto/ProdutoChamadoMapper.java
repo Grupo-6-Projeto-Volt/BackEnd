@@ -24,7 +24,7 @@ public class ProdutoChamadoMapper {
         ProdutoChamadoConsultaDto.ProdutoDto produtoDto = new ProdutoChamadoConsultaDto.ProdutoDto();
         produtoDto.setNome(produtoChamado.getProduto().getNome());
         produtoDto.setDescricao(produtoChamado.getProduto().getDescricao());
-        produtoDto.setCategoria(produtoChamado.getProduto().getCategoria());
+        produtoDto.setCategoria(produtoChamado.getProduto().getCategoria().getNome());
         produtoDto.setPreco(produtoChamado.getProduto().getPreco());
         produtoDto.setQtdEstoque(produtoChamado.getProduto().getQtdEstoque());
         produtoDto.setEstadoGeral(produtoChamado.getProduto().getEstadoGeral());

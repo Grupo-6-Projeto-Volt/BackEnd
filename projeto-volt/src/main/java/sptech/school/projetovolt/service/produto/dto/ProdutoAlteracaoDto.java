@@ -19,10 +19,6 @@ public class ProdutoAlteracaoDto {
     @Schema(description = "Descrição do produto", example = "O Iphone 12 Pro Max é o mais novo lançamento da Apple")
     private String descricao;
 
-    @Size(max = 100)
-    @Schema(description = "Categoria do produto", example = "Eletrônicos")
-    private String categoria;
-
     @PositiveOrZero
     @Schema(description = "Preço do produto", example = "10000.00")
     private Double preco;
@@ -46,4 +42,8 @@ public class ProdutoAlteracaoDto {
     @FutureOrPresent
     @Schema(description = "Data de fim do desconto")
     private LocalDate dataFimDesconto;
+
+    @Positive
+    @Schema(description = "Id da categoria do produto", example = "1")
+    private Integer idCategoria;
 }

@@ -16,9 +16,6 @@ public class ProdutoConsultaDTO {
     @Schema(description = "Descrição do produto")
     private String descricao;
 
-    @Schema(description = "Categoria do produto")
-    private String categoria;
-
     @Schema(description = "Preço do produto")
     private Double preco;
 
@@ -37,6 +34,9 @@ public class ProdutoConsultaDTO {
     @Schema(description = "Data de fim do desconto")
     private LocalDate dataFimDesconto;
 
+    @Schema(description = "Categoria do produto")
+    private String categoria;
+
     private List<ImagemProduto> imagensProduto;
     private List<TagProduto> tagsProduto;
 
@@ -51,6 +51,12 @@ public class ProdutoConsultaDTO {
     public static class TagProduto {
         private Integer id;
         private String tag;
+    }
+
+    @Data
+    public static class Categoria {
+        private Integer id;
+        private String nome;
     }
 
 }

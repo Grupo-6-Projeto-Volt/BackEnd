@@ -28,12 +28,12 @@ public class ClassificacaoProdutoMapper {
         ClassificacaoProdutoConsultaDto.Produto dto = new ClassificacaoProdutoConsultaDto.Produto();
         dto.setId(entity.getId());
         dto.setNome(entity.getNome());
-        dto.setCategoria(entity.getCategoria());
         dto.setDescricao(entity.getDescricao());
         dto.setPreco(entity.getPreco());
         dto.setQtdEstoque(entity.getQtdEstoque());
         dto.setEstadoGeral(entity.getEstadoGeral());
         dto.setDesconto(entity.getDesconto());
+        dto.setCategoria(entity.getCategoria().getNome());
         return dto;
     }
 

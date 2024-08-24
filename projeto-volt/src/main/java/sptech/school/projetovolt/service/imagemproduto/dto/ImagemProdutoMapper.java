@@ -13,6 +13,7 @@ public class ImagemProdutoMapper {
         ImagemProduto entity = new ImagemProduto();
         entity.setNome(dto.getNome());
         entity.setCodigoImagem(dto.getCodigoImagem());
+        entity.setIndiceVt(dto.getIndiceVt());
         return entity;
 
     }
@@ -23,6 +24,7 @@ public class ImagemProdutoMapper {
         ImagemProduto entity = new ImagemProduto();
         entity.setNome(dto.getNome());
         entity.setCodigoImagem(dto.getCodigoImagem());
+        entity.setIndiceVt(dto.getIndiceVt());
         return entity;
 
     }
@@ -35,6 +37,7 @@ public class ImagemProdutoMapper {
         dto.setId(entity.getId());
         dto.setNome(entity.getNome());
         dto.setCodigoImagem(entity.getCodigoImagem());
+        dto.setIndiceVt(entity.getIndiceVt());
         dto.setProduto(toProdutoDto(entity.getProduto()));
 
         return dto;
@@ -50,7 +53,7 @@ public class ImagemProdutoMapper {
         ImagemConsultaDto.Produto dto = new ImagemConsultaDto.Produto();
         dto.setId(entity.getId());
         dto.setNome(entity.getNome());
-        dto.setCategoria(entity.getCategoria());
+        dto.setCategoria(entity.getCategoria().getNome());
         dto.setDescricao(entity.getDescricao());
         dto.setPreco(entity.getPreco());
         dto.setQtdEstoque(entity.getQtdEstoque());
