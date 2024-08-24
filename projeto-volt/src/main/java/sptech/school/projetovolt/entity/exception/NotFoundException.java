@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class NotFoundException extends RuntimeException {
 
     public NotFoundException(String menssagem) {
-        super(String.format("Erro 404: %s não encontrado!", menssagem));
+        super(String.format("Erro 404: %s não encontrado(a)!", menssagem));
     }
 
 }
