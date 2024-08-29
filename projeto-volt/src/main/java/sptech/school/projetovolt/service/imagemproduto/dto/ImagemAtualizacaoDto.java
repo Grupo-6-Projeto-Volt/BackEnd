@@ -11,4 +11,7 @@ public class ImagemAtualizacaoDto {
 
     @NotBlank
     private String codigoImagem;
+
+    @NotBlank
+    private Integer indiceVt;
 }

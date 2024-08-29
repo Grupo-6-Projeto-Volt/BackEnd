@@ -15,6 +15,9 @@ public class ImagemCriacaoDto {
     @NotBlank
     private String codigoImagem;
 
+    @NotBlank
+    private Integer indiceVt;
+
     @Min(1)
     @NotNull
     @Positive

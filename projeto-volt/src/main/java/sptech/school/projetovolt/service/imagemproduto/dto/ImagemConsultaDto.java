@@ -7,6 +7,7 @@ public class ImagemConsultaDto {
     private Integer id;
     private String nome;
     private String codigoImagem;
+    private Integer indiceVt;
     private Produto produto;
 
     @Data

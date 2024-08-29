@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
+import sptech.school.projetovolt.entity.categoria.Categoria;
 import sptech.school.projetovolt.entity.classificacaoproduto.ClassificacaoProduto;
 import sptech.school.projetovolt.entity.clickProduto.ClickProduto;
 import sptech.school.projetovolt.entity.favoritos.Favoritos;
@@ -30,9 +31,6 @@ public class Produto {
     private String descricao;
 
     @Column
-    private String categoria;
-
-    @Column
     private Double preco;
 
     @Column(name = "qtd_estoque")
@@ -49,6 +47,10 @@ public class Produto {
 
     @Column(name = "data_fim_desconto")
     private LocalDate dataFimDesconto;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_categoria")
+    private Categoria categoria;
 
     @ManyToMany
     @JoinTable(
@@ -68,5 +70,6 @@ public class Produto {
 
     @OneToMany(mappedBy = "produto")
     private List<ImagemProduto> imagensProduto;
+
 
 }
