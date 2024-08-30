@@ -11,7 +11,10 @@ public class LoginMapper {
     public static UsuarioTokenDto of(Login login, String token) {
         UsuarioTokenDto usuarioTokenDto = new UsuarioTokenDto();
         usuarioTokenDto.setUserId(login.getId());
+        usuarioTokenDto.setIdUsuario(login.getUsuario().getId());
+        usuarioTokenDto.setNome(login.getUsuario().getNome());
         usuarioTokenDto.setEmail(login.getEmail());
+        usuarioTokenDto.setCategoria(login.getUsuario().getCategoria());
         usuarioTokenDto.setToken(token);
         return usuarioTokenDto;
     }
