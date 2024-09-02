@@ -17,10 +17,10 @@ public class ImagemProdutoService {
     private final ImagemProdutoRepository imagemProdutoRepository;
     private final ProdutoService produtoService;
 
-    public ImagemProduto adicionarImagem(ImagemProduto novoProduto, Integer idProduto) {
-        Produto produtoEncontrado = produtoService.buscarProdutoPorId(idProduto);
-        novoProduto.setProduto(produtoEncontrado);
-        return imagemProdutoRepository.save(novoProduto);
+    public ImagemProduto adicionarImagem(ImagemProduto novaImagem, Integer idProduto) {
+        Produto produto = produtoService.buscarProdutoPorId(idProduto);
+        novaImagem.setProduto(produto);
+        return imagemProdutoRepository.save(novaImagem);
     }
 
     public List<ImagemProduto> listarImagens() {
@@ -28,9 +28,8 @@ public class ImagemProdutoService {
     }
 
     public ImagemProduto buscarImagemPorId(Integer id) {
-        return imagemProdutoRepository
-               .findById(id)
-               .orElseThrow(() -> new NotFoundException("Imagem " + id));
+        return imagemProdutoRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Imagem com ID " + id + " não encontrada."));
     }
 
     public ImagemProduto atualizarImagemPorId(Integer id, ImagemProduto novaImagem) {
@@ -41,12 +40,10 @@ public class ImagemProdutoService {
     }
 
     public void deletarImagemPorId(Integer id) {
-        if (!imagemProdutoRepository.existsById(id)) {
-            throw new NotFoundException("Imagem " + id);
-        }
+        if (!imagemProdutoRepository.existsById(id)) throw new NotFoundException("Imagem com ID " + id + " não encontrada.");
+
         imagemProdutoRepository.deleteById(id);
     }
 
-    
 
 }

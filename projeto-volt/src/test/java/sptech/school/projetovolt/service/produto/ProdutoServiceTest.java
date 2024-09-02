@@ -43,7 +43,7 @@ class ProdutoServiceTest {
                 Produto entity = new Produto();
                 entity.setNome("Teclado Mecânico");
                 entity.setDescricao("Teclado que concerta carros");
-                entity.setCategoria("Informática");
+                // entity.setCategoria("Informática");
                 entity.setPreco(100.0);
                 entity.setQtdEstoque(2);
                 entity.setEstadoGeral("Novo");

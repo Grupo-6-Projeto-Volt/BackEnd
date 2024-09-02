@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @OpenAPIDefinition(
 		info = @Info(
-				title = "Porjeto Volt - Back End",
-				version = "2.18.9",
+				title = "Projeto Volt - Back End",
+				version = "3.18.9",
 				description = "Documentação dos EndPoints referentes a API Back End",
 				contact = @Contact(name = "Empresa Impact", url = "https://github.com/Grupo-6-Projeto-Volt")
 		)

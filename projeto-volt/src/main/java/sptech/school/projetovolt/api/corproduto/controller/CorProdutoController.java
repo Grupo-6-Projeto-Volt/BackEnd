@@ -4,13 +4,13 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sptech.school.projetovolt.api.util.ResponseUtil;
 import sptech.school.projetovolt.entity.corProduto.CorProduto;
 import sptech.school.projetovolt.service.corproduto.CorProdutoService;
 import sptech.school.projetovolt.service.corproduto.dto.CorProdutoConsultaDTO;
 import sptech.school.projetovolt.service.corproduto.dto.CorProdutoCriacaoDTO;
 import sptech.school.projetovolt.service.corproduto.dto.CorProdutoMapper;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -20,50 +20,34 @@ public class CorProdutoController {
 
     private final CorProdutoService corProdutoService;
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<CorProdutoConsultaDTO>> listarCores() {
         List<CorProduto> cores = corProdutoService.listarCores();
-
-        if (cores.isEmpty()) return ResponseEntity.noContent().build();
-
-        return ResponseEntity.ok(CorProdutoMapper.toDto(cores));
+        return ResponseUtil.respondIfNotEmpty(CorProdutoMapper.toDto(cores));
     }
 
     @GetMapping("/buscarPorNome")
     public ResponseEntity<CorProdutoConsultaDTO> buscarCorPorNome(@RequestParam @Valid String nome) {
         CorProduto cor = corProdutoService.buscarCorPorNome(nome);
-
-        if (cor == null) return ResponseEntity.notFound().build();
-
-        return ResponseEntity.ok(CorProdutoMapper.toDto(cor));
+        return ResponseUtil.respondIfNotNull(CorProdutoMapper.toDto(cor));
     }
 
     @GetMapping("/buscarPorHex")
     public ResponseEntity<CorProdutoConsultaDTO> buscarCorPorHex(@RequestParam @Valid String hex) {
         CorProduto cor = corProdutoService.buscarCorPorHex(hex);
-
-        if (cor == null) return ResponseEntity.notFound().build();
-
-        return ResponseEntity.ok(CorProdutoMapper.toDto(cor));
+        return ResponseUtil.respondIfNotNull(CorProdutoMapper.toDto(cor));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CorProdutoConsultaDTO> buscarCorPorId(@PathVariable @Valid int id) {
         CorProduto cor = corProdutoService.buscarCorPorId(id);
-
-        if (cor == null) return ResponseEntity.notFound().build();
-
-        return ResponseEntity.ok(CorProdutoMapper.toDto(cor));
+        return ResponseUtil.respondIfNotNull(CorProdutoMapper.toDto(cor));
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<CorProdutoConsultaDTO> criarCor(@RequestBody @Valid CorProdutoCriacaoDTO corCriacao) {
         CorProduto novaCor = corProdutoService.criarCor(CorProdutoMapper.toEntity(corCriacao));
-        CorProdutoConsultaDTO dto = CorProdutoMapper.toDto(novaCor);
-
-        URI uri = URI.create("/cor/" + dto.getId());
-
-        return ResponseEntity.created(uri).body(dto);
+        return ResponseUtil.respondCreated(CorProdutoMapper.toDto(novaCor), "/cor", novaCor.getId());
     }
 
     @DeleteMapping("/{id}")
@@ -71,8 +55,4 @@ public class CorProdutoController {
         corProdutoService.deletarCorPorId(id);
         return ResponseEntity.noContent().build();
     }
-
-
-
-
 }
