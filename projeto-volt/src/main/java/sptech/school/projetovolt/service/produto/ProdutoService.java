@@ -26,16 +26,15 @@ public class ProdutoService {
         return produtoRepository.save(produto);
     }
 
-    public List<Produto> listarProdutos (String textoBusca) {
-        if (textoBusca != null) {
-            return produtoRepository.findAllByNomeContainsIgnoreCase(Normalizer.normalize(textoBusca, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}", ""))
-                    .stream()
-                    .filter(produtoModel -> produtoModel
-                            .getNome()
-                            .contains(textoBusca))
-                    .toList();
-        }
+    public List<Produto> listarProdutos(String textoBusca) {
+        if (textoBusca != null && !textoBusca.isEmpty()) {
 
+            String textoNormalizado = Normalizer.normalize(textoBusca, Normalizer.Form.NFD)
+                    .replaceAll("\\p{InCombiningDiacriticalMarks}", "")
+                    .toLowerCase();
+
+            return produtoRepository.findAllByNomeContainsIgnoreCase(textoNormalizado);
+        }
         return produtoRepository.findAll();
     }
 
