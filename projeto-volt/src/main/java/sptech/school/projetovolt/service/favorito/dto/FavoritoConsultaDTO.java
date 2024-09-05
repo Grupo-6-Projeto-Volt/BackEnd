@@ -9,6 +9,7 @@ import java.util.List;
 
 @Data
 public class FavoritoConsultaDTO {
+    private Integer id;
     private UsuarioConsultaDto usuario;
     private ProdutoConsultaDTO produto;
     private LocalDateTime dtHoraInsercao;

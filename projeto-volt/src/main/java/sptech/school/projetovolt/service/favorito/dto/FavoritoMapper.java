@@ -14,6 +14,7 @@ public class FavoritoMapper {
         if(entity == null) return null;
 
         FavoritoConsultaDTO dto = new FavoritoConsultaDTO();
+        dto.setId(entity.getId());
         dto.setUsuario(UsuarioMapper.toUsuarioConsultaDto(entity.getUsuario()));
         dto.setProduto(ProdutoMapper.toDto(entity.getProduto()));
         dto.setDtHoraInsercao(entity.getDtHoraInsercao());
