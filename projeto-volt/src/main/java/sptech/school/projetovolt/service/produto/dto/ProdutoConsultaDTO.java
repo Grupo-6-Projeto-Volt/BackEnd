@@ -10,6 +10,9 @@ import java.util.List;
 @Schema(name = "Produto Consulta DTO", description = "DTO para consulta de um produto")
 public class ProdutoConsultaDTO {
 
+    @Schema(description = "ID do produto")
+    private Integer id;
+
     @Schema(description = "Nome do produto")
     private String nome;
 

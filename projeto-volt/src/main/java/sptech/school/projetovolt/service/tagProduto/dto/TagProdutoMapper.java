@@ -13,6 +13,7 @@ public class TagProdutoMapper {
         if(entity == null) return null;
 
         TagProdutoConsultaDto dto = new TagProdutoConsultaDto();
+        dto.setId(entity.getId());
         dto.setTag(entity.getTag());
 
         return dto;
