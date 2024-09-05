@@ -12,6 +12,7 @@ public class ProdutoMapper {
         if(produto == null) return null;
 
         ProdutoConsultaDTO dto = new ProdutoConsultaDTO();
+        dto.setId(produto.getId());
         dto.setNome(produto.getNome());
         dto.setDescricao(produto.getDescricao());
         dto.setPreco(produto.getPreco());
