@@ -2,12 +2,14 @@ package sptech.school.projetovolt.entity.tagProduto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import lombok.Data;
-import sptech.school.projetovolt.entity.produto.Produto;
+import lombok.Getter;
+import lombok.Setter;
+import sptech.school.projetovolt.entity.classificacaoproduto.ClassificacaoProduto;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_tag_produto")
 @Schema(name = "Tag Produto", description = "Entidade que representa uma tag de um produto")
@@ -21,7 +23,6 @@ public class TagProduto {
     @Schema(description = "Nome da tag", example = "Promoção")
     private String tag;
 
-    @ManyToMany(mappedBy = "tags")
-    @Schema(description = "Lista de produtos que possuem essa tag")
-    List<Produto> produtos;
+    @OneToMany(mappedBy = "tagProduto")
+    private List<ClassificacaoProduto> classificacaoProdutos;
 }

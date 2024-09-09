@@ -1,11 +1,14 @@
 package sptech.school.projetovolt.entity.login;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import sptech.school.projetovolt.entity.usuario.Usuario;
-import lombok.*;
+
 
 import java.util.UUID;
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_login")
 public class Login {
