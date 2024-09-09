@@ -7,6 +7,7 @@ import lombok.Setter;
 import sptech.school.projetovolt.entity.categoria.Categoria;
 import sptech.school.projetovolt.entity.classificacaoproduto.ClassificacaoProduto;
 import sptech.school.projetovolt.entity.clickProduto.ClickProduto;
+import sptech.school.projetovolt.entity.corProduto.CorProduto;
 import sptech.school.projetovolt.entity.favoritos.Favoritos;
 import sptech.school.projetovolt.entity.imagemproduto.ImagemProduto;
 import sptech.school.projetovolt.entity.tagProduto.TagProduto;
@@ -71,5 +72,7 @@ public class Produto {
     @OneToMany(mappedBy = "produto")
     private List<ImagemProduto> imagensProduto;
 
+    @OneToMany(mappedBy = "produto")
+    private List<CorProduto> coresProduto;
 
 }

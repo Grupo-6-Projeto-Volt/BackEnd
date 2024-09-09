@@ -2,6 +2,7 @@ package sptech.school.projetovolt.service.produto.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import sptech.school.projetovolt.entity.corProduto.CorProduto;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -42,6 +43,7 @@ public class ProdutoConsultaDTO {
 
     private List<ImagemProduto> imagensProduto;
     private List<TagProduto> tagsProduto;
+    private List<CorProduto> coresProduto;
 
     @Data
     public static class ImagemProduto {
@@ -62,4 +64,10 @@ public class ProdutoConsultaDTO {
         private String nome;
     }
 
+    @Data
+    public static class CorProduto {
+        private Integer id;
+        private String nome;
+        private String hexId;
+    }
 }
