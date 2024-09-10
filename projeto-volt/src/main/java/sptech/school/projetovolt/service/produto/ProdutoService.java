@@ -34,22 +34,10 @@ public class ProdutoService {
             String textoNormalizado = Normalizer.normalize(textoBusca, Normalizer.Form.NFD)
                     .replaceAll("\\p{InCombiningDiacriticalMarks}", "")
                     .toLowerCase();
-            return listarProdutosPorNome(textoNormalizado);
+            return produtoRepository.findAllByNomeContainsIgnoreCase(textoNormalizado);
         }
-        produtoRepository.findAll().stream().forEach(produto -> {
-            hashTable.put(produto.getNome().toLowerCase());
-        });
         return produtoRepository.findAll();
     }
-
-    public List<Produto> listarProdutosPorNome(String textoBusca){
-        String produtoEncontrado = hashTable.get(textoBusca);
-        if(produtoEncontrado == null){
-            return null;
-        }
-        return produtoRepository.findAllByNomeContainsIgnoreCase(produtoEncontrado);
-    }
-
     public List<Produto> buscarOfertas(){
         return produtoRepository.findByDescontoNotNull();
     }

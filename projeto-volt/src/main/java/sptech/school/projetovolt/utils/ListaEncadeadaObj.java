@@ -55,6 +55,4 @@ public class ListaEncadeadaObj<T> {
         }
         return tam;
     }
-
-
 }
