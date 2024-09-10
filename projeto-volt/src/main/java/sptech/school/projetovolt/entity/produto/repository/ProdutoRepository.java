@@ -16,7 +16,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
     ProdutoConsultaDTO findByNome(String nome);
     List<Produto> findAllByNome(String textoBusca);
 
-    @Query(value = "SELECT * FROM tb_produto p WHERE fnRemoveAccents(lower(p.nome)) COLLATE utf8_general_ci LIKE LOWER(CONCAT('%', ?, '%'))", nativeQuery = true)
+    @Query(value = "SELECT * FROM tb_produto p WHERE fnRemoveAccents(lower(p.nome)) COLLATE utf8mb4_0900_ai_ci LIKE LOWER(CONCAT('%', ?, '%'))", nativeQuery = true)
     List<Produto> findAllByNomeContainsIgnoreCase(String textoBusca);
 
     List<Produto> findByOrderByPrecoDesc();
