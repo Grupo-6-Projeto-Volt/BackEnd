@@ -74,4 +74,8 @@ public class ProdutoService {
         return produtoRepository.findByOrderByDescontoDesc();
     }
 
+    public List<Produto> buscarProdutosPorCategoria(String categoria) {
+        return produtoRepository.buscaProdutoPorCategoria(categoria);
+    }
+
 }

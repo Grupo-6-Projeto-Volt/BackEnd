@@ -82,4 +82,10 @@ public class ProdutoController {
         List<Produto> produtosEncontrados = produtoService.filtrarPorDesconto(direcao);
         return ResponseUtil.respondIfNotEmpty(ProdutoMapper.toDto(produtosEncontrados));
     }
+
+    @GetMapping("/filtro/filtrar-por-categoria")
+    public ResponseEntity<List<ProdutoConsultaDTO>> buscarProdutosPorCategoria(@RequestParam String categoria) {
+        List<Produto> produtosEncontrados = produtoService.buscarProdutosPorCategoria(categoria);
+        return ResponseUtil.respondIfNotEmpty(ProdutoMapper.toDto(produtosEncontrados));
+    }
 }
