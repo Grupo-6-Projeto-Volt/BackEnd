@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface VwUltimosAcessosRepository extends JpaRepository<VwUltimosAcessosSeteDias,Integer> {
 
-    @Query(value = "SELECT * FROM vwacessosultimossetedias AS vw",nativeQuery = true)
+    @Query(value = "SELECT * FROM vwacessossetedias AS vw",nativeQuery = true)
     List<VwUltimosAcessosSeteDias> ultimosAcessosNosSeteDias();
 }

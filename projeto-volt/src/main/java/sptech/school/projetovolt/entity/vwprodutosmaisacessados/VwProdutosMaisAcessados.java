@@ -10,14 +10,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class VwProdutosMaisAcessados {
+    @Id
+    private Integer id;
     @Column
     private int acessos;
     @Column
     private String nome;
     @Column
     private int qtd;
-    @Id
-    private Integer id;
     @Column
-    private String url;
+    private String img;
 }
