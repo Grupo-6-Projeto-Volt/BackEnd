@@ -19,5 +19,5 @@ public class VwProdutosMaisAcessados {
     @Column
     private int qtd;
     @Column
-    private String img;
+    private String url;
 }
