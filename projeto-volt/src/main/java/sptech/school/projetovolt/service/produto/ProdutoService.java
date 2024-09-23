@@ -32,26 +32,27 @@ public class ProdutoService {
     public Produto cadastrarProduto (Produto produto, Integer idCategoria, List<ProdutoConsultaDTO.ImagemProduto> imagens, List<ProdutoConsultaDTO.TagProduto> tags, List<ProdutoConsultaDTO.CorProduto> cores) {
         Categoria categoria = categoriaService.buscarCategoriaPorId(idCategoria);
         produto.setCategoria(categoria);
+        Produto produtoCriado = produtoRepository.save(produto);
 
         for (int i = 0; i < imagens.size(); i++) {
             ImagemProduto novaImagem = new ImagemProduto();
             novaImagem.setNome(imagens.get(i).getNome());
             novaImagem.setCodigoImagem(imagens.get(i).getCodigoImagem());
             novaImagem.setIndiceVt(imagens.get(i).getIndiceVt());
-            novaImagem.setProduto(produto);
+            novaImagem.setProduto(produtoCriado);
             imagemProdutoService.adicionarImagem(novaImagem);
         }
 
-        for (int i = 0; i < cores.size(); i++) {
-            CorProduto novaCor = new CorProduto();
-            novaCor.setNome(cores.get(i).getNome());
-            novaCor.setHexId(cores.get(i).getHexId());
-            novaCor.setProduto(produto);
-            corProdutoService.criarCor(novaCor);
-        }
+//        for (int i = 0; i < cores.size(); i++) {
+//            CorProduto novaCor = new CorProduto();
+//            novaCor.setNome(cores.get(i).getNome());
+//            novaCor.setHexId(cores.get(i).getHexId());
+//            novaCor.setProduto(produtoCriado);
+//            corProdutoService.criarCor(novaCor);
+//        }
 
         hashTable.put(produto.getNome().toLowerCase());
-        return produtoRepository.save(produto);
+        return produtoCriado;
     }
 
     public List<Produto> listarProdutos(String textoBusca) {
