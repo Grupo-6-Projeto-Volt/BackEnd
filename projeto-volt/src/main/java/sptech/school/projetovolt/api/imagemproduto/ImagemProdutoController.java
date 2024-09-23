@@ -24,7 +24,7 @@ public class ImagemProdutoController {
     @PostMapping
     public ResponseEntity<ImagemConsultaDto> adicionarImagem(@RequestBody @Valid ImagemCriacaoDto novaImagem) {
         ImagemProduto imagemCriada = imagemProdutoService.adicionarImagem(
-                ImagemProdutoMapper.toEntity(novaImagem), novaImagem.getIdProduto()
+                ImagemProdutoMapper.toEntity(novaImagem)
         );
         return ResponseUtil.respondCreated(
                 ImagemProdutoMapper.toDto(imagemCriada), "/imagem-produtos", imagemCriada.getId()

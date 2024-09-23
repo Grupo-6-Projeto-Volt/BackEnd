@@ -3,10 +3,16 @@ package sptech.school.projetovolt.service.produto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import sptech.school.projetovolt.entity.categoria.Categoria;
+import sptech.school.projetovolt.entity.corProduto.CorProduto;
 import sptech.school.projetovolt.entity.exception.NotFoundException;
+import sptech.school.projetovolt.entity.imagemproduto.ImagemProduto;
 import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.entity.produto.repository.ProdutoRepository;
+import sptech.school.projetovolt.entity.tagProduto.TagProduto;
 import sptech.school.projetovolt.service.categoria.CategoriaService;
+import sptech.school.projetovolt.service.corproduto.CorProdutoService;
+import sptech.school.projetovolt.service.imagemproduto.ImagemProdutoService;
+import sptech.school.projetovolt.service.produto.dto.ProdutoConsultaDTO;
 import sptech.school.projetovolt.service.produto.dto.ProdutoMapper;
 import sptech.school.projetovolt.utils.HashTableObj;
 
@@ -18,13 +24,32 @@ import java.util.List;
 public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
+    private final ImagemProdutoService imagemProdutoService;
+    private final CorProdutoService corProdutoService;
     private final CategoriaService categoriaService;
     private final HashTableObj<String> hashTable;
 
-    public Produto cadastrarProduto (Produto produto, Integer idCategoria) {
+    public Produto cadastrarProduto (Produto produto, Integer idCategoria, List<ProdutoConsultaDTO.ImagemProduto> imagens, List<ProdutoConsultaDTO.TagProduto> tags, List<ProdutoConsultaDTO.CorProduto> cores) {
         Categoria categoria = categoriaService.buscarCategoriaPorId(idCategoria);
-
         produto.setCategoria(categoria);
+
+        for (int i = 0; i < imagens.size(); i++) {
+            ImagemProduto novaImagem = new ImagemProduto();
+            novaImagem.setNome(imagens.get(i).getNome());
+            novaImagem.setCodigoImagem(imagens.get(i).getCodigoImagem());
+            novaImagem.setIndiceVt(imagens.get(i).getIndiceVt());
+            novaImagem.setProduto(produto);
+            imagemProdutoService.adicionarImagem(novaImagem);
+        }
+
+        for (int i = 0; i < cores.size(); i++) {
+            CorProduto novaCor = new CorProduto();
+            novaCor.setNome(cores.get(i).getNome());
+            novaCor.setHexId(cores.get(i).getHexId());
+            novaCor.setProduto(produto);
+            corProdutoService.criarCor(novaCor);
+        }
+
         hashTable.put(produto.getNome().toLowerCase());
         return produtoRepository.save(produto);
     }

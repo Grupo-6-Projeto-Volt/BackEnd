@@ -35,7 +35,7 @@ public class ProdutoController {
             @ApiResponse(responseCode = "400", description = "Erro na requisição")
     })
     public ResponseEntity<ProdutoConsultaDTO> cadastrarProduto(@RequestBody @Valid ProdutoCriacaoDTO produtoNovo) {
-        Produto produtoSalvo = produtoService.cadastrarProduto(ProdutoMapper.toEntity(produtoNovo), produtoNovo.getIdCategoria());
+        Produto produtoSalvo = produtoService.cadastrarProduto(ProdutoMapper.toEntity(produtoNovo), produtoNovo.getIdCategoria(), produtoNovo.getImagensProduto(), produtoNovo.getTagsProduto(), produtoNovo.getCoresProduto());
         return ResponseUtil.respondCreated(ProdutoMapper.toDto(produtoSalvo), "/produtos/estoque", produtoSalvo.getId());
     }
 

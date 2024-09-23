@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Schema(name = "Produto Criacao DTO", description = "DTO para criação de um produto")
@@ -47,4 +48,33 @@ public class ProdutoCriacaoDTO {
     @Positive
     @Schema(description = "Id da categoria do produto", example = "1")
     private Integer idCategoria;
+
+    @NotNull
+    @Schema(description = "Lista de imagens a serem cadastradas para o produto")
+    private List<ProdutoConsultaDTO.ImagemProduto> imagensProduto;
+
+    @NotNull
+    @Schema(description = "Lista de tags a serem cadastradas para o produto")
+    private List<ProdutoConsultaDTO.TagProduto> tagsProduto;
+
+    @NotNull
+    @Schema(description = "Lista de cores a serem cadastradas para o produto")
+    private List<ProdutoConsultaDTO.CorProduto> coresProduto;
+
+    @Data
+    public static class ImagemProduto {
+        private String nome;
+        private String codigoImagem;
+    }
+
+    @Data
+    public static class TagProduto {
+        private String tag;
+    }
+
+    @Data
+    public static class CorProduto {
+        private String nome;
+        private String hexId;
+    }
 }

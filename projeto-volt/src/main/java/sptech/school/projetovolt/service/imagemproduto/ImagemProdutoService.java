@@ -15,11 +15,7 @@ import java.util.List;
 public class ImagemProdutoService {
 
     private final ImagemProdutoRepository imagemProdutoRepository;
-    private final ProdutoService produtoService;
-
-    public ImagemProduto adicionarImagem(ImagemProduto novaImagem, Integer idProduto) {
-        Produto produto = produtoService.buscarProdutoPorId(idProduto);
-        novaImagem.setProduto(produto);
+    public ImagemProduto adicionarImagem(ImagemProduto novaImagem) {
         return imagemProdutoRepository.save(novaImagem);
     }
 

@@ -50,6 +50,7 @@ public class ProdutoConsultaDTO {
         private Integer id;
         private String nome;
         private String codigoImagem;
+        private Integer indiceVt;
     }
 
     @Data

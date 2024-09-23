@@ -44,6 +44,7 @@ public class ImagemProdutoMapper {
     }
 
     public static List<ImagemConsultaDto> toDto(List<ImagemProduto> entities) {
+        if (entities == null) return null;
         return entities.stream().map(ImagemProdutoMapper::toDto).toList();
     }
 
