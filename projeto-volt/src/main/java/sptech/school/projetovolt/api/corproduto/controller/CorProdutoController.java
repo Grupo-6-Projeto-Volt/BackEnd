@@ -46,7 +46,7 @@ public class CorProdutoController {
 
     @PostMapping
     public ResponseEntity<CorProdutoConsultaDTO> criarCor(@RequestBody @Valid CorProdutoCriacaoDTO corCriacao) {
-        CorProduto novaCor = corProdutoService.criarCor(CorProdutoMapper.toEntity(corCriacao));
+        CorProduto novaCor = corProdutoService.criarCor(CorProdutoMapper.toEntity(corCriacao), corCriacao.getIdProduto());
         return ResponseUtil.respondCreated(CorProdutoMapper.toDto(novaCor), "/cor", novaCor.getId());
     }
 
