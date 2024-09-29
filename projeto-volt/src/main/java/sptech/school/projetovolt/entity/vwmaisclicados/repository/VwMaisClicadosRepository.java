@@ -8,7 +8,7 @@ import sptech.school.projetovolt.service.clickproduto.dto.ClickProdutoMaisClicad
 import java.util.List;
 
 public interface VwMaisClicadosRepository extends JpaRepository<VwMaisClicados, Integer> {
-    @Query(value = "SELECT * FROM vwSelectMaisClicados AS vw ORDER BY vw.qtd_clicks DESC"
+    @Query(value = "SELECT * FROM vwprodutosmaisacessados"
             , nativeQuery = true)
     List<VwMaisClicados> produtosMaisClicados();
 }

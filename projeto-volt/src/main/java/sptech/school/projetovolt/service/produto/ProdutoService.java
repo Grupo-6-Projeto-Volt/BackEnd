@@ -8,6 +8,7 @@ import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.entity.produto.repository.ProdutoRepository;
 import sptech.school.projetovolt.service.categoria.CategoriaService;
 import sptech.school.projetovolt.service.produto.dto.ProdutoMapper;
+import sptech.school.projetovolt.utils.HashTableObj;
 
 import java.text.Normalizer;
 import java.util.List;
@@ -18,26 +19,25 @@ public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
     private final CategoriaService categoriaService;
+    private final HashTableObj<String> hashTable;
 
     public Produto cadastrarProduto (Produto produto, Integer idCategoria) {
         Categoria categoria = categoriaService.buscarCategoriaPorId(idCategoria);
 
         produto.setCategoria(categoria);
+        hashTable.put(produto.getNome().toLowerCase());
         return produtoRepository.save(produto);
     }
 
     public List<Produto> listarProdutos(String textoBusca) {
         if (textoBusca != null && !textoBusca.isEmpty()) {
-
             String textoNormalizado = Normalizer.normalize(textoBusca, Normalizer.Form.NFD)
                     .replaceAll("\\p{InCombiningDiacriticalMarks}", "")
                     .toLowerCase();
-
             return produtoRepository.findAllByNomeContainsIgnoreCase(textoNormalizado);
         }
         return produtoRepository.findAll();
     }
-
     public List<Produto> buscarOfertas(){
         return produtoRepository.findByDescontoNotNull();
     }
@@ -72,6 +72,10 @@ public class ProdutoService {
             return produtoRepository.findByOrderByDesconto();
         }
         return produtoRepository.findByOrderByDescontoDesc();
+    }
+
+    public List<Produto> buscarProdutosPorCategoria(String categoria) {
+        return produtoRepository.buscaProdutoPorCategoria(categoria);
     }
 
 }

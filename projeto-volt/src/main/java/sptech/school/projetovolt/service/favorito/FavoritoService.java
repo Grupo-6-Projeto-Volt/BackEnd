@@ -43,4 +43,8 @@ public class FavoritoService {
         favoritoRepository.delete(favoritoParaExcluir.get());
     }
 
+    public boolean isProdutoFavoritadoPorUsuario(int idUsuario, int idProduto) {
+        return favoritoRepository.findByUsuarioIdAndProdutoId(idUsuario, idProduto) != null;
+    }
+
 }
