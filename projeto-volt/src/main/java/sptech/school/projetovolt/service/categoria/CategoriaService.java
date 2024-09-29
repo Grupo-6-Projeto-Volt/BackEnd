@@ -46,8 +46,11 @@ public class CategoriaService {
     }
 
     public List<Categoria> buscarCategoriasPorNomeContendo(String nome) {
-        List<Categoria> categorias = categoriaRepository.findByNomeContainingIgnoreCase(nome);
+        return categoriaRepository.findByNomeContainingIgnoreCase(nome);
+    }
 
-        return categorias;
+    public Categoria buscarCategoriasPorNome(String nome) {
+        Optional<Categoria> categoriaEncontrada = categoriaRepository.findByNome(nome);
+        return categoriaEncontrada.orElseThrow(() -> new NotFoundException("Categoria " + nome));
     }
 }
