@@ -33,7 +33,7 @@ public class CategoriaController {
         return ResponseUtil.respondIfNotEmpty(CategoriaMapper.toDto(categorias));
     }
 
-    @GetMapping("/buscarPorNomeCategoria")
+    @GetMapping("/buscar-por-nome-categoria")
     public ResponseEntity<CategoriaConsultaDTO> buscarCategoriaPorNome(@RequestParam @Valid String nome) {
         Categoria categoria = categoriaService.buscarCategoriasPorNome(nome);
         return ResponseUtil.respondIfNotNull(CategoriaMapper.toDto(categoria));

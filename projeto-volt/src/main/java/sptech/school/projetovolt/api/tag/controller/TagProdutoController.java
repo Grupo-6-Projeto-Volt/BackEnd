@@ -42,7 +42,7 @@ public class TagProdutoController {
         return ResponseUtil.respondIfNotNull(TagProdutoMapper.toDto(tagEncontrada));
     }
 
-    @GetMapping
+    @GetMapping("/buscar-tag-por-nome")
     public ResponseEntity<TagProdutoConsultaDto> buscaTagPorNome(@RequestParam String tag) {
         TagProduto tagEncontrada = tagProdutoService.buscarTagPorNome(tag);
         return ResponseUtil.respondIfNotNull(TagProdutoMapper.toDto(tagEncontrada));
