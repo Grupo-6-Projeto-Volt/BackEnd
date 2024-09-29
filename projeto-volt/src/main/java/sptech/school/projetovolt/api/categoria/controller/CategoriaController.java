@@ -27,7 +27,7 @@ public class CategoriaController {
         return ResponseUtil.respondIfNotEmpty(CategoriaMapper.toDto(categorias));
     }
 
-    @GetMapping("/buscarPorNomeContendo")
+    @GetMapping("/buscar-por-nome-contendo")
     public ResponseEntity<List<CategoriaConsultaDTO>> buscarCategoriasPorNomeContendo(@RequestParam @Valid String nome) {
         List<Categoria> categorias = categoriaService.buscarCategoriasPorNomeContendo(nome);
         return ResponseUtil.respondIfNotEmpty(CategoriaMapper.toDto(categorias));
