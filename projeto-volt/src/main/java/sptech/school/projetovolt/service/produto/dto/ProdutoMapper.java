@@ -23,9 +23,9 @@ public class ProdutoMapper {
         dto.setDataInicioDesconto(produto.getDataInicioDesconto());
         dto.setDataFimDesconto(produto.getDataFimDesconto());
         dto.setCategoria(produto.getCategoria().getNome());
-        dto.setImagensProduto(toImagemProdutoDto(produto.getImagensProduto()));
-        dto.setTagsProduto(toTagProdutoDto(produto.getTags()));
-        dto.setCoresProduto(toCorProdutoDto(produto.getCoresProduto()));
+//        dto.setImagensProduto(toImagemProdutoDto(produto.getImagensProduto()));
+//        dto.setTagsProduto(toTagProdutoDto(produto.getTags()));
+//        dto.setCoresProduto(toCorProdutoDto(produto.getCoresProduto()));
 
         return dto;
     }
