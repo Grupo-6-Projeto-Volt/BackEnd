@@ -27,7 +27,8 @@ public class FavoritosController {
 
     @PostMapping
     public ResponseEntity<FavoritoConsultaDTO> criar(@RequestBody @Valid FavoritoCriacaoDTO novoFavorito) {
-        if (service.isProdutoFavoritadoPorUsuario(novoFavorito.getIdUsuario(), novoFavorito.getIdProduto())) {
+        Favoritos entity = service.isProdutoFavoritadoPorUsuario(novoFavorito.getIdUsuario(), novoFavorito.getIdProduto());
+        if (entity == null) {
             return ResponseEntity.status(409).build(); // Conflito: Produto já favoritado
         }
         Favoritos criado = FavoritoMapper.toEntity(novoFavorito,
@@ -49,7 +50,8 @@ public class FavoritosController {
     }
 
     @GetMapping("/is-favoritado")
-    public ResponseEntity<Boolean> isProdutoFavoritadoPorUsuario(@RequestParam int idUsuario, @RequestParam int idProduto) {
-        return ResponseEntity.ok(service.isProdutoFavoritadoPorUsuario(idUsuario, idProduto));
+    public ResponseEntity<FavoritoConsultaDTO> isProdutoFavoritadoPorUsuario(@RequestParam int idUsuario, @RequestParam int idProduto) {
+        FavoritoConsultaDTO dto = FavoritoMapper.toDto(service.isProdutoFavoritadoPorUsuario(idUsuario, idProduto));
+        return ResponseEntity.ok(dto);
     }
 }
