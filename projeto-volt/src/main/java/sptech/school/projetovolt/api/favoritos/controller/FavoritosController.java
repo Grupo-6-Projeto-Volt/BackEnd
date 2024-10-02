@@ -35,6 +35,8 @@ public class FavoritosController {
             return ResponseUtil.respondCreated(FavoritoMapper.toDto(salvo), "/favoritos", salvo.getId());
         }
 
+        if (idUsuario == null || idProduto == null) return ResponseEntity.badRequest().build();
+
         Favoritos entity = service.isProdutoFavoritadoPorUsuario(idUsuario, idProduto);
         service.excluir(entity.getId());
         return ResponseEntity.noContent().build();
