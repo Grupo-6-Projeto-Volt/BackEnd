@@ -39,6 +39,7 @@ public class FavoritosController {
 
         Favoritos entity = service.isProdutoFavoritadoPorUsuario(idUsuario, idProduto);
         service.excluir(entity.getId());
+        
         return ResponseEntity.noContent().build();
     }
 
