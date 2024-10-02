@@ -43,8 +43,12 @@ public class FavoritoService {
         favoritoRepository.delete(favoritoParaExcluir.get());
     }
 
-    public boolean isProdutoFavoritadoPorUsuario(int idUsuario, int idProduto) {
-        return favoritoRepository.findByUsuarioIdAndProdutoId(idUsuario, idProduto) != null;
+    public Favoritos isProdutoFavoritadoPorUsuario(int idUsuario, int idProduto) {
+        Favoritos entity =  favoritoRepository.findByUsuarioIdAndProdutoId(idUsuario, idProduto);
+
+        if (entity == null) throw new NotFoundException("Favorito");
+
+        return entity;
     }
 
 }
