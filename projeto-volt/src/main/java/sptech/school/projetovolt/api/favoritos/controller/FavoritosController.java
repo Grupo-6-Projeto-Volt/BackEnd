@@ -26,20 +26,18 @@ public class FavoritosController {
     private final ProdutoService produtoService;
 
     @PostMapping
-    public ResponseEntity<FavoritoConsultaDTO> criar(@RequestParam int idUsuario, @RequestParam int idProduto, @RequestBody(required = false) @Valid FavoritoCriacaoDTO novoFavorito) {
+    public ResponseEntity<FavoritoConsultaDTO> criar(@RequestParam(required = false) Integer idUsuario, @RequestParam(required = false) Integer idProduto, @RequestBody(required = false) @Valid FavoritoCriacaoDTO novoFavorito) {
+        if (novoFavorito != null) {
+            Favoritos criado = FavoritoMapper.toEntity(novoFavorito,
+                    produtoService.buscarProdutoPorId(novoFavorito.getIdProduto()),
+                    usuarioService.buscarUsuarioPorId(novoFavorito.getIdUsuario()));
+            Favoritos salvo = service.criar(criado, novoFavorito.getIdUsuario(), novoFavorito.getIdProduto());
+            return ResponseUtil.respondCreated(FavoritoMapper.toDto(salvo), "/favoritos", salvo.getId());
+        }
+
         Favoritos entity = service.isProdutoFavoritadoPorUsuario(idUsuario, idProduto);
-        if (entity != null) {
-            service.excluir(entity.getId());
-            return ResponseEntity.noContent().build(); // Favorito removido
-        }
-        if (novoFavorito == null) {
-            return ResponseEntity.badRequest().build(); // Body de FavoritoCriacaoDTO é obrigatório para criar um novo favorito
-        }
-        Favoritos criado = FavoritoMapper.toEntity(novoFavorito,
-                produtoService.buscarProdutoPorId(idProduto),
-                usuarioService.buscarUsuarioPorId(idUsuario));
-        Favoritos salvo = service.criar(criado, idUsuario, idProduto);
-        return ResponseUtil.respondCreated(FavoritoMapper.toDto(salvo), "/favoritos", salvo.getId());
+        service.excluir(entity.getId());
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/lista-por-usuario")
