@@ -22,6 +22,8 @@ import sptech.school.projetovolt.service.graficoskpis.dto.GraficoKpisMapper;
 import sptech.school.projetovolt.service.graficoskpis.dto.ProdutosAcessadosDto;
 import sptech.school.projetovolt.service.graficoskpis.dto.TaxaRetornoDto;
 import sptech.school.projetovolt.service.produto.ProdutoService;
+import sptech.school.projetovolt.service.produto.dto.ProdutoConsultaDTO;
+import sptech.school.projetovolt.service.produto.dto.ProdutoMapper;
 import sptech.school.projetovolt.service.usuario.UsuarioService;
 
 import java.net.URI;
@@ -42,6 +44,15 @@ public class ClickProdutoController {
     public ResponseEntity<List<ClickProdutoMaisClicadosDTO>> listarMaisClicados(){
         log.debug(service.listarMaisClicados().toString());
         return ResponseEntity.ok(ClickProdutoMapper.vwToDto(service.listarMaisClicados()));
+    }
+
+    @GetMapping("/mais-clicados-produtos")
+    public ResponseEntity<List<ProdutoConsultaDTO>> listarMaisClicadosProdutos(@RequestParam(required = false) Integer qtd){
+        List<ProdutoConsultaDTO> dtos = service.listarMaisClicadosProdutos(qtd).stream()
+                .map(ProdutoMapper::toDto)
+                .toList();
+
+        return ResponseEntity.ok(dtos);
     }
 
     @PostMapping

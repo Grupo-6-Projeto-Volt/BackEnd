@@ -37,4 +37,9 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
 
     List<Produto> findByOrderByDesconto();
     List<Produto> findByOrderByDescontoDesc();
+
+    // Produtos mais clicados
+    @Query(value = "SELECT p.id, p.nome, p.descricao, p.preco, p.qtd_estoque, p.estado_geral, p.desconto, p.fk_categoria, p.data_inicio_desconto, p.data_fim_desconto FROM tb_produto p INNER JOIN tb_click_produto cp ON p.id = cp.fk_produto GROUP BY p.id ORDER BY COUNT(cp.fk_produto) DESC", nativeQuery = true)
+    List<Produto> produtosMaisClicados();
+
 }

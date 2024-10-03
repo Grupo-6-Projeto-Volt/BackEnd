@@ -45,6 +45,13 @@ public class ClickProdutoService {
         return vwRepository.produtosMaisClicados();
     }
 
+    public List<Produto> listarMaisClicadosProdutos(Integer qtd){
+        if(qtd != null){
+            return produtoRepository.produtosMaisClicados().subList(0, qtd);
+        }
+        return produtoRepository.produtosMaisClicados();
+    }
+
     public List<ClickProduto> listarOrdenadoPorData(){
         return repository.findAllOrderByDataHoraClick();
     }
