@@ -52,5 +52,10 @@ public class CorProdutoService {
         corProdutoRepository.deleteById(id);
     }
 
+    public void deletarTodasCoresProduto(Integer idProduto) {
+        if (!corProdutoRepository.existsByProdutoId(idProduto)) throw  new NotFoundException("Não existe cor associada ao produto de id " + idProduto);
+        corProdutoRepository.deleteByProdutoId(idProduto);
+    }
+
 
 }

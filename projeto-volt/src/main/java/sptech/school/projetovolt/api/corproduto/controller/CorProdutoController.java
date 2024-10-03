@@ -55,4 +55,10 @@ public class CorProdutoController {
         corProdutoService.deletarCorPorId(id);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/deletar-cores-produto/{idProduto}")
+    public ResponseEntity<Void> deletarCoresDoProdutoPorIdProduto(@PathVariable Integer idProduto) {
+        corProdutoService.deletarTodasCoresProduto(idProduto);
+        return ResponseEntity.noContent().build();
+    }
 }
