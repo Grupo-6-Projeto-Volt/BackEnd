@@ -10,5 +10,5 @@ public class ProdutosAcessadosDto {
     private String nome;
     private int quantidade;
     private int acessos;
-    private String url;
+    private String img;
 }

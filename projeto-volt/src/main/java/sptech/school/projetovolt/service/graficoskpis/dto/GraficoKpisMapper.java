@@ -46,7 +46,7 @@ public class GraficoKpisMapper {
             dto.setNome(entity.getNome());
             dto.setAcessos(entity.getAcessos());
             dto.setQuantidade(entity.getQtd());
-            dto.setUrl(entity.getUrl());
+            dto.setImg(entity.getImg());
             dtos.add(dto);
         }
         return dtos;
