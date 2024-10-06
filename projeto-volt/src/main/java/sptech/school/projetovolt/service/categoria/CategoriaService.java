@@ -62,6 +62,7 @@ public class CategoriaService {
     public byte[] gravarArquivo(List<Categoria> categorias, HttpServletResponse response) {
         String arquivo = "categorias.csv";
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setContentType("text/csv");
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + arquivo + "\"");
 
         try{
@@ -86,6 +87,5 @@ public class CategoriaService {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-
     }
 }

@@ -54,7 +54,7 @@ public class CategoriaController {
         categoriaService.deletarCategoria(id);
         return ResponseEntity.noContent().build();
     }
-    @GetMapping(value = "/exportar", produces = "text/csv")
+    @PostMapping(value = "/exportar", produces = "text/csv")
     public ResponseEntity<byte[]> exportarArquivo(@RequestBody List<Categoria> categorias, HttpServletResponse response){
         if(categorias.isEmpty()) return null;
         try {
