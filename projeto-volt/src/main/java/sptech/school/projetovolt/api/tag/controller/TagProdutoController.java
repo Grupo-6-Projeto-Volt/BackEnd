@@ -61,7 +61,7 @@ public class TagProdutoController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping(value = "/exportar", produces = "text/csv")
+    @PostMapping(value = "/exportar", produces = "text/csv")
     public ResponseEntity<byte[]> exportarArquivo(@RequestBody List<TagProduto> tags, HttpServletResponse response){
         if(tags.isEmpty()) return null;
         try {

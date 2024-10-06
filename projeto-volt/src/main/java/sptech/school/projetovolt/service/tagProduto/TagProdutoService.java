@@ -57,7 +57,8 @@ public class TagProdutoService {
     public byte[] gravarArquivo(List<TagProduto> tags,HttpServletResponse response) {
         String arquivo = "tags.csv";
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + arquivo + "\"");
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + arquivo + "\"");
 
         try{
             return gerarArquivo(tags);
