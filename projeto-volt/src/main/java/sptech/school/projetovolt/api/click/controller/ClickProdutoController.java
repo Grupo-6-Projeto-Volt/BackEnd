@@ -41,13 +41,13 @@ public class ClickProdutoController {
 
 
     @GetMapping("/mais-clicados")
-    public ResponseEntity<List<ClickProdutoMaisClicadosDTO>> listarMaisClicados(){
+    public ResponseEntity<List<ClickProdutoMaisClicadosDTO>> listarMaisClicados() {
         log.debug(service.listarMaisClicados().toString());
         return ResponseEntity.ok(ClickProdutoMapper.vwToDto(service.listarMaisClicados()));
     }
 
     @GetMapping("/mais-clicados-produtos")
-    public ResponseEntity<List<ProdutoConsultaDTO>> listarMaisClicadosProdutos(@RequestParam(required = false) Integer qtd){
+    public ResponseEntity<List<ProdutoConsultaDTO>> listarMaisClicadosProdutos(@RequestParam(required = false) Integer qtd) {
         List<ProdutoConsultaDTO> dtos = service.listarMaisClicadosProdutos(qtd).stream()
                 .map(ProdutoMapper::toDto)
                 .toList();
@@ -56,53 +56,58 @@ public class ClickProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<ClickProdutoConsultaDTO> criar(@RequestBody @Valid ClickProdutoCriacaoDTO novoClick){
-        return ResponseEntity.created(URI.create("/clicks-produto")).body(
-                ClickProdutoMapper.toDto(
-                        service.criar(
-                                ClickProdutoMapper.toEntity(novoClick,
-                                produtoService.buscarProdutoPorId(novoClick.getIdProduto()),
-                                usuarioService.buscarUsuarioPorId(novoClick.getIdUsuario())),
-                novoClick.getIdUsuario(),
-                novoClick.getIdProduto())));
+    public ResponseEntity<ClickProdutoConsultaDTO> criar(@RequestBody @Valid ClickProdutoCriacaoDTO novoClick) {
+        if (novoClick.getIdUsuario() != null) {
+            return ResponseEntity.created(URI.create("/clicks-produto")).body(
+                    ClickProdutoMapper.toDto(
+                            service.criar(
+                                    ClickProdutoMapper.toEntity(novoClick,
+                                            produtoService.buscarProdutoPorId(novoClick.getIdProduto()),
+                                            usuarioService.buscarUsuarioPorId(novoClick.getIdUsuario())),
+                                    novoClick.getIdUsuario(),
+                                    novoClick.getIdProduto())));
+        } else {
+            return ResponseEntity.created(URI.create("/clicks-produto")).body(ClickProdutoMapper.toDto(service.criar(ClickProdutoMapper.toEntity(novoClick, produtoService.buscarProdutoPorId(novoClick.getIdProduto()), null), null, novoClick.getIdProduto())));
+        }
     }
 
     @GetMapping
-    public ResponseEntity<List<ClickProdutoConsultaDTO>> listarOrdenadoPorData(){
+    public ResponseEntity<List<ClickProdutoConsultaDTO>> listarOrdenadoPorData() {
         return ResponseEntity.ok(ClickProdutoMapper.toDto(service.listarOrdenadoPorData()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<ClickProdutoConsultaDTO>> listarClicksPorProduto(@PathVariable int id){
+    public ResponseEntity<List<ClickProdutoConsultaDTO>> listarClicksPorProduto(@PathVariable int id) {
         return ResponseEntity.ok(ClickProdutoMapper.toDto(service.listarPorProduto(id)));
     }
 
     @GetMapping("/capturar-dados/categorias")
-    public ResponseEntity<List<CategoriasGraficosDto>> listarCategoriasMaisAcessadas(){
+    public ResponseEntity<List<CategoriasGraficosDto>> listarCategoriasMaisAcessadas() {
         List<VwCategoriasAcessos> categoriasAcessos = graficoKpisService.capturarCategoriasMaisAcessadas();
 
-        if(categoriasAcessos.isEmpty()){
+        if (categoriasAcessos.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(GraficoKpisMapper.toCategoriasGraficosDto(categoriasAcessos));
     }
 
     @GetMapping("/capturar-dados/produtos-mais-acessados")
-    public ResponseEntity<List<ProdutosAcessadosDto>> listarProdutosMaisAcessados(){
+    public ResponseEntity<List<ProdutosAcessadosDto>> listarProdutosMaisAcessados() {
         List<VwProdutosMaisAcessados> produtosMaisAcessados = graficoKpisService.capturarProdutosMaisAcessados();
 
-        if(produtosMaisAcessados.isEmpty()){
+        if (produtosMaisAcessados.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(GraficoKpisMapper.toProdutosAcessadosDto(produtosMaisAcessados));
     }
+
     @GetMapping("/capturar-dados/taxa-de-retorno")
-    public ResponseEntity<TaxaRetornoDto> capturarTaxaDeRetorno(){
+    public ResponseEntity<TaxaRetornoDto> capturarTaxaDeRetorno() {
         List<VwTaxaRetorno> taxaRetorno = graficoKpisService.capturarTaxaDeRetorno();
         List<Usuario> qtdUsuario = usuarioService.listarUsuarios();
-        if(taxaRetorno.isEmpty()){
+        if (taxaRetorno.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(GraficoKpisMapper.toTaxaRetornoDto(taxaRetorno,qtdUsuario));
+        return ResponseEntity.ok(GraficoKpisMapper.toTaxaRetornoDto(taxaRetorno, qtdUsuario));
     }
 }
