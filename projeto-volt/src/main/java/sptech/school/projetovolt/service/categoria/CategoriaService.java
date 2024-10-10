@@ -1,12 +1,21 @@
 package sptech.school.projetovolt.service.categoria;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import sptech.school.projetovolt.entity.categoria.Categoria;
 import sptech.school.projetovolt.entity.categoria.repository.CategoriaRepository;
 import sptech.school.projetovolt.entity.exception.ConflictException;
 import sptech.school.projetovolt.entity.exception.NotFoundException;
+import sptech.school.projetovolt.entity.tagProduto.TagProduto;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,5 +58,34 @@ public class CategoriaService {
         List<Categoria> categorias = categoriaRepository.findByNomeContainingIgnoreCase(nome);
 
         return categorias;
+    }
+    public byte[] gravarArquivo(List<Categoria> categorias, HttpServletResponse response) {
+        String arquivo = "categorias.csv";
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setContentType("text/csv");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + arquivo + "\"");
+
+        try{
+            return gerarArquivo(categorias);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
+    }
+    private byte[] gerarArquivo(List<Categoria> categorias){
+        try(ByteArrayOutputStream saidaByte = new ByteArrayOutputStream()){
+            OutputStreamWriter writer = new OutputStreamWriter(saidaByte,StandardCharsets.UTF_8);
+            writer.write("Id;Categoria\n");
+            for (Categoria categoria : categorias) {
+                writer.write(String.format("%d;%s\n",categoria.getId(),categoria.getNome()));
+            }
+            writer.flush();
+            Files.write(Paths.get("./categorias.csv"),saidaByte.toByteArray());
+            return saidaByte.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 }
