@@ -40,6 +40,11 @@ public class TagProdutoService {
         return tagEncontrada.orElseThrow(() -> new NotFoundException("TagProduto " + id));
     }
 
+    public TagProduto buscarTagPorNome (String tag) {
+        Optional<TagProduto> tagEncontrada = tagProdutoRepository.findByTag(tag);
+        return tagEncontrada.orElseThrow(() -> new NotFoundException("TagProduto " + tag));
+    }
+
     public TagProduto atualizarTag (Integer id, String tag) {
         TagProduto tagEncontrada = buscarTagPorId(id);
 

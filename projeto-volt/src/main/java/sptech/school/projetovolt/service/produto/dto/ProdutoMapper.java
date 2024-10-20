@@ -90,10 +90,12 @@ public class ProdutoMapper {
     }
 
     public static List<ProdutoConsultaDTO.CorProduto> toCorProdutoDto(List<CorProduto> entities){
+        if (entities == null) return null;
         return entities.stream().map(ProdutoMapper::toCorProdutoDto).toList();
     }
 
     public static List<ProdutoConsultaDTO.ImagemProduto> toImagemProdutoDto(List<ImagemProduto> entities) {
+        if (entities == null) return null;
         return entities.stream().map(ProdutoMapper::toImagemProdutoDto).toList();
     }
 
@@ -108,6 +110,7 @@ public class ProdutoMapper {
     }
 
     public static List<ProdutoConsultaDTO.TagProduto> toTagProdutoDto(List<TagProduto> entities) {
+        if (entities == null) return null;
         return entities.stream().map(ProdutoMapper::toTagProdutoDto).toList();
     }
 

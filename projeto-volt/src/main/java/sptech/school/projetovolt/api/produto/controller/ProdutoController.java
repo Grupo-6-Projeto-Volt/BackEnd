@@ -13,10 +13,7 @@ import sptech.school.projetovolt.api.util.ResponseUtil;
 import sptech.school.projetovolt.entity.categoria.Categoria;
 import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.service.hashtable.HashTableService;
-import sptech.school.projetovolt.service.produto.dto.ProdutoAlteracaoDto;
-import sptech.school.projetovolt.service.produto.dto.ProdutoConsultaDTO;
-import sptech.school.projetovolt.service.produto.dto.ProdutoCriacaoDTO;
-import sptech.school.projetovolt.service.produto.dto.ProdutoMapper;
+import sptech.school.projetovolt.service.produto.dto.*;
 import sptech.school.projetovolt.service.produto.ProdutoService;
 
 import java.io.ByteArrayOutputStream;
@@ -119,6 +116,7 @@ public class ProdutoController {
         List<Produto> produtosEncontrados = produtoService.buscarProdutosPorCategoria(categoria);
         return ResponseUtil.respondIfNotEmpty(ProdutoMapper.toDto(produtosEncontrados));
     }
+
    @PostMapping(value = "/exportar", produces = "text/csv")
     public ResponseEntity<byte[]> exportarArquivo(@RequestBody List<ProdutoConsultaDTO> produtos, HttpServletResponse response){
         if(produtos.isEmpty()) return null;
@@ -129,5 +127,6 @@ public class ProdutoController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
 
 }

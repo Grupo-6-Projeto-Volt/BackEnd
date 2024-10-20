@@ -29,10 +29,16 @@ public class CategoriaController {
         return ResponseUtil.respondIfNotEmpty(CategoriaMapper.toDto(categorias));
     }
 
-    @GetMapping("/buscarPorNomeContendo")
+    @GetMapping("/buscar-por-nome-contendo")
     public ResponseEntity<List<CategoriaConsultaDTO>> buscarCategoriasPorNomeContendo(@RequestParam @Valid String nome) {
         List<Categoria> categorias = categoriaService.buscarCategoriasPorNomeContendo(nome);
         return ResponseUtil.respondIfNotEmpty(CategoriaMapper.toDto(categorias));
+    }
+
+    @GetMapping("/buscar-por-nome-categoria")
+    public ResponseEntity<CategoriaConsultaDTO> buscarCategoriaPorNome(@RequestParam @Valid String nome) {
+        Categoria categoria = categoriaService.buscarCategoriasPorNome(nome);
+        return ResponseUtil.respondIfNotNull(CategoriaMapper.toDto(categoria));
     }
 
     @PostMapping
