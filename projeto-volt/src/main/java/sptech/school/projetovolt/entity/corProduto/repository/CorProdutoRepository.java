@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import sptech.school.projetovolt.entity.corProduto.CorProduto;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CorProdutoRepository extends JpaRepository<CorProduto, Integer> {
@@ -12,9 +13,11 @@ public interface CorProdutoRepository extends JpaRepository<CorProduto, Integer>
 
     Optional<CorProduto> findByHexId(String hexId);
 
+
     boolean existsByProdutoId(Integer idProduto);
 
     @Transactional
     void deleteByProdutoId(Integer idProduto);
+
 
 }

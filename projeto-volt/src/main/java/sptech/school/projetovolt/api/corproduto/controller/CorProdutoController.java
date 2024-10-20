@@ -44,6 +44,12 @@ public class CorProdutoController {
         return ResponseUtil.respondIfNotNull(CorProdutoMapper.toDto(cor));
     }
 
+    @GetMapping("/produtos/{id}")
+    public ResponseEntity<List<CorProdutoConsultaDTO>> buscarCoresPorProduto(@PathVariable @Valid int id) {
+        List<CorProduto> cores = corProdutoService.buscarCoresPorProduto(id);
+        return ResponseUtil.respondIfNotEmpty(CorProdutoMapper.toDto(cores));
+    }
+
     @PostMapping
     public ResponseEntity<CorProdutoConsultaDTO> criarCor(@RequestBody @Valid CorProdutoCriacaoDTO corCriacao) {
         CorProduto novaCor = corProdutoService.criarCor(CorProdutoMapper.toEntity(corCriacao), corCriacao.getIdProduto());

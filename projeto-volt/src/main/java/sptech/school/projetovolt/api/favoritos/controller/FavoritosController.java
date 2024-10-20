@@ -26,12 +26,21 @@ public class FavoritosController {
     private final ProdutoService produtoService;
 
     @PostMapping
-    public ResponseEntity<FavoritoConsultaDTO> criar(@RequestBody @Valid FavoritoCriacaoDTO novoFavorito) {
-        Favoritos criado = FavoritoMapper.toEntity(novoFavorito,
-                produtoService.buscarProdutoPorId(novoFavorito.getIdProduto()),
-                usuarioService.buscarUsuarioPorId(novoFavorito.getIdUsuario()));
-        Favoritos salvo = service.criar(criado, criado.getUsuario().getId(), criado.getProduto().getId());
-        return ResponseUtil.respondCreated(FavoritoMapper.toDto(salvo), "/favoritos", salvo.getId());
+    public ResponseEntity<FavoritoConsultaDTO> criar(@RequestParam(required = false) Integer idUsuario, @RequestParam(required = false) Integer idProduto, @RequestBody(required = false) @Valid FavoritoCriacaoDTO novoFavorito) {
+        if (novoFavorito != null) {
+            Favoritos criado = FavoritoMapper.toEntity(novoFavorito,
+                    produtoService.buscarProdutoPorId(novoFavorito.getIdProduto()),
+                    usuarioService.buscarUsuarioPorId(novoFavorito.getIdUsuario()));
+            Favoritos salvo = service.criar(criado, novoFavorito.getIdUsuario(), novoFavorito.getIdProduto());
+            return ResponseUtil.respondCreated(FavoritoMapper.toDto(salvo), "/favoritos", salvo.getId());
+        }
+
+        if (idUsuario == null || idProduto == null) return ResponseEntity.badRequest().build();
+
+        Favoritos entity = service.isProdutoFavoritadoPorUsuario(idUsuario, idProduto);
+        service.excluir(entity.getId());
+        
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/lista-por-usuario")
@@ -43,5 +52,11 @@ public class FavoritosController {
     public ResponseEntity<Void> excluir(@PathVariable int id) {
         service.excluir(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/is-favoritado")
+    public ResponseEntity<FavoritoConsultaDTO> isProdutoFavoritadoPorUsuario(@RequestParam int idUsuario, @RequestParam int idProduto) {
+        FavoritoConsultaDTO dto = FavoritoMapper.toDto(service.isProdutoFavoritadoPorUsuario(idUsuario, idProduto));
+        return ResponseEntity.ok(dto);
     }
 }

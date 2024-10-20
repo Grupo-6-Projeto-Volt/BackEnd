@@ -1,7 +1,9 @@
 package sptech.school.projetovolt.api.tag.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.api.util.ResponseUtil;
@@ -12,7 +14,12 @@ import sptech.school.projetovolt.service.tagProduto.dto.TagProdutoCriacaoDto;
 import sptech.school.projetovolt.service.tagProduto.dto.TagProdutoMapper;
 import sptech.school.projetovolt.utils.ListaObj;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Formatter;
+import java.util.FormatterClosedException;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +38,7 @@ public class TagProdutoController {
     public ResponseEntity<ListaObj<TagProdutoConsultaDto>> listarTags() {
         List<TagProduto> tagsEncontradas = tagProdutoService.listarTags();
 
-        if(tagsEncontradas.isEmpty()) return ResponseEntity.noContent().build();
+        if (tagsEncontradas.isEmpty()) return ResponseEntity.noContent().build();
 
         return ResponseEntity.ok(TagProdutoMapper.toDto(tagsEncontradas));
     }
@@ -58,5 +65,16 @@ public class TagProdutoController {
     public ResponseEntity<Void> deletarTag(@PathVariable int id) {
         tagProdutoService.deletarTagPorId(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(value = "/exportar", produces = "text/csv")
+    public ResponseEntity<byte[]> exportarArquivo(@RequestBody List<TagProduto> tags, HttpServletResponse response){
+        if(tags.isEmpty()) return null;
+        try {
+            return ResponseEntity.ok(tagProdutoService.gravarArquivo(tags,response));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }

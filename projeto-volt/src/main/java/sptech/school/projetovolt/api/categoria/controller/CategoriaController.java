@@ -1,11 +1,13 @@
 package sptech.school.projetovolt.api.categoria.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.api.util.ResponseUtil;
 import sptech.school.projetovolt.entity.categoria.Categoria;
+import sptech.school.projetovolt.entity.tagProduto.TagProduto;
 import sptech.school.projetovolt.service.categoria.CategoriaService;
 import sptech.school.projetovolt.service.categoria.dto.CategoriaAlteracaoDTO;
 import sptech.school.projetovolt.service.categoria.dto.CategoriaConsultaDTO;
@@ -57,5 +59,15 @@ public class CategoriaController {
     public ResponseEntity<Void> deletarCategoria(@PathVariable int id) {
         categoriaService.deletarCategoria(id);
         return ResponseEntity.noContent().build();
+    }
+    @PostMapping(value = "/exportar", produces = "text/csv")
+    public ResponseEntity<byte[]> exportarArquivo(@RequestBody List<Categoria> categorias, HttpServletResponse response){
+        if(categorias.isEmpty()) return null;
+        try {
+            return ResponseEntity.ok(categoriaService.gravarArquivo(categorias,response));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }

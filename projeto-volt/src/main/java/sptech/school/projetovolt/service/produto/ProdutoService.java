@@ -1,16 +1,26 @@
 package sptech.school.projetovolt.service.produto;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import sptech.school.projetovolt.entity.categoria.Categoria;
 import sptech.school.projetovolt.entity.exception.NotFoundException;
 import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.entity.produto.repository.ProdutoRepository;
 import sptech.school.projetovolt.service.categoria.CategoriaService;
+import sptech.school.projetovolt.service.produto.dto.ProdutoConsultaDTO;
 import sptech.school.projetovolt.service.produto.dto.ProdutoMapper;
 import sptech.school.projetovolt.utils.HashTableObj;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -77,6 +87,35 @@ public class ProdutoService {
 
     public List<Produto> buscarProdutosPorCategoria(String categoria) {
         return produtoRepository.buscaProdutoPorCategoria(categoria);
+    }
+    public byte[] gravarArquivo(List<ProdutoConsultaDTO> produtos, HttpServletResponse response) {
+        String arquivo = "produtos.csv";
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + arquivo + "\"");
+
+        try{
+            return gerarArquivo(produtos);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
+    }
+    private byte[] gerarArquivo(List<ProdutoConsultaDTO> produtos){
+        try(ByteArrayOutputStream saidaByte = new ByteArrayOutputStream()){
+            OutputStreamWriter writer = new OutputStreamWriter(saidaByte, StandardCharsets.UTF_8);
+            writer.write("Id;Nome;Estado;Preço;Categoria\n");
+            for (ProdutoConsultaDTO produto : produtos) {
+                writer.write(String.format("%d;%s;%s;%f;%s\n",produto.getId(),produto.getNome(),produto.getEstadoGeral(),produto.getPreco(),produto.getCategoria()));
+            }
+            writer.flush();
+            Files.write(Paths.get("./produtos.csv"),saidaByte.toByteArray());
+            return saidaByte.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 
 }

@@ -10,8 +10,8 @@ import sptech.school.projetovolt.service.usuario.dto.UsuarioMapper;
 import java.util.List;
 
 public class ClickProdutoMapper {
-    public static ClickProdutoConsultaDTO toDto(ClickProduto entity){
-        if(entity == null) return null;
+    public static ClickProdutoConsultaDTO toDto(ClickProduto entity) {
+        if (entity == null) return null;
 
         ClickProdutoConsultaDTO dto = new ClickProdutoConsultaDTO();
         dto.setProduto(ProdutoMapper.toDto(entity.getProduto()));
@@ -21,15 +21,18 @@ public class ClickProdutoMapper {
 
         return dto;
     }
-    public static List<ClickProdutoConsultaDTO> toDto(List<ClickProduto> entities){
+
+    public static List<ClickProdutoConsultaDTO> toDto(List<ClickProduto> entities) {
         return entities.stream().map(ClickProdutoMapper::toDto).toList();
     }
 
-    public static ClickProduto toEntity(ClickProdutoCriacaoDTO dto, Produto produto, Usuario usuario){
-        if(dto == null) return null;
+    public static ClickProduto toEntity(ClickProdutoCriacaoDTO dto, Produto produto, Usuario usuario) {
+        if (dto == null) return null;
 
         ClickProduto entity = new ClickProduto();
-        entity.setProduto(produto);
+        if (produto != null) {
+            entity.setProduto(produto);
+        }
         entity.setUsuario(usuario);
         entity.setDataHoraClick(dto.getDataHoraClick());
         entity.setPossivelCompra(dto.getPossivelCompra());
@@ -37,8 +40,8 @@ public class ClickProdutoMapper {
         return entity;
     }
 
-    public static ClickProdutoMaisClicadosDTO vwToDto(VwMaisClicados view){
-        if(view == null) return null;
+    public static ClickProdutoMaisClicadosDTO vwToDto(VwMaisClicados view) {
+        if (view == null) return null;
 
         ClickProdutoMaisClicadosDTO dto = new ClickProdutoMaisClicadosDTO();
         dto.setQtdClicks(view.getQtdClicks());
@@ -47,7 +50,7 @@ public class ClickProdutoMapper {
         return dto;
     }
 
-    public static List<ClickProdutoMaisClicadosDTO> vwToDto(List<VwMaisClicados> view){
+    public static List<ClickProdutoMaisClicadosDTO> vwToDto(List<VwMaisClicados> view) {
         return view.stream().map(ClickProdutoMapper::vwToDto).toList();
     }
 
