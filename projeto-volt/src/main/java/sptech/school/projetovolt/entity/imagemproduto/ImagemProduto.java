@@ -19,7 +19,7 @@ public class ImagemProduto {
     private String nome;
 
     @Column(name = "codigo_imagem")
-    private String codigoImagem;
+    private Object codigoImagem;
 
     @Column(name = "indice_vt")
     private Integer indiceVt;

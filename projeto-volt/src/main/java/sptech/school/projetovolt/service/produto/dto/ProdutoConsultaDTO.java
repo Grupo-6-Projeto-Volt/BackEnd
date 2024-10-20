@@ -49,7 +49,7 @@ public class ProdutoConsultaDTO {
     public static class ImagemProduto {
         private Integer id;
         private String nome;
-        private String codigoImagem;
+        private Object codigoImagem;
     }
 
     @Data

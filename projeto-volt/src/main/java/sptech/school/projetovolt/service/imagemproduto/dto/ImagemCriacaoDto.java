@@ -9,8 +9,8 @@ public class ImagemCriacaoDto {
     @NotBlank
     private String nome;
 
-    @NotBlank
-    private String codigoImagem;
+    @NotNull
+    private Object codigoImagem;
 
     @NotNull
     @PositiveOrZero

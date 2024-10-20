@@ -6,7 +6,7 @@ import lombok.Data;
 public class ImagemConsultaDto {
     private Integer id;
     private String nome;
-    private String codigoImagem;
+    private Object codigoImagem;
     private Integer indiceVt;
     private Produto produto;
 

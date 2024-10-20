@@ -2,11 +2,14 @@ package sptech.school.projetovolt.service.imagemproduto;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import sptech.school.projetovolt.entity.exception.BadRequestException;
 import sptech.school.projetovolt.entity.exception.NotFoundException;
 import sptech.school.projetovolt.entity.imagemproduto.ImagemProduto;
 import sptech.school.projetovolt.entity.imagemproduto.repository.ImagemProdutoRepository;
 import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.service.produto.ProdutoService;
+import sptech.school.projetovolt.utils.LambdaFunction;
+import sptech.school.projetovolt.utils.LambdaResponse;
 
 import java.util.List;
 
@@ -20,6 +23,14 @@ public class ImagemProdutoService {
     public ImagemProduto adicionarImagem(ImagemProduto novaImagem, Integer idProduto) {
         Produto produto = produtoService.buscarProdutoPorId(idProduto);
         novaImagem.setProduto(produto);
+
+        LambdaResponse res = LambdaFunction.uploadToS3(novaImagem.getNome(), novaImagem.getCodigoImagem());
+
+        System.out.println("Response:");
+        System.out.println(res);
+
+        novaImagem.setCodigoImagem(res);
+
         return imagemProdutoRepository.save(novaImagem);
     }
 
