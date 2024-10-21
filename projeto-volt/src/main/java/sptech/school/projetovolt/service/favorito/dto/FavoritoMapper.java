@@ -6,7 +6,6 @@ import sptech.school.projetovolt.entity.usuario.Usuario;
 import sptech.school.projetovolt.service.produto.dto.ProdutoMapper;
 import sptech.school.projetovolt.service.usuario.dto.UsuarioMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FavoritoMapper {

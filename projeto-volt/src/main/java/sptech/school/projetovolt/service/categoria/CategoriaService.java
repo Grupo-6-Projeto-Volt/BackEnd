@@ -8,7 +8,6 @@ import sptech.school.projetovolt.entity.categoria.Categoria;
 import sptech.school.projetovolt.entity.categoria.repository.CategoriaRepository;
 import sptech.school.projetovolt.entity.exception.ConflictException;
 import sptech.school.projetovolt.entity.exception.NotFoundException;
-import sptech.school.projetovolt.entity.tagProduto.TagProduto;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

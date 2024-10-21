@@ -7,7 +7,6 @@ import lombok.Setter;
 import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.entity.usuario.Usuario;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter

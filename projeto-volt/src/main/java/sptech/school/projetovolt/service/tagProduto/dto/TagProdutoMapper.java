@@ -6,7 +6,6 @@ import sptech.school.projetovolt.utils.ListaObj;
 import java.util.List;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class TagProdutoMapper {
     public static TagProdutoConsultaDto toDto(TagProduto entity){
