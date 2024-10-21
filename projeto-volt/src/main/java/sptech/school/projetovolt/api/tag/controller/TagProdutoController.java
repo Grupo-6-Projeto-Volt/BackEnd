@@ -47,6 +47,12 @@ public class TagProdutoController {
         return ResponseUtil.respondIfNotNull(TagProdutoMapper.toDto(tagEncontrada));
     }
 
+    @GetMapping("/buscar-tag-por-nome")
+    public ResponseEntity<TagProdutoConsultaDto> buscaTagPorNome(@RequestParam String tag) {
+        TagProduto tagEncontrada = tagProdutoService.buscarTagPorNome(tag);
+        return ResponseUtil.respondIfNotNull(TagProdutoMapper.toDto(tagEncontrada));
+    }
+
     @PatchMapping("/{id}")
     @Operation(summary = "Alterar tag", method = "PATCH", description = "Responsável por alterar uma tag", tags = {"Tags"})
     public ResponseEntity<TagProdutoConsultaDto> alterarTag(@PathVariable int id, @RequestParam @Valid String tag) {

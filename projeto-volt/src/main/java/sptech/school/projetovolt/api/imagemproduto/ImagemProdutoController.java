@@ -65,4 +65,11 @@ public class ImagemProdutoController {
         imagemProdutoService.deletarImagemPorId(id);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/deletar-imagens-produto/{idProduto}")
+    public ResponseEntity<Void> deletarImagensDoProdutoPorIdProduto(@PathVariable Integer idProduto) {
+        imagemProdutoService.deletarTodasImagensProduto(idProduto);
+        return ResponseEntity.noContent().build();
+    }
 }
+

@@ -61,6 +61,7 @@ public class ProdutoService {
         buscarProdutoPorId(id);
         Categoria categoria = categoriaService.buscarCategoriaPorId(idCategoria);
         produto.setCategoria(categoria);
+        produto.setId(id);
         return produtoRepository.save(produto);
     }
 

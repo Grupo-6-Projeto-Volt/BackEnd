@@ -54,9 +54,12 @@ public class CategoriaService {
     }
 
     public List<Categoria> buscarCategoriasPorNomeContendo(String nome) {
-        List<Categoria> categorias = categoriaRepository.findByNomeContainingIgnoreCase(nome);
+        return categoriaRepository.findByNomeContainingIgnoreCase(nome);
+    }
 
-        return categorias;
+    public Categoria buscarCategoriasPorNome(String nome) {
+        Optional<Categoria> categoriaEncontrada = categoriaRepository.findByNome(nome);
+        return categoriaEncontrada.orElseThrow(() -> new NotFoundException("Categoria " + nome));
     }
     public byte[] gravarArquivo(List<Categoria> categorias, HttpServletResponse response) {
         String arquivo = "categorias.csv";

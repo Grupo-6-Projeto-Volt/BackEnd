@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.api.util.ResponseUtil;
 import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.service.hashtable.HashTableService;
-import sptech.school.projetovolt.service.produto.dto.ProdutoAlteracaoDto;
-import sptech.school.projetovolt.service.produto.dto.ProdutoConsultaDTO;
-import sptech.school.projetovolt.service.produto.dto.ProdutoCriacaoDTO;
-import sptech.school.projetovolt.service.produto.dto.ProdutoMapper;
+import sptech.school.projetovolt.service.produto.dto.*;
 import sptech.school.projetovolt.service.produto.ProdutoService;
 
 import java.util.List;

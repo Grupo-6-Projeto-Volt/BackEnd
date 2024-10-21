@@ -68,5 +68,10 @@ public class ClassificacaoProdutoController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/deletar-tags-produto/{idProduto}")
+    public ResponseEntity<Void> deletarTagsDoProdutoPorIdProduto(@PathVariable Integer idProduto) {
+        classificacaoProdutoService.deletarTodasTagsProduto(idProduto);
+        return ResponseEntity.noContent().build();
+    }
 
 }

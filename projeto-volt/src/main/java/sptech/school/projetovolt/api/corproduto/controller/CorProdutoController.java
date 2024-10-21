@@ -59,7 +59,7 @@ public class CorProdutoController {
     @PostMapping
     @Operation(summary = "Cadastrar uma cor", method = "POST", description = "Responsável por cadastrar uma cor", tags = {"Cores"})
     public ResponseEntity<CorProdutoConsultaDTO> criarCor(@RequestBody @Valid CorProdutoCriacaoDTO corCriacao) {
-        CorProduto novaCor = corProdutoService.criarCor(CorProdutoMapper.toEntity(corCriacao));
+        CorProduto novaCor = corProdutoService.criarCor(CorProdutoMapper.toEntity(corCriacao), corCriacao.getIdProduto());
         return ResponseUtil.respondCreated(CorProdutoMapper.toDto(novaCor), "/cor", novaCor.getId());
     }
 
@@ -67,6 +67,12 @@ public class CorProdutoController {
     @Operation(summary = "Deletar uma cor por ID", method = "DELETE", description = "Responsável por deletar uma cor por ID", tags = {"Cores"})
     public ResponseEntity<Void> deletarCorPorId(@PathVariable int id) {
         corProdutoService.deletarCorPorId(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/deletar-cores-produto/{idProduto}")
+    public ResponseEntity<Void> deletarCoresDoProdutoPorIdProduto(@PathVariable Integer idProduto) {
+        corProdutoService.deletarTodasCoresProduto(idProduto);
         return ResponseEntity.noContent().build();
     }
 }
