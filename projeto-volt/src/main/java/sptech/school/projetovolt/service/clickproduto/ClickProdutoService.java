@@ -11,8 +11,6 @@ import sptech.school.projetovolt.entity.usuario.Usuario;
 import sptech.school.projetovolt.entity.usuario.repository.UsuarioRepository;
 import sptech.school.projetovolt.entity.vwmaisclicados.VwMaisClicados;
 import sptech.school.projetovolt.entity.vwmaisclicados.repository.VwMaisClicadosRepository;
-import sptech.school.projetovolt.service.clickproduto.dto.ClickProdutoConsultaDTO;
-import sptech.school.projetovolt.service.clickproduto.dto.ClickProdutoMaisClicadosDTO;
 
 import java.util.List;
 import java.util.Optional;

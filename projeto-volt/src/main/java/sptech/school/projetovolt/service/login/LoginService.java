@@ -15,10 +15,8 @@ import sptech.school.projetovolt.entity.usuario.Usuario;
 import sptech.school.projetovolt.service.login.dto.LoginMapper;
 import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioLoginDto;
 import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioTokenDto;
-import sptech.school.projetovolt.service.usuario.UsuarioService;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
