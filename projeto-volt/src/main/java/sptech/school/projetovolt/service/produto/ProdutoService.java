@@ -9,6 +9,7 @@ import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.entity.produto.repository.ProdutoRepository;
 import sptech.school.projetovolt.service.categoria.CategoriaService;
 import sptech.school.projetovolt.service.produto.dto.ProdutoConsultaDTO;
+import sptech.school.projetovolt.service.produto.dto.ProdutoMapper;
 import sptech.school.projetovolt.utils.HashTableObj;
 
 import java.io.*;
@@ -120,7 +121,7 @@ public class ProdutoService {
         }
     }
     public byte[] gravarArquivo(String arquivo){
-        List<ProdutoConsultaDTO> produtos = ProdutoMapper.toDto(listarProdutos(null));
+        List<ProdutoConsultaDTO> produtos = ProdutoMapper.toDto(listarProdutos(null,1000));
         int contador = 0;
         ByteArrayOutputStream saidaByte = new ByteArrayOutputStream();
         try(OutputStreamWriter writer = new OutputStreamWriter(saidaByte,StandardCharsets.UTF_8)){
