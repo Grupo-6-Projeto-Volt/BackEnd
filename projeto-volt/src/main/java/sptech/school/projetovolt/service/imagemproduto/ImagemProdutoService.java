@@ -11,6 +11,7 @@ import sptech.school.projetovolt.service.produto.ProdutoService;
 import sptech.school.projetovolt.utils.LambdaFunction;
 import sptech.school.projetovolt.utils.LambdaResponse;
 
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -26,10 +27,11 @@ public class ImagemProdutoService {
 
         LambdaResponse res = LambdaFunction.uploadToS3(novaImagem.getNome(), novaImagem.getCodigoImagem());
 
-        System.out.println("Response:");
-        System.out.println(res);
+        if (res == null || !res.valid()) {
+            throw new BadRequestException("upload de imagem para s3");
+        }
 
-        novaImagem.setCodigoImagem(res);
+        novaImagem.setCodigoImagem(res.response());
 
         return imagemProdutoRepository.save(novaImagem);
     }

@@ -6,6 +6,8 @@ public record LambdaResponse(
     int status,
     Map<String, Object> params,
     boolean valid,
+
+    String response,
     String result
 ) {
 }

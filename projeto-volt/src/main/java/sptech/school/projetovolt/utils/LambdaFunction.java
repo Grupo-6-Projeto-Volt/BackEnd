@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class LambdaFunction {
 
-    public static LambdaResponse uploadToS3(String name, Object image) {
+    public static LambdaResponse uploadToS3(String name, String image) {
 
         String function = "lambda-cadastro-imagens-s3";
 
