@@ -127,6 +127,16 @@ public class ProdutoController {
             return ResponseEntity.internalServerError().build();
         }
     }
+    @GetMapping(value = "/exportar-txt",produces = "text/txt")
+    public ResponseEntity<byte[]> exportarArquivoTxt(){
+        try{
+            return ResponseEntity.ok(produtoService.gravarArquivo("produtos.txt"));
+        }catch (Exception  e){
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
 
     @GetMapping("/recomendado")
     @Operation(summary = "Lista os produtos recomendados", method = "GET", description = "Responsável por listar os produtos recomendados", tags = {"Produtos"})
