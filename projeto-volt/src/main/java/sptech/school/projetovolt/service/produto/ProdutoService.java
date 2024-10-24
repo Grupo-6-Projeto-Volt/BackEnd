@@ -2,7 +2,6 @@ package sptech.school.projetovolt.service.produto;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import sptech.school.projetovolt.entity.categoria.Categoria;
 import sptech.school.projetovolt.entity.exception.NotFoundException;
@@ -10,7 +9,6 @@ import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.entity.produto.repository.ProdutoRepository;
 import sptech.school.projetovolt.service.categoria.CategoriaService;
 import sptech.school.projetovolt.service.produto.dto.ProdutoConsultaDTO;
-import sptech.school.projetovolt.service.produto.dto.ProdutoMapper;
 import sptech.school.projetovolt.utils.HashTableObj;
 
 import java.io.*;
@@ -22,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -39,15 +38,16 @@ public class ProdutoService {
         return produtoRepository.save(produto);
     }
 
-    public List<Produto> listarProdutos(String textoBusca) {
+    public List<Produto> listarProdutos(String textoBusca, Integer limite) {
         if (textoBusca != null && !textoBusca.isEmpty()) {
             String textoNormalizado = Normalizer.normalize(textoBusca, Normalizer.Form.NFD)
                     .replaceAll("\\p{InCombiningDiacriticalMarks}", "")
                     .toLowerCase();
-            return produtoRepository.findAllByNomeContainsIgnoreCase(textoNormalizado);
+            return produtoRepository.findAllByNomeContainsIgnoreCase(textoNormalizado, limite);
         }
-        return produtoRepository.findAll();
+        return produtoRepository.findAll(limite);
     }
+
     public List<Produto> buscarOfertas(){
         return produtoRepository.findByDescontoNotNull();
     }
@@ -62,6 +62,7 @@ public class ProdutoService {
         buscarProdutoPorId(id);
         Categoria categoria = categoriaService.buscarCategoriaPorId(idCategoria);
         produto.setCategoria(categoria);
+        produto.setId(id);
         return produtoRepository.save(produto);
     }
 
@@ -87,6 +88,7 @@ public class ProdutoService {
     public List<Produto> buscarProdutosPorCategoria(String categoria) {
         return produtoRepository.buscaProdutoPorCategoria(categoria);
     }
+
     public byte[] gravarArquivo(List<ProdutoConsultaDTO> produtos, HttpServletResponse response) {
         String arquivo = "produtos.csv";
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
@@ -101,6 +103,7 @@ public class ProdutoService {
         }
 
     }
+
     private byte[] gerarArquivo(List<ProdutoConsultaDTO> produtos){
         try(ByteArrayOutputStream saidaByte = new ByteArrayOutputStream()){
             OutputStreamWriter writer = new OutputStreamWriter(saidaByte, StandardCharsets.UTF_8);
@@ -172,4 +175,8 @@ public class ProdutoService {
         }
     }
 
+    public List<Produto> buscarProdutosRecomendados(Integer idUser, Integer limite) {
+        // FIXME: Implementar lógica de recomendação quando o idUser for null
+        return produtoRepository.buscaProdutosRecomendados(Objects.requireNonNullElse(idUser, 1), limite);
+    }
 }

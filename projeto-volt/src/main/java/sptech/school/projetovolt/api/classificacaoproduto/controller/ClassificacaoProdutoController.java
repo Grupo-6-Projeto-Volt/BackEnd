@@ -1,5 +1,6 @@
 package sptech.school.projetovolt.api.classificacaoproduto.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ public class ClassificacaoProdutoController {
     private final ClassificacaoProdutoService classificacaoProdutoService;
 
     @PostMapping
+    @Operation(summary = "Cadastrar uma classificação de produto", method = "POST", description = "Responsável por cadastrar uma classificação de produto", tags = {"Classificação de Produto"})
     public ResponseEntity<ClassificacaoProdutoConsultaDto> associarTagProuduto(
             @RequestParam Integer idProduto,
             @RequestParam Integer idTag
@@ -30,6 +32,7 @@ public class ClassificacaoProdutoController {
     }
 
     @GetMapping
+    @Operation(summary = "Listar todas as classificações de produtos", method = "GET", description = "Responsável por listar todas as classificações de produtos cadastradas", tags = {"Classificação de Produto"})
     public ResponseEntity<List<ClassificacaoProdutoConsultaDto>> listarClassificacaoProduto() {
         List<ClassificacaoProduto> classificacoesEncontradas = classificacaoProdutoService.listarClassificacoesProdutos();
         if (classificacoesEncontradas.isEmpty()) {
@@ -40,12 +43,14 @@ public class ClassificacaoProdutoController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Buscar classificação de produto por ID", method = "GET", description = "Responsável por buscar uma classificação de produto por ID", tags = {"Classificação de Produto"})
     public ResponseEntity<ClassificacaoProdutoConsultaDto> buscarClassificacaoProdutoPorId(@PathVariable Integer id) {
         ClassificacaoProduto classificacaoEncontrada = classificacaoProdutoService.buscarClassificacaoProdutoPorId(id);
         return ResponseEntity.ok(toDto(classificacaoEncontrada));
     }
 
     @PatchMapping("/{id}")
+    @Operation(summary = "Atualizar classificação de produto", method = "PATCH", description = "Responsável por atualizar uma classificação de produto", tags = {"Classificação de Produto"})
     public ResponseEntity<ClassificacaoProdutoConsultaDto> atualizarClassificacaoProduto(
             @PathVariable Integer id,
             @RequestParam Integer idProduto,
@@ -57,10 +62,16 @@ public class ClassificacaoProdutoController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Deletar classificação de produto por ID", method = "DELETE", description = "Responsável por deletar uma classificação de produto por ID", tags = {"Classificação de Produto"})
     public ResponseEntity<Void> deletarClassificacaoProdutoPorId(@PathVariable Integer id) {
         classificacaoProdutoService.deletarClassificacaoProdutoPorId(id);
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/deletar-tags-produto/{idProduto}")
+    public ResponseEntity<Void> deletarTagsDoProdutoPorIdProduto(@PathVariable Integer idProduto) {
+        classificacaoProdutoService.deletarTodasTagsProduto(idProduto);
+        return ResponseEntity.noContent().build();
+    }
 
 }

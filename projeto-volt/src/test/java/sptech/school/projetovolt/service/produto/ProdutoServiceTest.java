@@ -114,7 +114,7 @@ class ProdutoServiceTest {
             Mockito.when(repository.findAll()).thenReturn(List.of(produto));
 
             // THEN
-            List<Produto> resposta = service.listarProdutos(null);
+            List<Produto> resposta = service.listarProdutos(null, 10);
 
             // ASSERT
             Assertions.assertFalse(resposta.isEmpty());
@@ -135,7 +135,7 @@ class ProdutoServiceTest {
             Mockito.when(repository.findAllByNome(textoBusca)).thenReturn(List.of(produto));
 
             // THEN
-            List<Produto> resposta = service.listarProdutos(textoBusca);
+            List<Produto> resposta = service.listarProdutos(textoBusca, 10);
 
             // ASSERT
             Assertions.assertFalse(resposta.isEmpty());

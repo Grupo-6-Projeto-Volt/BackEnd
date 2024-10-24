@@ -2,7 +2,6 @@ package sptech.school.projetovolt.service.tagProduto;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import sptech.school.projetovolt.entity.exception.ConflictException;
 import sptech.school.projetovolt.entity.exception.NotFoundException;
@@ -38,6 +37,11 @@ public class TagProdutoService {
     public TagProduto buscarTagPorId (Integer id) {
         Optional<TagProduto> tagEncontrada = tagProdutoRepository.findById(id);
         return tagEncontrada.orElseThrow(() -> new NotFoundException("TagProduto " + id));
+    }
+
+    public TagProduto buscarTagPorNome (String tag) {
+        Optional<TagProduto> tagEncontrada = tagProdutoRepository.findByTag(tag);
+        return tagEncontrada.orElseThrow(() -> new NotFoundException("TagProduto " + tag));
     }
 
     public TagProduto atualizarTag (Integer id, String tag) {

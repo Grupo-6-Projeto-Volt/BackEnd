@@ -1,6 +1,7 @@
 package sptech.school.projetovolt.utils;
 
 import org.springframework.stereotype.Component;
+
 @Component
 public class HashTableObj<T> {
     private ListaEncadeadaObj<T>[] tab;
