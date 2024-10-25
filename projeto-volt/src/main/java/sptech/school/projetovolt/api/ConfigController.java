@@ -21,21 +21,21 @@ public class ConfigController {
     private final Region region = Region.US_EAST_1;
     private final S3Client s3 = S3Client.builder().region(region).build();
 
-    @GetMapping(value = "/banner", produces = "image/png")
-    public ResponseEntity<byte[]> getFotoBanner() throws IOException {
+    @GetMapping(produces = "image/png")
+    public ResponseEntity<byte[]> getFoto(@RequestParam String nameImg) throws IOException {
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                 .bucket("s3-ichiban-teste")
-                .key("banner.png")
+                .key(nameImg + ".png")
                 .build();
         byte[] byteArray = s3.getObjectAsBytes(getObjectRequest).asByteArray();
         return ResponseEntity.ok(byteArray);
     }
 
-    @PostMapping(value = "/banner", consumes = "image/*")
-    public ResponseEntity<Void> postarBanner(@RequestBody byte[] referenciaArquivoFoto){
+    @PostMapping( consumes = "image/*")
+    public ResponseEntity<Void> postar(@RequestBody byte[] referenciaArquivoFoto, @RequestParam String nameImg){
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket("s3-ichiban-teste")
-                .key("banner.png")
+                .key(nameImg + ".png")
                 .build();
 
         s3.putObject(putObjectRequest, fromBytes(referenciaArquivoFoto));
