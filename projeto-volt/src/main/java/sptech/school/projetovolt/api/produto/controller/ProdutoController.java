@@ -7,16 +7,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.api.util.ResponseUtil;
-import sptech.school.projetovolt.entity.categoria.Categoria;
 import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.service.hashtable.HashTableService;
-import sptech.school.projetovolt.service.produto.dto.ProdutoAlteracaoDto;
-import sptech.school.projetovolt.service.produto.dto.ProdutoConsultaDTO;
-import sptech.school.projetovolt.service.produto.dto.ProdutoCriacaoDTO;
-import sptech.school.projetovolt.service.produto.dto.ProdutoMapper;
+import sptech.school.projetovolt.service.produto.dto.*;
 import sptech.school.projetovolt.service.produto.ProdutoService;
 
 import java.io.ByteArrayOutputStream;
@@ -128,6 +125,20 @@ public class ProdutoController {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @GetMapping("/exportar-json")
+    public ResponseEntity<byte[]> exportarJson() {
+        List<Produto> produtos = produtoService.listarProdutos(null);
+        List<ProdutoExportacaoDto> dtos = ProdutoMapper.toProdutoExportacaoDto(produtos);
+        byte[] bytes = produtoService.exportarJson(dtos);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=produtos.json");
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(bytes);
     }
 
 }

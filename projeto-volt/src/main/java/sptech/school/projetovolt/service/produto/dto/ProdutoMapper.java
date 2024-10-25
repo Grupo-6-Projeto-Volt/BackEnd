@@ -111,4 +111,25 @@ public class ProdutoMapper {
         return entities.stream().map(ProdutoMapper::toTagProdutoDto).toList();
     }
 
+    public static ProdutoExportacaoDto toProdutoExportacaoDto(Produto entity) {
+        if (entity == null) return null;
+
+        ProdutoExportacaoDto dto = new ProdutoExportacaoDto();
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
+        dto.setEstadoGeral(entity.getEstadoGeral());
+        dto.setPreco(entity.getPreco());
+        dto.setCategoria(entity.getCategoria().getNome());
+
+        return dto;
+    }
+
+    public static List<ProdutoExportacaoDto> toProdutoExportacaoDto(List<Produto> entities) {
+        if (entities == null) return null;
+
+        return entities.stream()
+                .map(ProdutoMapper::toProdutoExportacaoDto).toList();
+
+    }
+
 }
