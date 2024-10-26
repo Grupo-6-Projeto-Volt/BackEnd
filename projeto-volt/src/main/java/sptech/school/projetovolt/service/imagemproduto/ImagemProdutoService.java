@@ -41,8 +41,12 @@ public class ImagemProdutoService {
 
     public void deletarImagemPorId(Integer id) {
         if (!imagemProdutoRepository.existsById(id)) throw new NotFoundException("Imagem com ID " + id + " não encontrada.");
-
         imagemProdutoRepository.deleteById(id);
+    }
+
+    public void deletarTodasImagensProduto(Integer idProduto) {
+        if (!imagemProdutoRepository.existsByProdutoId(idProduto)) throw  new NotFoundException("Não existe imagem associada ao produto de id " + idProduto);
+        imagemProdutoRepository.deleteByProdutoId(idProduto);
     }
 
 

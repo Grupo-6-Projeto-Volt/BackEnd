@@ -3,7 +3,6 @@ package sptech.school.projetovolt.service.produtochamado.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data

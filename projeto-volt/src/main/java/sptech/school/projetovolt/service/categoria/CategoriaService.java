@@ -8,7 +8,6 @@ import sptech.school.projetovolt.entity.categoria.Categoria;
 import sptech.school.projetovolt.entity.categoria.repository.CategoriaRepository;
 import sptech.school.projetovolt.entity.exception.ConflictException;
 import sptech.school.projetovolt.entity.exception.NotFoundException;
-import sptech.school.projetovolt.entity.tagProduto.TagProduto;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -55,9 +54,12 @@ public class CategoriaService {
     }
 
     public List<Categoria> buscarCategoriasPorNomeContendo(String nome) {
-        List<Categoria> categorias = categoriaRepository.findByNomeContainingIgnoreCase(nome);
+        return categoriaRepository.findByNomeContainingIgnoreCase(nome);
+    }
 
-        return categorias;
+    public Categoria buscarCategoriasPorNome(String nome) {
+        Optional<Categoria> categoriaEncontrada = categoriaRepository.findByNome(nome);
+        return categoriaEncontrada.orElseThrow(() -> new NotFoundException("Categoria " + nome));
     }
     public byte[] gravarArquivo(List<Categoria> categorias, HttpServletResponse response) {
         String arquivo = "categorias.csv";

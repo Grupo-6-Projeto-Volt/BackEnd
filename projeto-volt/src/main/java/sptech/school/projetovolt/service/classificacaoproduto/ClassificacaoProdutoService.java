@@ -70,4 +70,9 @@ public class ClassificacaoProdutoService {
         classificacaoProdutoRepository.deleteById(id);
     }
 
+    public void deletarTodasTagsProduto(Integer idProduto) {
+        if (!classificacaoProdutoRepository.existsByProdutoId(idProduto)) throw  new NotFoundException("Não existe tag associada ao produto de id " + idProduto);
+        classificacaoProdutoRepository.deleteByProdutoId(idProduto);
+    }
+
 }

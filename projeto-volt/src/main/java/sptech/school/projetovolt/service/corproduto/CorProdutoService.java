@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import sptech.school.projetovolt.entity.corProduto.CorProduto;
 import sptech.school.projetovolt.entity.corProduto.repository.CorProdutoRepository;
 import sptech.school.projetovolt.entity.exception.NotFoundException;
+import sptech.school.projetovolt.entity.produto.Produto;
+import sptech.school.projetovolt.service.produto.ProdutoService;
 
 import java.util.List;
 
@@ -13,6 +15,7 @@ import java.util.List;
 public class CorProdutoService {
 
     private final CorProdutoRepository corProdutoRepository;
+    private final ProdutoService produtoService;
 
     public List<CorProduto> listarCores() {
         return corProdutoRepository.findAll();
@@ -40,7 +43,9 @@ public class CorProdutoService {
                .orElseThrow(() -> new NotFoundException("Cor Hex " + hex));
     }
 
-    public CorProduto criarCor(CorProduto novaCor) {
+    public CorProduto criarCor(CorProduto novaCor, Integer idProduto) {
+        Produto produtoEncontrado = produtoService.buscarProdutoPorId(idProduto);
+        novaCor.setProduto(produtoEncontrado);
         return corProdutoRepository.save(novaCor);
     }
 
@@ -49,6 +54,11 @@ public class CorProdutoService {
             throw new NotFoundException("Cor " + id);
         }
         corProdutoRepository.deleteById(id);
+    }
+
+    public void deletarTodasCoresProduto(Integer idProduto) {
+        if (!corProdutoRepository.existsByProdutoId(idProduto)) throw  new NotFoundException("Não existe cor associada ao produto de id " + idProduto);
+        corProdutoRepository.deleteByProdutoId(idProduto);
     }
 
 

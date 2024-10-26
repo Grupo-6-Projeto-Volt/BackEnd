@@ -1,6 +1,7 @@
 package sptech.school.projetovolt.utils;
 
 import lombok.Getter;
+
 @Getter
 public enum StatusChamado {
 
