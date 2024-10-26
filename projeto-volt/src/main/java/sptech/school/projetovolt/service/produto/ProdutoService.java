@@ -13,6 +13,7 @@ import sptech.school.projetovolt.entity.produto.repository.ProdutoRepository;
 import sptech.school.projetovolt.service.categoria.CategoriaService;
 import sptech.school.projetovolt.service.produto.dto.ProdutoConsultaDTO;
 import sptech.school.projetovolt.service.produto.dto.ProdutoExportacaoDto;
+import sptech.school.projetovolt.service.produto.dto.ProdutoMapper;
 import sptech.school.projetovolt.utils.HashTableObj;
 
 import java.io.*;

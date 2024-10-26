@@ -150,7 +150,7 @@ public class ProdutoController {
 
     @GetMapping("/exportar-json")
     public ResponseEntity<byte[]> exportarJson() {
-        List<Produto> produtos = produtoService.listarProdutos(null);
+        List<Produto> produtos = produtoService.listarProdutos(null, 1000);
         List<ProdutoExportacaoDto> dtos = ProdutoMapper.toProdutoExportacaoDto(produtos);
         byte[] bytes = produtoService.exportarJson(dtos);
         HttpHeaders headers = new HttpHeaders();
