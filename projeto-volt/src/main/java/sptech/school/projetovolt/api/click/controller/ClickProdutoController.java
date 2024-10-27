@@ -101,9 +101,8 @@ public class ClickProdutoController {
     public ResponseEntity<List<ProdutosAcessadosDto>> listarProdutosMaisAcessados() {
         List<VwProdutosMaisAcessados> produtosMaisAcessados = graficoKpisService.capturarProdutosMaisAcessados();
 
-        if (produtosMaisAcessados.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
+        if (produtosMaisAcessados.isEmpty()) return ResponseEntity.noContent().build();
+
         return ResponseEntity.ok(GraficoKpisMapper.toProdutosAcessadosDto(produtosMaisAcessados));
     }
 

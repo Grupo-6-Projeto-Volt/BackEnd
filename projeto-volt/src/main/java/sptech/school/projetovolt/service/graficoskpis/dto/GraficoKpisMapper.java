@@ -39,7 +39,9 @@ public class GraficoKpisMapper {
 
     public static List<ProdutosAcessadosDto> toProdutosAcessadosDto(List<VwProdutosMaisAcessados> entities){
         if(entities.isEmpty()) return null;
+
         List<ProdutosAcessadosDto> dtos = new ArrayList<>();
+
         for (VwProdutosMaisAcessados entity : entities) {
             ProdutosAcessadosDto dto = new ProdutosAcessadosDto();
             dto.setId(entity.getId());
@@ -49,6 +51,7 @@ public class GraficoKpisMapper {
             dto.setUrl(entity.getUrl());
             dtos.add(dto);
         }
+
         return dtos;
     }
 

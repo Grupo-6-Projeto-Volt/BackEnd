@@ -19,5 +19,6 @@ public interface CorProdutoRepository extends JpaRepository<CorProduto, Integer>
     @Transactional
     void deleteByProdutoId(Integer idProduto);
 
+    List<CorProduto> findByProdutoId(Integer id);
 
 }

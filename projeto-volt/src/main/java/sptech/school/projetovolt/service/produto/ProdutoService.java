@@ -11,9 +11,7 @@ import sptech.school.projetovolt.service.categoria.CategoriaService;
 import sptech.school.projetovolt.service.produto.dto.ProdutoConsultaDTO;
 import sptech.school.projetovolt.utils.HashTableObj;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -119,8 +117,30 @@ public class ProdutoService {
         }
     }
 
+    public void importarArquivo(String arquivo){
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(arquivo))) {
+            String linha = reader.readLine();
+            // Leitura do header do TXT
+            if (!linha.startsWith("00")) {
+                throw new IllegalArgumentException("Arquivo inválido");
+            }
+            // Leitura
+            while ((linha = reader.readLine()) != null && linha.startsWith("02")) {
+
+                Produto produto = new Produto();
+                produto.setId(Integer.parseInt(linha.substring(2, 6).trim()));
+                produto.setNome(linha.substring(6, 38).trim());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
     public List<Produto> buscarProdutosRecomendados(Integer idUser, Integer limite) {
-        // FIXME: Implementar lógica de recomendação quando o idUser for null
-        return produtoRepository.buscaProdutosRecomendados(Objects.requireNonNullElse(idUser, 1), limite);
+        if(idUser == null) return produtoRepository.buscarProdutosMaioresPromocoes(limite);
+        return produtoRepository.buscaProdutosRecomendados(idUser, limite);
     }
 }
