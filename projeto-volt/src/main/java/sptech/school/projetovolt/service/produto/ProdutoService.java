@@ -1,6 +1,9 @@
 package sptech.school.projetovolt.service.produto;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import sptech.school.projetovolt.entity.categoria.Categoria;
@@ -9,6 +12,7 @@ import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.entity.produto.repository.ProdutoRepository;
 import sptech.school.projetovolt.service.categoria.CategoriaService;
 import sptech.school.projetovolt.service.produto.dto.ProdutoConsultaDTO;
+import sptech.school.projetovolt.service.produto.dto.ProdutoExportacaoDto;
 import sptech.school.projetovolt.service.produto.dto.ProdutoMapper;
 import sptech.school.projetovolt.utils.HashTableObj;
 
@@ -23,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+
 @Service
 @RequiredArgsConstructor
 public class ProdutoService {
@@ -31,7 +36,7 @@ public class ProdutoService {
     private final CategoriaService categoriaService;
     private final HashTableObj<String> hashTable;
 
-    public Produto cadastrarProduto (Produto produto, Integer idCategoria) {
+    public Produto cadastrarProduto(Produto produto, Integer idCategoria) {
         Categoria categoria = categoriaService.buscarCategoriaPorId(idCategoria);
 
         produto.setCategoria(categoria);
@@ -49,17 +54,17 @@ public class ProdutoService {
         return produtoRepository.findAll(limite);
     }
 
-    public List<Produto> buscarOfertas(){
+    public List<Produto> buscarOfertas() {
         return produtoRepository.findByDescontoNotNull();
     }
 
-    public Produto buscarProdutoPorId (int id) {
+    public Produto buscarProdutoPorId(int id) {
         return produtoRepository
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException("Produto " + id));
     }
 
-    public Produto alterarProdutoPorId (Integer id, Produto produto, Integer idCategoria) {
+    public Produto alterarProdutoPorId(Integer id, Produto produto, Integer idCategoria) {
         buscarProdutoPorId(id);
         Categoria categoria = categoriaService.buscarCategoriaPorId(idCategoria);
         produto.setCategoria(categoria);
@@ -67,19 +72,19 @@ public class ProdutoService {
         return produtoRepository.save(produto);
     }
 
-    public void deletarProdutoPorId (Integer id) {
+    public void deletarProdutoPorId(Integer id) {
         buscarProdutoPorId(id);
         produtoRepository.deleteById(id);
     }
 
-    public List<Produto> filtrarPorPreco (String direcao) {
+    public List<Produto> filtrarPorPreco(String direcao) {
         if (direcao == null || direcao.equalsIgnoreCase("asc")) {
             return produtoRepository.findByOrderByPreco();
         }
         return produtoRepository.findByOrderByPrecoDesc();
     }
 
-    public List<Produto> filtrarPorDesconto (String direcao) {
+    public List<Produto> filtrarPorDesconto(String direcao) {
         if (direcao == null || direcao.equalsIgnoreCase("asc")) {
             return produtoRepository.findByOrderByDesconto();
         }
@@ -96,7 +101,7 @@ public class ProdutoService {
         response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=\"" + arquivo + "\"");
 
-        try{
+        try {
             return gerarArquivo(produtos);
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,15 +110,15 @@ public class ProdutoService {
 
     }
 
-    private byte[] gerarArquivo(List<ProdutoConsultaDTO> produtos){
-        try(ByteArrayOutputStream saidaByte = new ByteArrayOutputStream()){
+    private byte[] gerarArquivo(List<ProdutoConsultaDTO> produtos) {
+        try (ByteArrayOutputStream saidaByte = new ByteArrayOutputStream()) {
             OutputStreamWriter writer = new OutputStreamWriter(saidaByte, StandardCharsets.UTF_8);
             writer.write("Id;Nome;Estado;Preço;Categoria\n");
             for (ProdutoConsultaDTO produto : produtos) {
-                writer.write(String.format("%d;%s;%s;%f;%s\n",produto.getId(),produto.getNome(),produto.getEstadoGeral(),produto.getPreco(),produto.getCategoria()));
+                writer.write(String.format("%d;%s;%s;%f;%s\n", produto.getId(), produto.getNome(), produto.getEstadoGeral(), produto.getPreco(), produto.getCategoria()));
             }
             writer.flush();
-            Files.write(Paths.get("./produtos.csv"),saidaByte.toByteArray());
+            Files.write(Paths.get("./produtos.csv"), saidaByte.toByteArray());
             return saidaByte.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
@@ -153,7 +158,6 @@ public class ProdutoService {
             exception.printStackTrace();
             throw new RuntimeException(exception);
         }
-
         try(OutputStreamWriter writer = new OutputStreamWriter(saidaByte,StandardCharsets.UTF_8)){
             String trailer = "01";
             trailer += String.format("%05d",contador);
@@ -180,4 +184,16 @@ public class ProdutoService {
         // FIXME: Implementar lógica de recomendação quando o idUser for null
         return produtoRepository.buscaProdutosRecomendados(Objects.requireNonNullElse(idUser, 1), limite);
     }
+  
+    public byte[] exportarJson(List<ProdutoExportacaoDto> produtos) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            return objectMapper.writeValueAsBytes(produtos);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao serializar os dados para JSON", e);
+        }
+    }
+
 }
