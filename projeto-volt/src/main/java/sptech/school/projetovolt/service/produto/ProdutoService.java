@@ -3,6 +3,7 @@ package sptech.school.projetovolt.service.produto;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import sptech.school.projetovolt.entity.categoria.Categoria;
 import sptech.school.projetovolt.entity.exception.NotFoundException;
 import sptech.school.projetovolt.entity.produto.Produto;
@@ -17,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.Normalizer;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -179,5 +181,45 @@ public class ProdutoService {
     public List<Produto> buscarProdutosRecomendados(Integer idUser, Integer limite) {
         // FIXME: Implementar lógica de recomendação quando o idUser for null
         return produtoRepository.buscaProdutosRecomendados(Objects.requireNonNullElse(idUser, 1), limite);
+    }
+
+    public void processarArquivoImportacao(MultipartFile file) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
+            String linha;
+
+            linha = reader.readLine();
+
+            if (linha == null || !linha.startsWith("00")) throw new IllegalArgumentException("Header inválido no arquivo.");
+
+
+            while ((linha = reader.readLine()) != null) {
+                if (linha.startsWith("02")) {
+                    Produto produto = parseRegistroProduto(linha);
+                    produtoRepository.save(produto);
+                } else if (linha.startsWith("01")) {
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao ler o arquivo", e);
+        }
+    }
+
+    private Produto parseRegistroProduto(String linha) {
+        Produto produto = new Produto();
+        produto.setNome(linha.substring(7, 11).trim());
+        produto.setDescricao(linha.substring(11, 411).trim());
+        produto.setPreco(Double.parseDouble(linha.substring(411, 418).trim()));
+        produto.setQtdEstoque(Integer.parseInt(linha.substring(418, 422).trim()));
+        produto.setEstadoGeral(linha.substring(422, 425).trim());
+        produto.setDesconto(Integer.parseInt(linha.substring(425, 428).trim()));
+        produto.setDataInicioDesconto(parseData(linha.substring(428, 436).trim()));
+        produto.setDataFimDesconto(parseData(linha.substring(436, 444).trim()));
+        return produto;
+    }
+
+    private LocalDate parseData(String data) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+        return LocalDate.parse(data, formatter);
     }
 }
