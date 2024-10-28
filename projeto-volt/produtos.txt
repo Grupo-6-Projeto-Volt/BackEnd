@@ -1,0 +1,120 @@
+00PROD25/10/2024 22:23:5601
+02001Notebook Dell Inspiron 15                                                                                               Computador               02500,00Novo                                         
+02002Smartphone Samsung Galaxy S21                                                                                           Celular                  01800,00Semi novo                                    
+02003Teclado Mecânico Gamer Husky Gaming Blizzard                                                                            Acessório                00150,00Novo                                         
+02004Mouse Gamer Logitech G203 LIGHTSYNC RGB                                                                                 Acessório                00080,00Semi novo                                    
+02005Monitor PCFort Gamer H238F165 23.8' Led Full Hd 165hz Freesync Hdmi Display Port VESA                                   Acessório                00600,00Novo                                         
+02006Apple iPhone 13 (128 GB)                                                                                                Celular                  02000,00Novo                                         
+02007QCY H2 PRO Fone de Ouvido Bluetooth                                                                                     Acessório                00120,00Semi novo                                    
+02008JBL Partybox 110                                                                                                        Caixa de som             01500,00Semi novo                                    
+02009Câmera digital Canon EOS Rebel T7                                                                                       Acessório                00700,00Novo                                         
+02010Notebook HP Pavilion 14                                                                                                 Computador               01800,00Semi novo                                    
+0100010
+00PROD25/10/2024 22:23:5601
+02001Notebook Dell Inspiron 15                                                                                               Computador               02500,00Novo                                         
+02002Smartphone Samsung Galaxy S21                                                                                           Celular                  01800,00Semi novo                                    
+02003Teclado Mecânico Gamer Husky Gaming Blizzard                                                                            Acessório                00150,00Novo                                         
+02004Mouse Gamer Logitech G203 LIGHTSYNC RGB                                                                                 Acessório                00080,00Semi novo                                    
+02005Monitor PCFort Gamer H238F165 23.8' Led Full Hd 165hz Freesync Hdmi Display Port VESA                                   Acessório                00600,00Novo                                         
+02006Apple iPhone 13 (128 GB)                                                                                                Celular                  02000,00Novo                                         
+02007QCY H2 PRO Fone de Ouvido Bluetooth                                                                                     Acessório                00120,00Semi novo                                    
+02008JBL Partybox 110                                                                                                        Caixa de som             01500,00Semi novo                                    
+02009Câmera digital Canon EOS Rebel T7                                                                                       Acessório                00700,00Novo                                         
+02010Notebook HP Pavilion 14                                                                                                 Computador               01800,00Semi novo                                    
+0100010
+00PROD25/10/2024 22:29:1901
+02001Notebook Dell Inspiron 15                                                                                               Computador               02500,00Novo                                         
+02002Smartphone Samsung Galaxy S21                                                                                           Celular                  01800,00Semi novo                                    
+02003Teclado Mecânico Gamer Husky Gaming Blizzard                                                                            Acessório                00150,00Novo                                         
+02004Mouse Gamer Logitech G203 LIGHTSYNC RGB                                                                                 Acessório                00080,00Semi novo                                    
+02005Monitor PCFort Gamer H238F165 23.8' Led Full Hd 165hz Freesync Hdmi Display Port VESA                                   Acessório                00600,00Novo                                         
+02006Apple iPhone 13 (128 GB)                                                                                                Celular                  02000,00Novo                                         
+02007QCY H2 PRO Fone de Ouvido Bluetooth                                                                                     Acessório                00120,00Semi novo                                    
+02008JBL Partybox 110                                                                                                        Caixa de som             01500,00Semi novo                                    
+02009Câmera digital Canon EOS Rebel T7                                                                                       Acessório                00700,00Novo                                         
+02010Notebook HP Pavilion 14                                                                                                 Computador               01800,00Semi novo                                    
+0100010
+00PROD25/10/2024 22:29:1901
+02001Notebook Dell Inspiron 15                                                                                               Computador               02500,00Novo                                         
+02002Smartphone Samsung Galaxy S21                                                                                           Celular                  01800,00Semi novo                                    
+02003Teclado Mecânico Gamer Husky Gaming Blizzard                                                                            Acessório                00150,00Novo                                         
+02004Mouse Gamer Logitech G203 LIGHTSYNC RGB                                                                                 Acessório                00080,00Semi novo                                    
+02005Monitor PCFort Gamer H238F165 23.8' Led Full Hd 165hz Freesync Hdmi Display Port VESA                                   Acessório                00600,00Novo                                         
+02006Apple iPhone 13 (128 GB)                                                                                                Celular                  02000,00Novo                                         
+02007QCY H2 PRO Fone de Ouvido Bluetooth                                                                                     Acessório                00120,00Semi novo                                    
+02008JBL Partybox 110                                                                                                        Caixa de som             01500,00Semi novo                                    
+02009Câmera digital Canon EOS Rebel T7                                                                                       Acessório                00700,00Novo                                         
+02010Notebook HP Pavilion 14                                                                                                 Computador               01800,00Semi novo                                    
+0100010
+00PROD25/10/2024 22:29:3101
+02001Notebook Dell Inspiron 15                                                                                               Computador               02500,00Novo                                         
+02002Smartphone Samsung Galaxy S21                                                                                           Celular                  01800,00Semi novo                                    
+02003Teclado Mecânico Gamer Husky Gaming Blizzard                                                                            Acessório                00150,00Novo                                         
+02004Mouse Gamer Logitech G203 LIGHTSYNC RGB                                                                                 Acessório                00080,00Semi novo                                    
+02005Monitor PCFort Gamer H238F165 23.8' Led Full Hd 165hz Freesync Hdmi Display Port VESA                                   Acessório                00600,00Novo                                         
+02006Apple iPhone 13 (128 GB)                                                                                                Celular                  02000,00Novo                                         
+02007QCY H2 PRO Fone de Ouvido Bluetooth                                                                                     Acessório                00120,00Semi novo                                    
+02008JBL Partybox 110                                                                                                        Caixa de som             01500,00Semi novo                                    
+02009Câmera digital Canon EOS Rebel T7                                                                                       Acessório                00700,00Novo                                         
+02010Notebook HP Pavilion 14                                                                                                 Computador               01800,00Semi novo                                    
+0100010
+00PROD25/10/2024 22:29:3101
+02001Notebook Dell Inspiron 15                                                                                               Computador               02500,00Novo                                         
+02002Smartphone Samsung Galaxy S21                                                                                           Celular                  01800,00Semi novo                                    
+02003Teclado Mecânico Gamer Husky Gaming Blizzard                                                                            Acessório                00150,00Novo                                         
+02004Mouse Gamer Logitech G203 LIGHTSYNC RGB                                                                                 Acessório                00080,00Semi novo                                    
+02005Monitor PCFort Gamer H238F165 23.8' Led Full Hd 165hz Freesync Hdmi Display Port VESA                                   Acessório                00600,00Novo                                         
+02006Apple iPhone 13 (128 GB)                                                                                                Celular                  02000,00Novo                                         
+02007QCY H2 PRO Fone de Ouvido Bluetooth                                                                                     Acessório                00120,00Semi novo                                    
+02008JBL Partybox 110                                                                                                        Caixa de som             01500,00Semi novo                                    
+02009Câmera digital Canon EOS Rebel T7                                                                                       Acessório                00700,00Novo                                         
+02010Notebook HP Pavilion 14                                                                                                 Computador               01800,00Semi novo                                    
+0100010
+00PROD25/10/2024 22:29:4001
+02001Notebook Dell Inspiron 15                                                                                               Computador               02500,00Novo                                         
+02002Smartphone Samsung Galaxy S21                                                                                           Celular                  01800,00Semi novo                                    
+02003Teclado Mecânico Gamer Husky Gaming Blizzard                                                                            Acessório                00150,00Novo                                         
+02004Mouse Gamer Logitech G203 LIGHTSYNC RGB                                                                                 Acessório                00080,00Semi novo                                    
+02005Monitor PCFort Gamer H238F165 23.8' Led Full Hd 165hz Freesync Hdmi Display Port VESA                                   Acessório                00600,00Novo                                         
+02006Apple iPhone 13 (128 GB)                                                                                                Celular                  02000,00Novo                                         
+02007QCY H2 PRO Fone de Ouvido Bluetooth                                                                                     Acessório                00120,00Semi novo                                    
+02008JBL Partybox 110                                                                                                        Caixa de som             01500,00Semi novo                                    
+02009Câmera digital Canon EOS Rebel T7                                                                                       Acessório                00700,00Novo                                         
+02010Notebook HP Pavilion 14                                                                                                 Computador               01800,00Semi novo                                    
+0100010
+00PROD25/10/2024 22:29:4001
+02001Notebook Dell Inspiron 15                                                                                               Computador               02500,00Novo                                         
+02002Smartphone Samsung Galaxy S21                                                                                           Celular                  01800,00Semi novo                                    
+02003Teclado Mecânico Gamer Husky Gaming Blizzard                                                                            Acessório                00150,00Novo                                         
+02004Mouse Gamer Logitech G203 LIGHTSYNC RGB                                                                                 Acessório                00080,00Semi novo                                    
+02005Monitor PCFort Gamer H238F165 23.8' Led Full Hd 165hz Freesync Hdmi Display Port VESA                                   Acessório                00600,00Novo                                         
+02006Apple iPhone 13 (128 GB)                                                                                                Celular                  02000,00Novo                                         
+02007QCY H2 PRO Fone de Ouvido Bluetooth                                                                                     Acessório                00120,00Semi novo                                    
+02008JBL Partybox 110                                                                                                        Caixa de som             01500,00Semi novo                                    
+02009Câmera digital Canon EOS Rebel T7                                                                                       Acessório                00700,00Novo                                         
+02010Notebook HP Pavilion 14                                                                                                 Computador               01800,00Semi novo                                    
+0100010
+00PROD25/10/2024 22:31:4801
+02001Notebook Dell Inspiron 15                                                                                               Computador               02500,00Novo                                         
+02002Smartphone Samsung Galaxy S21                                                                                           Celular                  01800,00Semi novo                                    
+02003Teclado Mecânico Gamer Husky Gaming Blizzard                                                                            Acessório                00150,00Novo                                         
+02004Mouse Gamer Logitech G203 LIGHTSYNC RGB                                                                                 Acessório                00080,00Semi novo                                    
+02005Monitor PCFort Gamer H238F165 23.8' Led Full Hd 165hz Freesync Hdmi Display Port VESA                                   Acessório                00600,00Novo                                         
+02006Apple iPhone 13 (128 GB)                                                                                                Celular                  02000,00Novo                                         
+02007QCY H2 PRO Fone de Ouvido Bluetooth                                                                                     Acessório                00120,00Semi novo                                    
+02008JBL Partybox 110                                                                                                        Caixa de som             01500,00Semi novo                                    
+02009Câmera digital Canon EOS Rebel T7                                                                                       Acessório                00700,00Novo                                         
+02010Notebook HP Pavilion 14                                                                                                 Computador               01800,00Semi novo                                    
+0100010
+00PROD25/10/2024 22:31:4801
+02001Notebook Dell Inspiron 15                                                                                               Computador               02500,00Novo                                         
+02002Smartphone Samsung Galaxy S21                                                                                           Celular                  01800,00Semi novo                                    
+02003Teclado Mecânico Gamer Husky Gaming Blizzard                                                                            Acessório                00150,00Novo                                         
+02004Mouse Gamer Logitech G203 LIGHTSYNC RGB                                                                                 Acessório                00080,00Semi novo                                    
+02005Monitor PCFort Gamer H238F165 23.8' Led Full Hd 165hz Freesync Hdmi Display Port VESA                                   Acessório                00600,00Novo                                         
+02006Apple iPhone 13 (128 GB)                                                                                                Celular                  02000,00Novo                                         
+02007QCY H2 PRO Fone de Ouvido Bluetooth                                                                                     Acessório                00120,00Semi novo                                    
+02008JBL Partybox 110                                                                                                        Caixa de som             01500,00Semi novo                                    
+02009Câmera digital Canon EOS Rebel T7                                                                                       Acessório                00700,00Novo                                         
+02010Notebook HP Pavilion 14                                                                                                 Computador               01800,00Semi novo                                    
+0100010

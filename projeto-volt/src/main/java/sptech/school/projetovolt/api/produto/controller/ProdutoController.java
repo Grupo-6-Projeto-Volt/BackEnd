@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -163,6 +164,20 @@ public class ProdutoController {
 
         List<Produto> produtosEncontrados = produtoService.buscarProdutosRecomendados(idUser, limite);
         return ResponseUtil.respondIfNotEmpty(ProdutoMapper.toDto(produtosEncontrados));
+    }
+
+    @GetMapping("/exportar-json")
+    public ResponseEntity<byte[]> exportarJson() {
+        List<Produto> produtos = produtoService.listarProdutos(null, 1000);
+        List<ProdutoExportacaoDto> dtos = ProdutoMapper.toProdutoExportacaoDto(produtos);
+        byte[] bytes = produtoService.exportarJson(dtos);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=produtos.json");
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(bytes);
     }
 
 }
