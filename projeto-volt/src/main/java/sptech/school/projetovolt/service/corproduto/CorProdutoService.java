@@ -21,6 +21,10 @@ public class CorProdutoService {
         return corProdutoRepository.findAll();
     }
 
+    public List<CorProduto> buscarCoresPorProduto(Integer id) {
+        return corProdutoRepository.findByProdutoId(id);
+    }
+
     public CorProduto buscarCorPorId(Integer id) {
         return corProdutoRepository
                .findById(id)

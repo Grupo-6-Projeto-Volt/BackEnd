@@ -1,6 +1,5 @@
 package sptech.school.projetovolt.service.login.autenticacao.dto;
 
-
 import lombok.Data;
 
 @Data

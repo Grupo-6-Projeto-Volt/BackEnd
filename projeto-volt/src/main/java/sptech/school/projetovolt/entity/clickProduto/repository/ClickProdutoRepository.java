@@ -3,7 +3,6 @@ package sptech.school.projetovolt.entity.clickProduto.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import sptech.school.projetovolt.entity.clickProduto.ClickProduto;
-import sptech.school.projetovolt.service.clickproduto.dto.ClickProdutoMaisClicadosDTO;
 
 import java.util.List;
 

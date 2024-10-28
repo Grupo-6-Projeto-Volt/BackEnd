@@ -6,9 +6,6 @@ import sptech.school.projetovolt.entity.exception.ConflitoStatusChamadoException
 import sptech.school.projetovolt.entity.exception.NotFoundException;
 import sptech.school.projetovolt.entity.produtochamado.ProdutoChamado;
 import sptech.school.projetovolt.entity.produtochamado.repository.ProdutoChamadoRepository;
-import sptech.school.projetovolt.entity.vwchamadosgraficos.VwChamadosGraficos;
-import sptech.school.projetovolt.entity.vwchamadosgraficos.repository.VwChamadosGraficosRepository;
-import sptech.school.projetovolt.entity.vwmaisclicados.repository.VwMaisClicadosRepository;
 import sptech.school.projetovolt.service.produto.ProdutoService;
 import sptech.school.projetovolt.service.usuario.UsuarioService;
 import sptech.school.projetovolt.utils.FilaObj;

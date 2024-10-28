@@ -4,10 +4,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import sptech.school.projetovolt.api.util.ResponseUtil;
 import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.service.hashtable.HashTableService;
@@ -38,10 +42,13 @@ public class ProdutoController {
 
     @GetMapping("/loja")
     @Operation(summary = "Lista todos os produtos da Loja", method = "GET", description = "Responsável por listar todos os produtos cadastrados na loja", tags = {"Produtos"})
-    public ResponseEntity<List<ProdutoConsultaDTO>> listarTodosProdutos(@RequestParam(required = false) String textoBusca) {
-        List<Produto> produtosEncontrados = produtoService.listarProdutos(textoBusca);
+    public ResponseEntity<List<ProdutoConsultaDTO>> listarTodosProdutos(@RequestParam(required = false) String textoBusca, @RequestParam(required = false) Integer limite) {
+        if(limite == null) limite = 25;
+
+        List<Produto> produtosEncontrados = produtoService.listarProdutos(textoBusca, limite);
         return ResponseUtil.respondIfNotEmpty(ProdutoMapper.toDto(produtosEncontrados));
     }
+
     @GetMapping("/loja/hash")
     @Operation(summary = "Lista todos os produtos da loja por meio da hash table",method = "GET",description = "Responsável por listar todos os nomes dos produtos cadastrados na loja",tags = {"Produtos"})
     public ResponseEntity<String> buscarProdutoHashTable(@RequestParam String textoBusca){
@@ -85,27 +92,91 @@ public class ProdutoController {
     }
 
     @GetMapping("/ofertas")
+    @Operation(summary = "Lista todos os produtos em oferta", method = "GET", description = "Responsável por listar todos os produtos em oferta", tags = {"Produtos"})
     public ResponseEntity<List<ProdutoConsultaDTO>> buscarOfertas() {
         List<Produto> produtos = produtoService.buscarOfertas();
         return ResponseUtil.respondIfNotEmpty(ProdutoMapper.toDto(produtos));
     }
 
     @GetMapping("/filtro/filtrar-por-preco")
+    @Operation(summary = "Filtra os produtos por preço", method = "GET", description = "Responsável por filtrar os produtos por preço", tags = {"Produtos"})
     public ResponseEntity<List<ProdutoConsultaDTO>> filtrarPorPreco(@RequestParam String direcao) {
         List<Produto> produtosEncontrados = produtoService.filtrarPorPreco(direcao);
         return ResponseUtil.respondIfNotEmpty(ProdutoMapper.toDto(produtosEncontrados));
     }
 
     @GetMapping("/filtro/filtrar-por-desconto")
+    @Operation(summary = "Filtra os produtos por desconto", method = "GET", description = "Responsável por filtrar os produtos por desconto", tags = {"Produtos"})
     public ResponseEntity<List<ProdutoConsultaDTO>> filtrarPorDesconto(@RequestParam String direcao) {
         List<Produto> produtosEncontrados = produtoService.filtrarPorDesconto(direcao);
         return ResponseUtil.respondIfNotEmpty(ProdutoMapper.toDto(produtosEncontrados));
     }
 
     @GetMapping("/filtro/filtrar-por-categoria")
+    @Operation(summary = "Filtra os produtos por categoria", method = "GET", description = "Responsável por filtrar os produtos por categoria", tags = {"Produtos"})
     public ResponseEntity<List<ProdutoConsultaDTO>> buscarProdutosPorCategoria(@RequestParam String categoria) {
         List<Produto> produtosEncontrados = produtoService.buscarProdutosPorCategoria(categoria);
         return ResponseUtil.respondIfNotEmpty(ProdutoMapper.toDto(produtosEncontrados));
     }
 
+   @PostMapping(value = "/exportar", produces = "text/csv")
+    @Operation(summary = "Exporta um arquivo CSV com os produtos", method = "POST", description = "Responsável por exportar um arquivo CSV com os produtos", tags = {"Produtos"})
+    public ResponseEntity<byte[]> exportarArquivo(@RequestBody List<ProdutoConsultaDTO> produtos, HttpServletResponse response){
+        if(produtos.isEmpty()) return null;
+        try {
+            return ResponseEntity.ok(produtoService.gravarArquivo(produtos,response));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping(value = "/exportar-txt",produces = "text/txt")
+    public ResponseEntity<byte[]> exportarArquivoTxt(){
+        try{
+            return ResponseEntity.ok(produtoService.gravarArquivo("produtos.txt"));
+        }catch (Exception  e){
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PostMapping(value = "/importar-txt", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Faz o upload de um arquivo TXT para importar produtos", method = "POST", description = "Processa o arquivo TXT e insere produtos no banco de dados")
+    public ResponseEntity<String> importarArquivo(@RequestParam("file") MultipartFile file) {
+
+        if (file.isEmpty()) return ResponseEntity.badRequest().body("Arquivo vazio!");
+
+        try {
+            produtoService.processarArquivoImportacao(file);
+            return ResponseEntity.ok("Arquivo importado com sucesso!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("Erro ao importar o arquivo.");
+        }
+    }
+
+
+    @GetMapping("/recomendado")
+    @Operation(summary = "Lista os produtos recomendados", method = "GET", description = "Responsável por listar os produtos recomendados", tags = {"Produtos"})
+    public ResponseEntity<List<ProdutoConsultaDTO>> buscarProdutosRecomendados(@RequestParam(required = false) Integer idUser, @RequestParam(required = false) Integer limite) {
+        if(limite == null) limite = 25;
+
+        List<Produto> produtosEncontrados = produtoService.buscarProdutosRecomendados(idUser, limite);
+        return ResponseUtil.respondIfNotEmpty(ProdutoMapper.toDto(produtosEncontrados));
+    }
+
+    @GetMapping("/exportar-json")
+    public ResponseEntity<byte[]> exportarJson() {
+        List<Produto> produtos = produtoService.listarProdutos(null, 1000);
+        List<ProdutoExportacaoDto> dtos = ProdutoMapper.toProdutoExportacaoDto(produtos);
+        byte[] bytes = produtoService.exportarJson(dtos);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=produtos.json");
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(bytes);
+    }
 }

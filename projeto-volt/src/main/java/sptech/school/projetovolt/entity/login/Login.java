@@ -6,7 +6,6 @@ import lombok.Setter;
 import sptech.school.projetovolt.entity.usuario.Usuario;
 
 
-import java.util.UUID;
 @Getter
 @Setter
 @Entity
