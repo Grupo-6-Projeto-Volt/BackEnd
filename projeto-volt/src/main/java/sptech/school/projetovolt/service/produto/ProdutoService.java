@@ -186,12 +186,6 @@ public class ProdutoService {
         }
     }
 
-    public List<Produto> buscarProdutosRecomendados(Integer idUser, Integer limite) {
-        // FIXME: Implementar lógica de recomendação quando o idUser for null
-        return produtoRepository.buscaProdutosRecomendados(Objects.requireNonNullElse(idUser, 1), limite);
-    }
-
-
     public void processarArquivoImportacao(MultipartFile file) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
             String linha;
