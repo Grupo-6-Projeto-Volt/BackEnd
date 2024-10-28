@@ -7,9 +7,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import sptech.school.projetovolt.api.util.ResponseUtil;
 import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.service.hashtable.HashTableService;
@@ -128,6 +130,7 @@ public class ProdutoController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
     @GetMapping(value = "/exportar-txt",produces = "text/txt")
     public ResponseEntity<byte[]> exportarArquivoTxt(){
         try{
@@ -135,6 +138,21 @@ public class ProdutoController {
         }catch (Exception  e){
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PostMapping(value = "/importar-txt", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Faz o upload de um arquivo TXT para importar produtos", method = "POST", description = "Processa o arquivo TXT e insere produtos no banco de dados")
+    public ResponseEntity<String> importarArquivo(@RequestParam("file") MultipartFile file) {
+
+        if (file.isEmpty()) return ResponseEntity.badRequest().body("Arquivo vazio!");
+
+        try {
+            produtoService.processarArquivoImportacao(file);
+            return ResponseEntity.ok("Arquivo importado com sucesso!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("Erro ao importar o arquivo.");
         }
     }
 
