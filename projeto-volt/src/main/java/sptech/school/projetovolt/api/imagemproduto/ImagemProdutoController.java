@@ -1,5 +1,6 @@
 package sptech.school.projetovolt.api.imagemproduto;
 
+import jakarta.validation.Path;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ import sptech.school.projetovolt.service.imagemproduto.dto.ImagemConsultaDto;
 import sptech.school.projetovolt.service.imagemproduto.dto.ImagemCriacaoDto;
 import sptech.school.projetovolt.service.imagemproduto.dto.ImagemProdutoMapper;
 
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 @RestController

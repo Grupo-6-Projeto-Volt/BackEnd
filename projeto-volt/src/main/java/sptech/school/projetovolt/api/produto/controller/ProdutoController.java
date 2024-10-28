@@ -7,8 +7,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import sptech.school.projetovolt.api.util.ResponseUtil;
 import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.service.hashtable.HashTableService;
@@ -116,6 +119,7 @@ public class ProdutoController {
         return ResponseUtil.respondIfNotEmpty(ProdutoMapper.toDto(produtosEncontrados));
     }
 
+
     @PostMapping(value = "/exportar", produces = "text/csv")
     @Operation(summary = "Exporta um arquivo CSV com os produtos", method = "POST", description = "Responsável por exportar um arquivo CSV com os produtos", tags = {"Produtos"})
     public ResponseEntity<byte[]> exportarArquivo(@RequestBody List<ProdutoConsultaDTO> produtos, HttpServletResponse response){
@@ -127,6 +131,32 @@ public class ProdutoController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @GetMapping(value = "/exportar-txt",produces = "text/txt")
+    public ResponseEntity<byte[]> exportarArquivoTxt(){
+        try{
+            return ResponseEntity.ok(produtoService.gravarArquivo("produtos.txt"));
+        }catch (Exception  e){
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PostMapping(value = "/importar-txt", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Faz o upload de um arquivo TXT para importar produtos", method = "POST", description = "Processa o arquivo TXT e insere produtos no banco de dados")
+    public ResponseEntity<String> importarArquivo(@RequestParam("file") MultipartFile file) {
+
+        if (file.isEmpty()) return ResponseEntity.badRequest().body("Arquivo vazio!");
+
+        try {
+            produtoService.processarArquivoImportacao(file);
+            return ResponseEntity.ok("Arquivo importado com sucesso!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("Erro ao importar o arquivo.");
+        }
+    }
+
 
 
     @PostMapping("/importar")
@@ -146,4 +176,17 @@ public class ProdutoController {
         return ResponseUtil.respondIfNotEmpty(ProdutoMapper.toDto(produtosEncontrados));
     }
 
+    @GetMapping("/exportar-json")
+    public ResponseEntity<byte[]> exportarJson() {
+        List<Produto> produtos = produtoService.listarProdutos(null, 1000);
+        List<ProdutoExportacaoDto> dtos = ProdutoMapper.toProdutoExportacaoDto(produtos);
+        byte[] bytes = produtoService.exportarJson(dtos);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=produtos.json");
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(bytes);
+    }
 }

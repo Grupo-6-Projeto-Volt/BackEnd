@@ -80,4 +80,5 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
             "LIMIT :limite", nativeQuery = true)
     List<Produto> buscarProdutosMaioresPromocoes(@Param("limite") int limite);
 
+
 }
