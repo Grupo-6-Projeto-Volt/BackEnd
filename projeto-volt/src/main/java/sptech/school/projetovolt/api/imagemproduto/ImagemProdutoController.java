@@ -1,6 +1,5 @@
 package sptech.school.projetovolt.api.imagemproduto;
 
-
 import jakarta.validation.Path;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;

@@ -71,4 +71,14 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
             "LIMIT :limite" , nativeQuery = true)
     List<Produto> buscaProdutosRecomendados(@Param("usuarioId") int usuarioId, @Param("limite") int limite);
 
+    @Query(value = "SELECT p.* " +
+            "FROM tb_produto p " +
+            "INNER JOIN tb_favoritos f ON p.id = f.fk_produto " +
+            "WHERE p.desconto is not null " +
+            "and p.desconto > 0 " +
+            "ORDER BY COUNT(CASE WHEN f.fk_produto IS NOT NULL THEN 1 END) DESC " +
+            "LIMIT :limite", nativeQuery = true)
+    List<Produto> buscarProdutosMaioresPromocoes(@Param("limite") int limite);
+
+
 }

@@ -119,7 +119,8 @@ public class ProdutoController {
         return ResponseUtil.respondIfNotEmpty(ProdutoMapper.toDto(produtosEncontrados));
     }
 
-   @PostMapping(value = "/exportar", produces = "text/csv")
+
+    @PostMapping(value = "/exportar", produces = "text/csv")
     @Operation(summary = "Exporta um arquivo CSV com os produtos", method = "POST", description = "Responsável por exportar um arquivo CSV com os produtos", tags = {"Produtos"})
     public ResponseEntity<byte[]> exportarArquivo(@RequestBody List<ProdutoConsultaDTO> produtos, HttpServletResponse response){
         if(produtos.isEmpty()) return null;
@@ -156,6 +157,15 @@ public class ProdutoController {
         }
     }
 
+
+
+    @PostMapping("/importar")
+    @Operation(summary = "Importa um arquivo TXT com os produtos", method = "POST", description = "Responsável por importar um arquivo TXT com os produtos", tags = {"Produtos"})
+    public ResponseEntity<Void> importarArquivo(@RequestBody String arquivo){
+        produtoService.importarArquivo(arquivo);
+
+        return ResponseEntity.noContent().build();
+    }
 
     @GetMapping("/recomendado")
     @Operation(summary = "Lista os produtos recomendados", method = "GET", description = "Responsável por listar os produtos recomendados", tags = {"Produtos"})

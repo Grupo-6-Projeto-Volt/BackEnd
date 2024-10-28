@@ -22,6 +22,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.Normalizer;
+import java.util.List;
+import java.util.Objects;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -56,7 +58,8 @@ public class ProdutoService {
         return produtoRepository.findAll(limite);
     }
 
-    public List<Produto> buscarOfertas() {
+
+    public List<Produto> buscarOfertas(){
         return produtoRepository.findByDescontoNotNull();
     }
 
@@ -111,6 +114,7 @@ public class ProdutoService {
         }
 
     }
+
 
     private byte[] gerarArquivo(List<ProdutoConsultaDTO> produtos) {
         try (ByteArrayOutputStream saidaByte = new ByteArrayOutputStream()) {
@@ -241,4 +245,30 @@ public class ProdutoService {
     }
 
 
+    public void importarArquivo(String arquivo){
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(arquivo))) {
+            String linha = reader.readLine();
+            // Leitura do header do TXT
+            if (!linha.startsWith("00")) {
+                throw new IllegalArgumentException("Arquivo inválido");
+            }
+            // Leitura
+            while ((linha = reader.readLine()) != null && linha.startsWith("02")) {
+
+                Produto produto = new Produto();
+                produto.setId(Integer.parseInt(linha.substring(2, 6).trim()));
+                produto.setNome(linha.substring(6, 38).trim());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Produto> buscarProdutosRecomendados(Integer idUser, Integer limite) {
+        if(idUser == null) return produtoRepository.buscarProdutosMaioresPromocoes(limite);
+        return produtoRepository.buscaProdutosRecomendados(idUser, limite);
+    }
 }
