@@ -238,6 +238,26 @@ public class ProdutoService {
         }
     }
 
+    public byte[] exportarXml(List<ProdutoExportacaoDto> produtos) {
+        StringBuilder xml = new StringBuilder();
+        xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+        xml.append("<produtos>\n");
+
+        for (ProdutoExportacaoDto produto : produtos) {
+            xml.append("  <produto>\n");
+            xml.append("    <id>").append(produto.getId()).append("</id>\n");
+            xml.append("    <nome>").append(produto.getNome()).append("</nome>\n");
+            xml.append("    <categoria>").append(produto.getCategoria()).append("</categoria>\n");
+            xml.append("    <preco>").append(produto.getPreco()).append("</preco>\n");
+            xml.append("    <estado>").append(produto.getEstadoGeral()).append("</estado>\n");
+            xml.append("  </produto>\n");
+        }
+
+        xml.append("</produtos>");
+
+        return xml.toString().getBytes(StandardCharsets.UTF_8);
+    }
+
 
     public void importarArquivo(String arquivo){
 

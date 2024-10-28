@@ -189,4 +189,19 @@ public class ProdutoController {
                 .headers(headers)
                 .body(bytes);
     }
+
+    @GetMapping("/exportar-xml")
+    public ResponseEntity<byte[]> exportarXml() {
+        List<Produto> produtos = produtoService.listarProdutos(null, 50);
+
+        List<ProdutoExportacaoDto> dtos = ProdutoMapper.toProdutoExportacaoDto(produtos);
+
+        byte[] bytes = produtoService.exportarXml(dtos);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=produtos.xml");
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/xml");
+
+        return ResponseEntity.ok().headers(headers).body(bytes);
+    }
 }
