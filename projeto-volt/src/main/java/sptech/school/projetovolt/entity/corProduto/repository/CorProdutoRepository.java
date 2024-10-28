@@ -13,11 +13,11 @@ public interface CorProdutoRepository extends JpaRepository<CorProduto, Integer>
 
     Optional<CorProduto> findByHexId(String hexId);
 
-
     boolean existsByProdutoId(Integer idProduto);
 
     @Transactional
     void deleteByProdutoId(Integer idProduto);
+
     List<CorProduto> findByProdutoId(Integer id);
 
 

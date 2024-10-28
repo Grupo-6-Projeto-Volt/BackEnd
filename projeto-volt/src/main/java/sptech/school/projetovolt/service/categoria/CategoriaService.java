@@ -89,5 +89,6 @@ public class CategoriaService {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+
     }
 }

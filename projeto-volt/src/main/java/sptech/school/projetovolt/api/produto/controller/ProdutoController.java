@@ -179,5 +179,4 @@ public class ProdutoController {
                 .headers(headers)
                 .body(bytes);
     }
-
 }
