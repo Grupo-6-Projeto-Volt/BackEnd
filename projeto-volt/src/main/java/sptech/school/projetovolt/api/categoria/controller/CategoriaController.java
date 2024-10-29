@@ -67,10 +67,10 @@ public class CategoriaController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping(value = "/exportar", produces = "text/csv")
-    @Operation(summary = "Exportar categorias para arquivo CSV", method = "POST", description = "Responsável por exportar categorias para arquivo CSV", tags = {"Categorias"})
-    public ResponseEntity<byte[]> exportarArquivo(@RequestBody List<Categoria> categorias, HttpServletResponse response){
-        if(categorias.isEmpty()) return null;
+    @GetMapping(value = "/exportar", produces = "text/csv")
+    @Operation(summary = "Exportar categorias para arquivo CSV", method = "GET", description = "Responsável por exportar categorias para arquivo CSV", tags = {"Categorias"})
+    public ResponseEntity<byte[]> exportarArquivo(HttpServletResponse response){
+        List<CategoriaConsultaDTO> categorias = CategoriaMapper.toDto(categoriaService.listarCategorias());
         try {
             return ResponseEntity.ok(categoriaService.gravarArquivo(categorias,response));
         } catch (Exception e) {

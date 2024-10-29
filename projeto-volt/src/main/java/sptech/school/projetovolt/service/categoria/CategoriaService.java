@@ -62,7 +62,7 @@ public class CategoriaService {
         Optional<Categoria> categoriaEncontrada = categoriaRepository.findByNome(nome);
         return categoriaEncontrada.orElseThrow(() -> new NotFoundException("Categoria " + nome));
     }
-    public byte[] gravarArquivo(List<Categoria> categorias, HttpServletResponse response) {
+    public byte[] gravarArquivo(List<CategoriaConsultaDTO> categorias, HttpServletResponse response) {
         String arquivo = "categorias.csv";
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setContentType("text/csv");
@@ -92,15 +92,14 @@ public class CategoriaService {
 
     }
 
-    private byte[] gerarArquivo(List<Categoria> categorias){
+    private byte[] gerarArquivo(List<CategoriaConsultaDTO> categorias){
         try(ByteArrayOutputStream saidaByte = new ByteArrayOutputStream()){
             OutputStreamWriter writer = new OutputStreamWriter(saidaByte,StandardCharsets.UTF_8);
             writer.write("Id;Categoria\n");
-            for (Categoria categoria : categorias) {
+            for (CategoriaConsultaDTO categoria : categorias) {
                 writer.write(String.format("%d;%s\n",categoria.getId(),categoria.getNome()));
             }
             writer.flush();
-            Files.write(Paths.get("./categorias.csv"),saidaByte.toByteArray());
             return saidaByte.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();

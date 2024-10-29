@@ -67,10 +67,10 @@ public class TagProdutoController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping(value = "/exportar", produces = "text/csv")
-    @Operation(summary = "Exportar arquivo", method = "POST", description = "Responsável por exportar um arquivo", tags = {"Tags"})
-    public ResponseEntity<byte[]> exportarArquivo(@RequestBody List<TagProduto> tags, HttpServletResponse response){
-        if(tags.isEmpty()) return null;
+    @GetMapping(value = "/exportar", produces = "text/csv")
+    @Operation(summary = "Exportar arquivo", method = "GET", description = "Responsável por exportar um arquivo", tags = {"Tags"})
+    public ResponseEntity<byte[]> exportarArquivo(HttpServletResponse response){
+        List<TagProdutoConsultaDto> tags = TagProdutoMapper.toDto(tagProdutoService.listarTags());
         try {
             return ResponseEntity.ok(tagProdutoService.gravarArquivo(tags,response));
         } catch (Exception e) {

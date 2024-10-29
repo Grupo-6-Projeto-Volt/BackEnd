@@ -59,7 +59,7 @@ public class TagProdutoService {
         tagProdutoRepository.deleteById(id);
     }
 
-    public byte[] gravarArquivo(List<TagProduto> tags,HttpServletResponse response) {
+    public byte[] gravarArquivo(List<TagProdutoConsultaDto> tags,HttpServletResponse response) {
         String arquivo = "tags.csv";
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setContentType("text/csv");
@@ -88,15 +88,14 @@ public class TagProdutoService {
         return xml.toString().getBytes(StandardCharsets.UTF_8);
     }
 
-    private byte[] gerarArquivo(List<TagProduto> tagProdutos){
+    private byte[] gerarArquivo(List<TagProdutoConsultaDto> tagProdutos){
         try(ByteArrayOutputStream saidaByte = new ByteArrayOutputStream()){
             OutputStreamWriter writer = new OutputStreamWriter(saidaByte,StandardCharsets.UTF_8);
             writer.write("Id;Tag\n");
-            for (TagProduto tagProduto : tagProdutos) {
+            for (TagProdutoConsultaDto tagProduto : tagProdutos) {
                 writer.write(String.format("%d;%s\n",tagProduto.getId(),tagProduto.getTag()));
             }
             writer.flush();
-            Files.write(Paths.get("./tags.csv"),saidaByte.toByteArray());
             return saidaByte.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();

@@ -124,7 +124,6 @@ public class ProdutoService {
                 writer.write(String.format("%d;%s;%s;%f;%s\n", produto.getId(), produto.getNome(), produto.getEstadoGeral(), produto.getPreco(), produto.getCategoria()));
             }
             writer.flush();
-            Files.write(Paths.get("./produtos.csv"), saidaByte.toByteArray());
             return saidaByte.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();

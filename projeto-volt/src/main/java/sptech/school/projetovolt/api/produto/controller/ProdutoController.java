@@ -120,10 +120,10 @@ public class ProdutoController {
     }
 
 
-    @PostMapping(value = "/exportar", produces = "text/csv")
-    @Operation(summary = "Exporta um arquivo CSV com os produtos", method = "POST", description = "Responsável por exportar um arquivo CSV com os produtos", tags = {"Produtos"})
-    public ResponseEntity<byte[]> exportarArquivo(@RequestBody List<ProdutoConsultaDTO> produtos, HttpServletResponse response){
-        if(produtos.isEmpty()) return null;
+    @GetMapping(value = "/exportar", produces = "text/csv")
+    @Operation(summary = "Exporta um arquivo CSV com os produtos", method = "GET", description = "Responsável por exportar um arquivo CSV com os produtos", tags = {"Produtos"})
+    public ResponseEntity<byte[]> exportarArquivo(HttpServletResponse response){
+        List<ProdutoConsultaDTO> produtos = ProdutoMapper.toDto(produtoService.listarProdutos(null,500));
         try {
             return ResponseEntity.ok(produtoService.gravarArquivo(produtos,response));
         } catch (Exception e) {
@@ -133,6 +133,7 @@ public class ProdutoController {
     }
 
     @GetMapping(value = "/exportar-txt",produces = "text/txt")
+    @Operation(summary = "Exporta um arquivo TXT de produtos",method = "GET",description = "Responsável por exportar um arquivo TXT com os produtos",tags = {"Produtos"})
     public ResponseEntity<byte[]> exportarArquivoTxt(){
         try{
             return ResponseEntity.ok(produtoService.gravarArquivo("produtos.txt"));
