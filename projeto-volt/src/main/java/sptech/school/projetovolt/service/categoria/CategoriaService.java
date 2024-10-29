@@ -92,6 +92,24 @@ public class CategoriaService {
 
     }
 
+    public byte[] exportarParquet(List<CategoriaConsultaDTO> categorias) {
+        StringBuilder sb = new StringBuilder();
+
+        // cabeçalho básico
+        sb.append("PARQUET_SIMULADO\n");
+        sb.append("Versão: 1.0\n");
+        sb.append("Colunas: id, nome\n");
+        sb.append("Registro de dados:\n");
+
+        for (CategoriaConsultaDTO categoria : categorias) {
+            sb.append("ID:").append(categoria.getId()).append(";");
+            sb.append("Nome:").append(categoria.getNome()).append(";");
+            sb.append("\n");
+        }
+
+        return sb.toString().getBytes(StandardCharsets.UTF_8);
+    }
+
     private byte[] gerarArquivo(List<CategoriaConsultaDTO> categorias){
         try(ByteArrayOutputStream saidaByte = new ByteArrayOutputStream()){
             OutputStreamWriter writer = new OutputStreamWriter(saidaByte,StandardCharsets.UTF_8);

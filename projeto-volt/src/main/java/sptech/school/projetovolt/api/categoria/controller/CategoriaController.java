@@ -94,4 +94,20 @@ public class CategoriaController {
 
         return ResponseEntity.ok().headers(headers).body(bytes);
     }
+
+    @GetMapping("/exportar-parquet")
+    @Operation(summary = "Exportar categorias para arquivo Parquet", method = "GET", description = "Responsável por exportar categorias para arquivo Parquet", tags = {"Categorias"})
+    public ResponseEntity<byte[]> exportarParquet(){
+        List<Categoria> categorias = categoriaService.listarCategorias();
+
+        List<CategoriaConsultaDTO> dtos = CategoriaMapper.toDto(categorias);
+
+        byte[] bytes = categoriaService.exportarParquet(dtos);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=categorias.parquet");
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
+
+        return ResponseEntity.ok().headers(headers).body(bytes);
+    }
 }

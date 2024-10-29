@@ -94,5 +94,20 @@ public class TagProdutoController {
 
         return ResponseEntity.ok().headers(headers).body(bytes);
     }
-    
+
+    @GetMapping("/exportar-parquet")
+    @Operation(summary = "Exportar arquivo Parquet", method = "GET", description = "Responsável por exportar um arquivo Parquet", tags = {"Tags"})
+    public ResponseEntity<byte[]> exportarParquet(){
+        List<TagProduto> tags = tagProdutoService.listarTags();
+
+        List<TagProdutoConsultaDto> dtos = TagProdutoMapper.toDto(tags);
+
+        byte[] bytes = tagProdutoService.exportarParquet(dtos);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=tags.parquet");
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
+
+        return ResponseEntity.ok().headers(headers).body(bytes);
+    }
 }

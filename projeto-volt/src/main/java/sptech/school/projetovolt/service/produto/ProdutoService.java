@@ -284,4 +284,29 @@ public class ProdutoService {
         if(idUser == null) return produtoRepository.buscarProdutosMaioresPromocoes(limite);
         return produtoRepository.buscaProdutosRecomendados(idUser, limite);
     }
+
+
+    public byte[] exportarParquet(List<ProdutoExportacaoDto> produtos) {
+        StringBuilder sb = new StringBuilder();
+
+        // cabeçalho básico
+        sb.append("PARQUET_SIMULADO\n");
+        sb.append("Versão: 1.0\n");
+        sb.append("Colunas: id, nome, categoria, preco, estado\n");
+        sb.append("Registro de dados:\n");
+
+        // Dados dos produtos
+        for (ProdutoExportacaoDto produto : produtos) {
+            sb.append("ID:").append(produto.getId()).append(";");
+            sb.append("Nome:").append(produto.getNome()).append(";");
+            sb.append("Categoria:").append(produto.getCategoria()).append(";");
+            sb.append("Preco:").append(produto.getPreco()).append(";");
+            sb.append("Estado:").append(produto.getEstadoGeral()).append(";");
+            sb.append("\n");
+        }
+
+        // Convertendo o conteúdo para binário (UTF-8)
+        return sb.toString().getBytes(StandardCharsets.UTF_8);
+    }
+
 }

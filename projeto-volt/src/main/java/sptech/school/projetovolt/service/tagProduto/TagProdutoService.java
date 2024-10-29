@@ -104,7 +104,22 @@ public class TagProdutoService {
 
     }
 
+    public byte[] exportarParquet(List<TagProdutoConsultaDto> tags) {
+        StringBuilder sb = new StringBuilder();
 
+        // cabeçalho básico
+        sb.append("PARQUET_SIMULADO\n");
+        sb.append("Versão: 1.0\n");
+        sb.append("Colunas: id, nome\n");
+        sb.append("Registro de dados:\n");
 
+        for (TagProdutoConsultaDto tag : tags) {
+            sb.append("ID:").append(tag.getId()).append(";");
+            sb.append("Nome:").append(tag.getTag()).append(";");
+            sb.append("\n");
+        }
+
+        return sb.toString().getBytes(StandardCharsets.UTF_8);
+    }
 
 }

@@ -205,4 +205,20 @@ public class ProdutoController {
 
         return ResponseEntity.ok().headers(headers).body(bytes);
     }
+
+    @GetMapping("/exportar-parquet")
+    public ResponseEntity<byte[]> exportarParquetSimulado() {
+        List<Produto> produtos = produtoService.listarProdutos(null, 50);
+        List<ProdutoExportacaoDto> dtos = ProdutoMapper.toProdutoExportacaoDto(produtos);
+
+        byte[] bytes = produtoService.exportarParquet(dtos);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=produtos-simulado.parquet");
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
+
+        return ResponseEntity.ok().headers(headers).body(bytes);
+    }
+
+
 }
