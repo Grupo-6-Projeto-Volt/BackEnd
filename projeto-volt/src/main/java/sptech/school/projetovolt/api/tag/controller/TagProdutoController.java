@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.api.util.ResponseUtil;
@@ -12,7 +13,6 @@ import sptech.school.projetovolt.service.tagProduto.TagProdutoService;
 import sptech.school.projetovolt.service.tagProduto.dto.TagProdutoConsultaDto;
 import sptech.school.projetovolt.service.tagProduto.dto.TagProdutoCriacaoDto;
 import sptech.school.projetovolt.service.tagProduto.dto.TagProdutoMapper;
-import sptech.school.projetovolt.utils.ListaObj;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class TagProdutoController {
 
     @GetMapping
     @Operation(summary = "Listar todas as tags", method = "GET", description = "Responsável por listar todas as tags cadastradas", tags = {"Tags"})
-    public ResponseEntity<ListaObj<TagProdutoConsultaDto>> listarTags() {
+    public ResponseEntity<List<TagProdutoConsultaDto>> listarTags() {
         List<TagProduto> tagsEncontradas = tagProdutoService.listarTags();
 
         if (tagsEncontradas.isEmpty()) return ResponseEntity.noContent().build();
@@ -78,4 +78,21 @@ public class TagProdutoController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @GetMapping("/exportar-xml")
+    @Operation(summary = "Exportar arquivo XML", method = "GET", description = "Responsável por exportar um arquivo XML", tags = {"Tags"})
+    public ResponseEntity<byte[]> exportarXml(){
+        List<TagProduto> tags = tagProdutoService.listarTags();
+
+        List<TagProdutoConsultaDto> dtos = TagProdutoMapper.toDto(tags);
+
+        byte[] bytes = tagProdutoService.exportarXml(dtos);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=tags.xml");
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/xml");
+
+        return ResponseEntity.ok().headers(headers).body(bytes);
+    }
+    
 }

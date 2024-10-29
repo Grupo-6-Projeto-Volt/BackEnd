@@ -7,6 +7,7 @@ import sptech.school.projetovolt.entity.exception.ConflictException;
 import sptech.school.projetovolt.entity.exception.NotFoundException;
 import sptech.school.projetovolt.entity.tagProduto.TagProduto;
 import sptech.school.projetovolt.entity.tagProduto.repository.TagProdutoRepository;
+import sptech.school.projetovolt.service.tagProduto.dto.TagProdutoConsultaDto;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -72,6 +73,21 @@ public class TagProdutoService {
         }
 
     }
+
+    public byte[] exportarXml(List<TagProdutoConsultaDto> tags) {
+        StringBuilder xml = new StringBuilder();
+        xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+
+        xml.append("<tags>\n");
+        for (TagProdutoConsultaDto tagProduto : tags) {
+            xml.append(String.format("  <tag id=\"%d\">%s</tag>\n",tagProduto.getId(),tagProduto.getTag()));
+        }
+
+        xml.append("</tags>");
+
+        return xml.toString().getBytes(StandardCharsets.UTF_8);
+    }
+
     private byte[] gerarArquivo(List<TagProduto> tagProdutos){
         try(ByteArrayOutputStream saidaByte = new ByteArrayOutputStream()){
             OutputStreamWriter writer = new OutputStreamWriter(saidaByte,StandardCharsets.UTF_8);

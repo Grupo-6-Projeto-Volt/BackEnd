@@ -27,15 +27,9 @@ public class TagProdutoMapper {
         return entity;
     }
 
-    public static ListaObj<TagProdutoConsultaDto> toDto(List<TagProduto> listaEntity){
+    public static List<TagProdutoConsultaDto> toDto(List<TagProduto> listaEntity){
         if(listaEntity == null) return null;
 
-        List<TagProdutoConsultaDto> dtos = new ArrayList<>();
-        ListaObj<TagProdutoConsultaDto> dtosGenerico = new ListaObj<>(listaEntity.size());
-        for (TagProduto tagProduto : listaEntity) {
-            dtosGenerico.add(TagProdutoMapper.toDto(tagProduto));
-        }
-
-        return dtosGenerico;
+        return listaEntity.stream().map(TagProdutoMapper::toDto).toList();
     }
 }
