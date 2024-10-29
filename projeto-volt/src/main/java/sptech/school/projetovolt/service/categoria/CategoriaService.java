@@ -8,6 +8,7 @@ import sptech.school.projetovolt.entity.categoria.Categoria;
 import sptech.school.projetovolt.entity.categoria.repository.CategoriaRepository;
 import sptech.school.projetovolt.entity.exception.ConflictException;
 import sptech.school.projetovolt.entity.exception.NotFoundException;
+import sptech.school.projetovolt.service.categoria.dto.CategoriaConsultaDTO;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -75,6 +76,22 @@ public class CategoriaService {
         }
 
     }
+
+    public byte[] exportarXml(List<CategoriaConsultaDTO> categorias) {
+        StringBuilder xml = new StringBuilder();
+        xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+        xml.append("<categorias>\n");
+
+        for (CategoriaConsultaDTO categoria : categorias) {
+            xml.append(String.format("    <categoria id=\"%d\">%s</categoria>\n", categoria.getId(), categoria.getNome()));
+        }
+
+        xml.append("</categorias>");
+
+        return xml.toString().getBytes(StandardCharsets.UTF_8);
+
+    }
+
     private byte[] gerarArquivo(List<Categoria> categorias){
         try(ByteArrayOutputStream saidaByte = new ByteArrayOutputStream()){
             OutputStreamWriter writer = new OutputStreamWriter(saidaByte,StandardCharsets.UTF_8);

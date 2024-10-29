@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.api.util.ResponseUtil;
@@ -12,6 +13,7 @@ import sptech.school.projetovolt.service.categoria.CategoriaService;
 import sptech.school.projetovolt.service.categoria.dto.CategoriaConsultaDTO;
 import sptech.school.projetovolt.service.categoria.dto.CategoriaCriacaoDTO;
 import sptech.school.projetovolt.service.categoria.dto.CategoriaMapper;
+import sptech.school.projetovolt.service.produto.dto.ProdutoMapper;
 
 import java.util.List;
 
@@ -75,5 +77,21 @@ public class CategoriaController {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @GetMapping("/exportar-xml")
+    @Operation(summary = "Exportar categorias para arquivo XML", method = "GET", description = "Responsável por exportar categorias para arquivo XML", tags = {"Categorias"})
+    public ResponseEntity<byte[]> exportarArquivoXml(){
+        List<Categoria> categorias = categoriaService.listarCategorias();
+
+        List<CategoriaConsultaDTO> dtos = CategoriaMapper.toDto(categorias);
+
+        byte[] bytes = categoriaService.exportarXml(dtos);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=categorias.xml");
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/xml");
+
+        return ResponseEntity.ok().headers(headers).body(bytes);
     }
 }
