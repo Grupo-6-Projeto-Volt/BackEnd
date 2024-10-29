@@ -9,11 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.api.util.ResponseUtil;
 import sptech.school.projetovolt.entity.categoria.Categoria;
+import sptech.school.projetovolt.entity.tagProduto.TagProduto;
 import sptech.school.projetovolt.service.categoria.CategoriaService;
 import sptech.school.projetovolt.service.categoria.dto.CategoriaConsultaDTO;
 import sptech.school.projetovolt.service.categoria.dto.CategoriaCriacaoDTO;
 import sptech.school.projetovolt.service.categoria.dto.CategoriaMapper;
 import sptech.school.projetovolt.service.produto.dto.ProdutoMapper;
+import sptech.school.projetovolt.service.tagProduto.dto.TagProdutoConsultaDto;
+import sptech.school.projetovolt.service.tagProduto.dto.TagProdutoMapper;
 
 import java.util.List;
 
@@ -77,6 +80,22 @@ public class CategoriaController {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @GetMapping("/exportar-json")
+    @Operation(summary = "Exportar categorias para arquivo JSON", method = "GET", description = "Responsável por exportar categorias para arquivo JSON", tags = {"Categorias"})
+    public ResponseEntity<byte[]> exportarJson() {
+        List<Categoria> categorias = categoriaService.listarCategorias();
+
+        List<CategoriaConsultaDTO> dtos = CategoriaMapper.toDto(categorias);
+        byte[] bytes = categoriaService.exportarJson(dtos);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=categorias.json");
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(bytes);
     }
 
     @GetMapping("/exportar-xml")

@@ -1,5 +1,7 @@
 package sptech.school.projetovolt.service.categoria;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -9,6 +11,7 @@ import sptech.school.projetovolt.entity.categoria.repository.CategoriaRepository
 import sptech.school.projetovolt.entity.exception.ConflictException;
 import sptech.school.projetovolt.entity.exception.NotFoundException;
 import sptech.school.projetovolt.service.categoria.dto.CategoriaConsultaDTO;
+import sptech.school.projetovolt.service.tagProduto.dto.TagProdutoConsultaDto;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -75,6 +78,17 @@ public class CategoriaService {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public byte[] exportarJson(List<CategoriaConsultaDTO> categorias) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            return objectMapper.writeValueAsBytes(categorias);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao serializar os dados para JSON", e);
+        }
     }
 
     public byte[] exportarXml(List<CategoriaConsultaDTO> categorias) {

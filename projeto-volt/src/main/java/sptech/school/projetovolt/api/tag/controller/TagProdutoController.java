@@ -79,6 +79,22 @@ public class TagProdutoController {
         }
     }
 
+    @GetMapping("/exportar-json")
+    @Operation(summary = "Exportar arquivo JSON", method = "GET", description = "Responsável por exportar um arquivo JSON", tags = {"Tags"})
+    public ResponseEntity<byte[]> exportarJson() {
+        List<TagProduto> tags = tagProdutoService.listarTags();
+
+        List<TagProdutoConsultaDto> dtos = TagProdutoMapper.toDto(tags);
+        byte[] bytes = tagProdutoService.exportarJson(dtos);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=tags.json");
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(bytes);
+    }
+
     @GetMapping("/exportar-xml")
     @Operation(summary = "Exportar arquivo XML", method = "GET", description = "Responsável por exportar um arquivo XML", tags = {"Tags"})
     public ResponseEntity<byte[]> exportarXml(){

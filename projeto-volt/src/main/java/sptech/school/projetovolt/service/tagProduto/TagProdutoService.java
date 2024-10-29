@@ -1,5 +1,7 @@
 package sptech.school.projetovolt.service.tagProduto;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -72,6 +74,17 @@ public class TagProdutoService {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public byte[] exportarJson(List<TagProdutoConsultaDto> tags) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            return objectMapper.writeValueAsBytes(tags);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao serializar os dados para JSON", e);
+        }
     }
 
     public byte[] exportarXml(List<TagProdutoConsultaDto> tags) {
