@@ -16,7 +16,7 @@ public class LambdaFunction {
 
     public static LambdaResponse uploadToS3(String name, String image) {
 
-        String function = "lambda-cadastro-imagens-s3";
+        String function = "lbd-imagens-s3-ichiban";
 
         LambdaClient lambda = LambdaClient.builder()
                 .region(Region.US_EAST_1)
