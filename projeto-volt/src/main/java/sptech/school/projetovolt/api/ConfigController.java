@@ -24,7 +24,7 @@ public class ConfigController {
     @GetMapping(produces = "image/png")
     public ResponseEntity<byte[]> getFoto(@RequestParam String nameImg) throws IOException {
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
-                .bucket("s3-ichiban-teste")
+                .bucket("bucket-ichiban")
                 .key(nameImg + ".png")
                 .build();
         byte[] byteArray = s3.getObjectAsBytes(getObjectRequest).asByteArray();
@@ -34,7 +34,7 @@ public class ConfigController {
     @PostMapping( consumes = "image/*")
     public ResponseEntity<Void> postar(@RequestBody byte[] referenciaArquivoFoto, @RequestParam String nameImg){
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-                .bucket("s3-ichiban-teste")
+                .bucket("bucket-ichiban")
                 .key(nameImg + ".png")
                 .build();
 

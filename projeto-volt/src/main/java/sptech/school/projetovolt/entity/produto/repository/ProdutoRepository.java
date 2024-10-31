@@ -73,11 +73,15 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
 
     @Query(value = "SELECT p.* " +
             "FROM tb_produto p " +
-            "INNER JOIN tb_favoritos f ON p.id = f.fk_produto " +
-            "WHERE p.desconto is not null " +
-            "and p.desconto > 0 " +
-            "ORDER BY COUNT(CASE WHEN f.fk_produto IS NOT NULL THEN 1 END) DESC " +
-            "LIMIT :limite", nativeQuery = true)
+            "LEFT JOIN (SELECT fk_produto, COUNT(*) AS favoritos_count " +
+            "FROM tb_favoritos " +
+            "GROUP BY fk_produto) f ON p.id = f.fk_produto " +
+            "WHERE p.desconto IS NOT NULL " +
+            "AND p.desconto > 0 " +
+            "ORDER BY f.favoritos_count DESC " +
+            "LIMIT :limite",
+            nativeQuery = true)
+
     List<Produto> buscarProdutosMaioresPromocoes(@Param("limite") int limite);
 
 
