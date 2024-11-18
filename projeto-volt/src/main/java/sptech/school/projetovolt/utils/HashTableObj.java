@@ -2,12 +2,15 @@ package sptech.school.projetovolt.utils;
 
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class HashTableObj<T> {
     private ListaEncadeadaObj<T>[] tab;
 
     public HashTableObj() {
-        this.tab = new ListaEncadeadaObj[26];
+        this.tab = new ListaEncadeadaObj[8];
         for (int i = 0; i < tab.length; i++) {
             tab[i] = new ListaEncadeadaObj<T>();
         }
@@ -15,9 +18,10 @@ public class HashTableObj<T> {
     private int hashFunction(T product){
         return Math.abs(product.hashCode())%tab.length;
     }
-    public void put(T product){
+    public T put(T product){
         int key = hashFunction(product);
         tab[key].addNode(product);
+        return product;
     }
     public T get(T product){
         int key = hashFunction(product);
@@ -63,6 +67,17 @@ public class HashTableObj<T> {
         }
         return bucketSizes;
     }
+    public List<T> getAll(){
+        List<T> objects = new ArrayList<>();
+        for (int i = 0; i < tab.length; i++) {
+            if(tab[i] != null){
+                objects.addAll(tab[i].getAll());
+            }
+        }
+        return objects;
+    }
+
+
 }
 
 

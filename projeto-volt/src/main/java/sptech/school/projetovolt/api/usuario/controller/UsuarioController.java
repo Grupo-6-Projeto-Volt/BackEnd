@@ -1,5 +1,6 @@
 package sptech.school.projetovolt.api.usuario.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.projetovolt.entity.usuario.Usuario;
+import sptech.school.projetovolt.service.hashtable.HashTableService;
 import sptech.school.projetovolt.service.usuario.UsuarioService;
 import sptech.school.projetovolt.service.usuario.dto.UsuarioAtualizacaoDto;
 import sptech.school.projetovolt.service.usuario.dto.UsuarioConsultaDto;
@@ -28,6 +30,7 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
     private final PasswordEncoder passwordEncoder;
+    private final HashTableService hashTableService;
 
     @PostMapping
     @SecurityRequirement(name = "Bearer")
@@ -50,7 +53,6 @@ public class UsuarioController {
             )
     })
     public ResponseEntity<UsuarioConsultaDto> criarConta(@RequestBody @Valid UsuarioCriacaoDto novoUsuario) {
-
         novoUsuario.setSenha(passwordEncoder.encode(novoUsuario.getSenha()));
 
         Usuario usuarioCriado = usuarioService.criarConta(UsuarioMapper.toEntity(novoUsuario), novoUsuario.getSenha());
@@ -65,6 +67,17 @@ public class UsuarioController {
 
         if (usuarios.isEmpty()) {
             return ResponseEntity.noContent().build();
+        }
+//List<UsuarioConsultaDto> usuarioConsultaDtos = UsuarioMapper.toUsuarioConsultaDto(usuarios);
+//        for (UsuarioConsultaDto usuario : usuarioConsultaDtos) {
+//            hashTableService.inserir(usuario);
+//        }
+//        hashTableService.gravarHashTable();
+        try {
+            hashTableService.lerArquivoHash();
+            hashTableService.exibir();
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
 
         return ResponseEntity.ok(UsuarioMapper.toUsuarioConsultaDto(usuarios));
