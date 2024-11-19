@@ -11,7 +11,11 @@ public interface ProdutoChamadoRepository extends JpaRepository<ProdutoChamado, 
     List<ProdutoChamado> findByOrderByDataHoraAberturaAsc();
     List<ProdutoChamado> findByOrderByDataHoraAberturaDesc();
 
-    @Query(value = "SELECT * FROM vwfaturamento", nativeQuery = true)
+    @Query(value = """
+                SELECT SUM(vw.preco) AS faturamento
+                FROM vwfaturamento as vw
+                WHERE vw.dataClick BETWEEN DATE_SUB('2024-04-10', INTERVAL 7 DAY) AND '2024-04-10';
+            """, nativeQuery = true)
     Double faturamento();
 
     @Query(value = "SELECT tb_produto.nome AS produto,tb_produto_chamado AS chamado FROM " +

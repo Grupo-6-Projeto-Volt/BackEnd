@@ -7,7 +7,19 @@ import sptech.school.projetovolt.entity.vwprodutosmaisacessados.VwProdutosMaisAc
 import java.util.List;
 
 public interface VwProdutosMaisAcessadosRepository extends JpaRepository<VwProdutosMaisAcessados,Integer> {
-    @Query(value = "SELECT * FROM vwprodutosmaisacessados AS vw",nativeQuery = true)
+    @Query(value = """
+                SELECT
+                	vw.id,
+                    vw.qtd,
+                    vw.nome,
+                    COUNT(vw.dataClick) as acessos,
+                    vw.url
+                FROM vwprodutosmaisacessados as vw
+                where vw.dataClick = '2024-04-03'
+                GROUP BY vw.id, vw.qtd, vw.nome
+                ORDER BY vw.dataClick DESC
+                LIMIT 7;
+            """,nativeQuery = true)
     List<VwProdutosMaisAcessados> produtosMaisAcessados();
 
 }

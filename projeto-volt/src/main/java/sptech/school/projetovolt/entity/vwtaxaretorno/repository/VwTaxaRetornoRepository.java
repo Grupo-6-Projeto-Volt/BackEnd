@@ -7,6 +7,15 @@ import sptech.school.projetovolt.entity.vwtaxaretorno.VwTaxaRetorno;
 import java.util.List;
 
 public interface VwTaxaRetornoRepository extends JpaRepository<VwTaxaRetorno,Integer> {
-    @Query(value = "SELECT * FROM vwtaxaretorno AS vw ORDER BY cliques DESC",nativeQuery = true)
+    @Query(value = """
+                SELECT
+                    vw.id,
+                    vw.usuario,
+                    COUNT(vw.dataClick) AS cliques
+                FROM vwtaxaretorno AS vw
+                WHERE vw.dataClick = '2024-04-01'
+                GROUP BY vw.id HAVING cliques > 1
+                ORDER BY cliques DESC;
+            """,nativeQuery = true)
     List<VwTaxaRetorno> taxaDeRetorno();
 }
