@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import sptech.school.projetovolt.entity.produtochamado.ProdutoChamado;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;    
 
@@ -14,9 +15,9 @@ public interface ProdutoChamadoRepository extends JpaRepository<ProdutoChamado, 
     @Query(value = """
                 SELECT SUM(vw.preco) AS faturamento
                 FROM vwfaturamento as vw
-                WHERE vw.dataClick BETWEEN DATE_SUB('2024-04-10', INTERVAL 7 DAY) AND '2024-04-10';
+                WHERE vw.dataClick BETWEEN DATE_SUB(:data, INTERVAL 7 DAY) AND :data;
             """, nativeQuery = true)
-    Double faturamento();
+    Double faturamento(LocalDate data);
 
     @Query(value = "SELECT tb_produto.nome AS produto,tb_produto_chamado AS chamado FROM " +
             "tb_produto_chamado JOIN tb_produto ON fk_produto = tb_produto.id WHERE tb_produto_status_chamado >= 1",nativeQuery = true)

@@ -26,6 +26,7 @@ import sptech.school.projetovolt.service.produto.dto.ProdutoMapper;
 import sptech.school.projetovolt.service.usuario.UsuarioService;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -87,8 +88,8 @@ public class ClickProdutoController {
 
     @GetMapping("/capturar-dados/categorias")
     @Operation(summary = "Capturar dados de categorias", method = "GET", description = "Responsável por capturar dados de categorias", tags = {"Gráficos KPIs"})
-    public ResponseEntity<List<CategoriasGraficosDto>> listarCategoriasMaisAcessadas() {
-        List<VwCategoriasAcessos> categoriasAcessos = graficoKpisService.capturarCategoriasMaisAcessadas();
+    public ResponseEntity<List<CategoriasGraficosDto>> listarCategoriasMaisAcessadas(@RequestParam LocalDate data) {
+        List<VwCategoriasAcessos> categoriasAcessos = graficoKpisService.capturarCategoriasMaisAcessadas(data);
 
         if (categoriasAcessos.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -98,8 +99,8 @@ public class ClickProdutoController {
 
     @GetMapping("/capturar-dados/produtos-mais-acessados")
     @Operation(summary = "Capturar dados de produtos mais acessados", method = "GET", description = "Responsável por capturar dados de produtos mais acessados", tags = {"Gráficos KPIs"})
-    public ResponseEntity<List<ProdutosAcessadosDto>> listarProdutosMaisAcessados() {
-        List<VwProdutosMaisAcessados> produtosMaisAcessados = graficoKpisService.capturarProdutosMaisAcessados();
+    public ResponseEntity<List<ProdutosAcessadosDto>> listarProdutosMaisAcessados(@RequestParam LocalDate data) {
+        List<VwProdutosMaisAcessados> produtosMaisAcessados = graficoKpisService.capturarProdutosMaisAcessados(data);
 
         if (produtosMaisAcessados.isEmpty()) return ResponseEntity.noContent().build();
 
@@ -108,8 +109,8 @@ public class ClickProdutoController {
 
     @GetMapping("/capturar-dados/taxa-de-retorno")
     @Operation(summary = "Capturar taxa de retorno", method = "GET", description = "Responsável por capturar taxa de retorno", tags = {"Gráficos KPIs"})
-    public ResponseEntity<TaxaRetornoDto> capturarTaxaDeRetorno() {
-        List<VwTaxaRetorno> taxaRetorno = graficoKpisService.capturarTaxaDeRetorno();
+    public ResponseEntity<TaxaRetornoDto> capturarTaxaDeRetorno(@RequestParam LocalDate data) {
+        List<VwTaxaRetorno> taxaRetorno = graficoKpisService.capturarTaxaDeRetorno(data);
         List<Usuario> qtdUsuario = usuarioService.listarUsuarios();
         if (taxaRetorno.isEmpty()) {
             return ResponseEntity.noContent().build();
