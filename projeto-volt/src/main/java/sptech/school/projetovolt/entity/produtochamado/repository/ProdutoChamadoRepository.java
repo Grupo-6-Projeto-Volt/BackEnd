@@ -15,7 +15,7 @@ public interface ProdutoChamadoRepository extends JpaRepository<ProdutoChamado, 
     @Query(value = """
                 SELECT SUM(vw.preco) AS faturamento
                 FROM vwfaturamento as vw
-                WHERE vw.dataClick BETWEEN DATE_SUB(:data, INTERVAL 7 DAY) AND :data;
+                WHERE vw.dataClick BETWEEN DATE_SUB(:data, INTERVAL 7 DAY) AND :data
             """, nativeQuery = true)
     Double faturamento(LocalDate data);
 

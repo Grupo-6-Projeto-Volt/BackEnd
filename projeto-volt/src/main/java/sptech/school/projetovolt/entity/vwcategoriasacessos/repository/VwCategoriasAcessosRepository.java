@@ -16,7 +16,7 @@ public interface VwCategoriasAcessosRepository extends JpaRepository<VwCategoria
                 FROM vwcategoriasacessos as vw
                 WHERE vw.dataClick = :data
                 GROUP BY vw.categoria, vw.id
-                ORDER BY vw.acessos DESC;
+                ORDER BY acessos DESC;
             """, nativeQuery = true)
     List<VwCategoriasAcessos> categoriasMaisAcessadas(LocalDate data);
 }

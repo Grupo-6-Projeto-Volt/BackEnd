@@ -15,7 +15,7 @@ public interface VwUltimosAcessosRepository extends JpaRepository<VwUltimosAcess
                     vw.id
                 FROM vwacessossetedias as vw
                 WHERE vw.dataClick BETWEEN DATE_SUB(:data, INTERVAL 7 DAY) AND :data
-                GROUP BY vw.id;;
+                GROUP BY vw.id;
             """,nativeQuery = true)
     List<VwUltimosAcessosSeteDias> ultimosAcessosNosSeteDias(LocalDate data);
 }
