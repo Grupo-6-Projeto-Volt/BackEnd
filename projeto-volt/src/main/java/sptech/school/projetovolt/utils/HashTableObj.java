@@ -1,35 +1,35 @@
 package sptech.school.projetovolt.utils;
 
 import org.springframework.stereotype.Component;
+import sptech.school.projetovolt.service.usuario.dto.UsuarioConsultaDto;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class HashTableObj<T> {
-    private ListaEncadeadaObj<T>[] tab;
+public class HashTableObj {
+    private ListaEncadeadaObj[] tab;
 
     public HashTableObj() {
         this.tab = new ListaEncadeadaObj[8];
         for (int i = 0; i < tab.length; i++) {
-            tab[i] = new ListaEncadeadaObj<T>();
+            tab[i] = new ListaEncadeadaObj();
         }
     }
-    private int hashFunction(T product){
-        return Math.abs(product.hashCode())%tab.length;
+    private int hashFunction(UsuarioConsultaDto object){
+        return Math.abs(object.hashCode())%tab.length;
     }
-    public T put(T product){
-        int key = hashFunction(product);
-        tab[key].addNode(product);
-        return product;
+    public void put(UsuarioConsultaDto object){
+        int key = hashFunction(object);
+        tab[key].addNode(object);
     }
-    public T get(T product){
-        int key = hashFunction(product);
-        NodeObj<T> nodeFinded = tab[key].searchNode(product);
+    public NodeObj<UsuarioConsultaDto> get(UsuarioConsultaDto object){
+        int key = hashFunction(object);
+        NodeObj<UsuarioConsultaDto> nodeFinded = tab[key].searchNode(object);
         if(nodeFinded == null){
             return null;
         }
-        return nodeFinded.getInfo();
+        return nodeFinded;
     }
     public void show(){
         for (int i = 0; i < tab.length; i++) {
@@ -40,6 +40,7 @@ public class HashTableObj<T> {
                 tab[i].show();
             }
         }
+        System.out.println("\n");
     }
     public Boolean isEmpty(){
         int aux = 0;
@@ -53,9 +54,9 @@ public class HashTableObj<T> {
         }
         return false;
     }
-    public Boolean remove(T product){
-        int key = hashFunction(product);
-        if(tab[key].removeNode(product)){
+    public Boolean remove(UsuarioConsultaDto object){
+        int key = hashFunction(object);
+        if(tab[key].removeNode(object)){
             return true;
         }
         return false;
@@ -67,8 +68,8 @@ public class HashTableObj<T> {
         }
         return bucketSizes;
     }
-    public List<T> getAll(){
-        List<T> objects = new ArrayList<>();
+    public List<UsuarioConsultaDto> getAll(){
+        List<UsuarioConsultaDto> objects = new ArrayList<>();
         for (int i = 0; i < tab.length; i++) {
             if(tab[i] != null){
                 objects.addAll(tab[i].getAll());

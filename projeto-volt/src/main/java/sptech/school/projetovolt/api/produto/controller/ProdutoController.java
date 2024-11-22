@@ -176,16 +176,8 @@ public class ProdutoController {
     @Operation(summary = "Lista os produtos recomendados", method = "GET", description = "Responsável por listar os produtos recomendados", tags = {"Produtos"})
     public ResponseEntity<List<ProdutoConsultaDTO>> buscarProdutosRecomendados(@RequestParam(required = false) Integer idUser, @RequestParam(required = false) Integer limite) {
         if(limite == null) limite = 25;
-
         List<Produto> produtosEncontrados = produtoService.buscarProdutosRecomendados(idUser, limite);
         return ResponseUtil.respondIfNotEmpty(ProdutoMapper.toDto(produtosEncontrados));
-    }
-
-    @GetMapping("/poc-recomendacao")
-    public ResponseEntity<Usuario> buscarProdutosRecomendados(@RequestParam Integer idUser){
-        Usuario usuarioRecuperado = usuarioService.buscarUsuarioPorId(idUser);
-        Usuario usuarioRecomendado = (Usuario) hashTableService.buscar(usuarioRecuperado);
-        return ResponseEntity.ok(usuarioRecomendado);
     }
 
     @GetMapping("/exportar-json")

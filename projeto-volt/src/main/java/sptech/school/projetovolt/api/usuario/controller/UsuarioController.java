@@ -30,7 +30,6 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
     private final PasswordEncoder passwordEncoder;
-    private final HashTableService hashTableService;
 
     @PostMapping
     @SecurityRequirement(name = "Bearer")
@@ -68,18 +67,6 @@ public class UsuarioController {
         if (usuarios.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-//List<UsuarioConsultaDto> usuarioConsultaDtos = UsuarioMapper.toUsuarioConsultaDto(usuarios);
-//        for (UsuarioConsultaDto usuario : usuarioConsultaDtos) {
-//            hashTableService.inserir(usuario);
-//        }
-//        hashTableService.gravarHashTable();
-        try {
-            hashTableService.lerArquivoHash();
-            hashTableService.exibir();
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
         return ResponseEntity.ok(UsuarioMapper.toUsuarioConsultaDto(usuarios));
     }
 

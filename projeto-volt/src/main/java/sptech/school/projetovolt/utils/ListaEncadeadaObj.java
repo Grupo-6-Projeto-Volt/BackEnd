@@ -1,11 +1,13 @@
 package sptech.school.projetovolt.utils;
 
+import sptech.school.projetovolt.service.usuario.dto.UsuarioConsultaDto;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListaEncadeadaObj<T> {
-    private NodeObj<T> head;
-    private NodeObj<T> tail;
+public class ListaEncadeadaObj {
+    private NodeObj<UsuarioConsultaDto> head;
+    private NodeObj<UsuarioConsultaDto> tail;
 
     public ListaEncadeadaObj() {
         this.head = new NodeObj<>(null);
@@ -14,26 +16,26 @@ public class ListaEncadeadaObj<T> {
         this.tail.setPrev(head);
     }
 
-    public void addNode(T valor){
-        NodeObj<T> newNode = new NodeObj<T>(valor);
-        NodeObj<T> aux = head.getNext();
+    public void addNode(UsuarioConsultaDto valor){
+        NodeObj<UsuarioConsultaDto> newNode = new NodeObj<>(valor);
+        NodeObj<UsuarioConsultaDto> aux = head.getNext();
         newNode.setNext(aux);
         head.setNext(newNode);
         newNode.setPrev(head);
         aux.setPrev(newNode);
     }
     public void show(){
-        NodeObj<T> nodeAtual = head.getNext();
+        NodeObj<UsuarioConsultaDto> nodeAtual = head.getNext();
         while(nodeAtual.getNext() != null){
-            System.out.print(nodeAtual.getInfo()+ " ->");
+            System.out.print(nodeAtual.getInfo().getEmail()+ " ->");
             nodeAtual = nodeAtual.getNext();
         }
         System.out.println("\n");
     }
 
-    public List<T> getAll(){
-        List<T> nodes = new ArrayList<>();
-        NodeObj<T> actualNode = head.getNext();
+    public List<UsuarioConsultaDto> getAll(){
+        List<UsuarioConsultaDto> nodes = new ArrayList<>();
+        NodeObj<UsuarioConsultaDto> actualNode = head.getNext();
         while ((actualNode != head && actualNode != tail) && actualNode != null){
             nodes.add(actualNode.getInfo());
             actualNode = actualNode.getNext();
@@ -41,22 +43,20 @@ public class ListaEncadeadaObj<T> {
         return nodes;
     }
 
-    public NodeObj<T> searchNode(T valor){
-        NodeObj<T> actualNode = head.getNext();
-        NodeObj<T> ant = head;
-        while (actualNode != null){
-            if(actualNode == valor){
-                return actualNode;
+    public NodeObj<UsuarioConsultaDto> searchNode(UsuarioConsultaDto valor){
+        NodeObj<UsuarioConsultaDto> nodeAtual = head.getNext();
+        while (nodeAtual != null){
+            if(nodeAtual.getInfo().equals(valor)){
+                return nodeAtual;
             }
-                ant = actualNode;
-                actualNode = actualNode.getNext();
+            nodeAtual = nodeAtual.getNext();
         }
-        return null;
+        return tail;
     }
 
-    public Boolean removeNode(T valor){
-        NodeObj<T> nodeAtual = head.getNext();
-        NodeObj<T> ant = head;
+    public Boolean removeNode(UsuarioConsultaDto valor){
+        NodeObj<UsuarioConsultaDto> nodeAtual = head.getNext();
+        NodeObj<UsuarioConsultaDto> ant = head;
         while (nodeAtual != null){
             if(nodeAtual != tail){
                 nodeAtual.getNext().setPrev(ant);
@@ -70,7 +70,7 @@ public class ListaEncadeadaObj<T> {
     }
 
     public int getSize(){
-        NodeObj<T> actualNode= head.getNext();
+        NodeObj<UsuarioConsultaDto> actualNode= head.getNext();
         int tam = 0;
         while(actualNode.getInfo() != null){
             tam++;
