@@ -286,9 +286,8 @@ public class ProdutoService {
     public List<Produto> buscarProdutosRecomendados(Integer idUser, Integer limite) {
         if(idUser == null) return produtoRepository.buscarProdutosMaioresPromocoes(limite);
         UsuarioConsultaDto usuarioEncontrado = hashTableService.buscar(usuarioService.buscarUsuarioPorId(idUser));
-        List<Produto> produtosEncontrados = hashTableService.listarProdutosUsuario(usuarioEncontrado);
+        List<Produto> produtosEncontrados = hashTableService.listarProdutosUsuario(usuarioEncontrado,limite);
         return produtosEncontrados;
-//        return produtoRepository.buscaProdutosRecomendados(idUser, limite);
     }
     public byte[] exportarParquet(List<ProdutoExportacaoDto> produtos) {
         StringBuilder sb = new StringBuilder();

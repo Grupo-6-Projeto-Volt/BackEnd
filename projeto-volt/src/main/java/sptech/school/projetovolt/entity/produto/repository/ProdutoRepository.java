@@ -86,7 +86,20 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
             "ORDER BY RAND(),ABS(p.preco - (SELECT preco FROM tb_produto WHERE id = :idProduto)) ASC," +
             "p.qtd_estoque DESC LIMIT :limite",nativeQuery = true)
     List<Produto> recomendarParaUsuariosUnicos(@Param("limite")int limite,@Param("idProduto")int idProduto);
-
+    @Query(value = "SELECT p.* FROM tb_produto p WHERE p.id " +
+            "NOT IN(SELECT f.fk_produto FROM tb_favoritos f WHERE f.fk_usuario IN(:idUsuarioA,:idUsuarioB))" +
+            "AND p.estado_geral =(SELECT estado_geral FROM tb_produto WHERE id = :idProduto) AND p.preco BETWEEN" +
+            "(SELECT preco * 0.25 FROM tb_produto WHERE id = :idProduto)" +
+            "AND (SELECT preco * 1 FROM tb_produto WHERE id = :idProduto)" +
+            "ORDER BY RAND(),ABS(p.preco - (SELECT preco FROM tb_produto WHERE id = :idProduto))ASC LIMIT 15",nativeQuery = true)
+    List<Produto> recomendarParaUsuarioComVizinhos(@Param("idUsuarioA")int idUsuarioA,@Param("idUsuarioB")int idUsuarioB,@Param("idProduto")int idProduto);
+    @Query(value = "SELECT p.* FROM tb_produto p WHERE p.id " +
+            "NOT IN(SELECT f.fk_produto FROM tb_favoritos f WHERE f.fk_usuario = :idUsuarioA)" +
+            "AND p.estado_geral =(SELECT estado_geral FROM tb_produto WHERE id = :idProduto) AND p.preco " +
+            "BETWEEN (SELECT preco * 0.25 FROM tb_produto WHERE id = :idProduto)" +
+            "AND (SELECT preco * 1 FROM tb_produto WHERE id = :idProduto)" +
+            "ORDER BY RAND(),ABS(p.preco - (SELECT preco FROM tb_produto WHERE id = :idProduto))ASC LIMIT 15",nativeQuery = true)
+    List<Produto> recomendarParaUsuarioComVizinhoUnico(@Param("idUsuarioA")int idUsuarioA,@Param("idProduto")int idProduto);
     @Query(value = "SELECT p.* " +
             "FROM tb_produto p " +
             "LEFT JOIN (SELECT fk_produto, COUNT(*) AS favoritos_count " +

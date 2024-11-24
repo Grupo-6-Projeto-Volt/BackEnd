@@ -18,6 +18,7 @@ import sptech.school.projetovolt.utils.NodeObj;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -39,7 +40,9 @@ public class HashTableService {
 
     public void inserir(Usuario usuarioInserido){
         UsuarioConsultaDto usuarioFormatado = UsuarioMapper.toUsuarioConsultaDto(usuarioInserido);
-        hashTable.put(usuarioFormatado);
+        if(!usuarioFormatado.getCategoria().equals("Admin")){
+            hashTable.put(usuarioFormatado);
+        }
     }
     public void remover(Usuario usuarioRemovido){
         hashTable.remove(buscar(usuarioRemovido));
@@ -53,23 +56,13 @@ public class HashTableService {
     }
     public void exibir(){
         hashTable.show();
-//        if(!hashTable.isEmpty()){
-//            hashTable.show();
-//        }else{
-//            try {
-//                lerArquivoHash();
-//            } catch (JsonProcessingException e) {
-//                e.printStackTrace();
-//                throw new RuntimeException(e);
-//            }
-//        }
     }
     public void gravarHashTable(){
         List<UsuarioConsultaDto> usuarios = hashTable.getAll();
         usuarios.stream().toList();
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(".src/main/resources/usuarios.json"),usuarios);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File("./usuarios.json"),usuarios);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao serializar os dados para JSON", e);
@@ -78,7 +71,7 @@ public class HashTableService {
         }
     }
     public void lerArquivoHash() throws JsonProcessingException {
-        File usuarioFile = new File(".src/main/resources/usuarios.json");
+        File usuarioFile = new File("./usuarios.json");
         if(usuarioFile.exists()){
             ObjectMapper objectMapper = new ObjectMapper();
             List<UsuarioConsultaDto> users = null;
@@ -98,10 +91,9 @@ public class HashTableService {
             inserir(user);
         }
     }
-    public List<Produto> listarProdutosUsuario(UsuarioConsultaDto usuarioFormatado){
+    public List<Produto> listarProdutosUsuario(UsuarioConsultaDto usuarioFormatado,Integer limite){
         List<Produto> produtos = new ArrayList<>();
         NodeObj<UsuarioConsultaDto> node = hashTable.get(usuarioFormatado);
-        int limite = 25;
         // usuario sozinho na lista
         if(node.getNext().getInfo() == null && node.getPrev().getInfo() == null){
             Usuario usuarioRecomendado = usuarioService.buscarUsuarioPorId(node.getInfo().getId());
@@ -135,7 +127,17 @@ public class HashTableService {
             for (ClickProduto clickProduto : aux) {
                 produtos.add(clickProduto.getProduto());
             }
-            //adicionar produtos vindos da query
+            if(produtos.isEmpty()){
+                produtos.addAll(produtoRepository.recomendarProdutosParaUsuariosNovos(limite));
+            }else{
+                //adicionar produtos complementares vindos da query
+                int idProduto = produtos.stream().findAny().get().getId();
+                produtos.addAll(produtoRepository.recomendarParaUsuarioComVizinhoUnico(usuarioRecomendado.getId(),idProduto));
+
+                //embaralha a lista
+                Collections.shuffle(produtos);
+            }
+
         } else if (node.getNext().getInfo() != null && node.getPrev().getInfo() == null) {
             UsuarioConsultaDto usuarioVizinho = (UsuarioConsultaDto) node.getNext().getInfo();
             Usuario usuarioRecomendado = usuarioService.buscarUsuarioPorId(usuarioVizinho.getId());
@@ -145,22 +147,40 @@ public class HashTableService {
             for (ClickProduto clickProduto : aux) {
                 produtos.add(clickProduto.getProduto());
             }
+            if(produtos.isEmpty()){
+                produtos.addAll(produtoRepository.recomendarProdutosParaUsuariosNovos(limite));
+            }else{
+                int idProduto = produtos.stream().findAny().get().getId();
+                produtos.addAll(produtoRepository.recomendarParaUsuarioComVizinhoUnico(usuarioRecomendado.getId(),idProduto));
+                Collections.shuffle(produtos);
+            }
+
         }else if(node.getNext().getInfo() != null && node.getPrev().getInfo() != null){
             UsuarioConsultaDto usuarioNext = (UsuarioConsultaDto) node.getNext().getInfo();
            UsuarioConsultaDto usuarioPrev = (UsuarioConsultaDto) node.getPrev().getInfo();
 
             Usuario usuarioVizinhoDireito = usuarioService.buscarUsuarioPorId(usuarioNext.getId());
             Usuario usuarioVizinhoEsquerdo = usuarioService.buscarUsuarioPorId(usuarioPrev.getId());
+            Usuario usuarioAtual = usuarioService.buscarUsuarioPorId(node.getInfo().getId());
 
             List<ClickProduto> aux = usuarioVizinhoDireito.getClickProdutos();
             aux.addAll(usuarioVizinhoEsquerdo.getClickProdutos());
+            aux.addAll(usuarioAtual.getClickProdutos());
             for (ClickProduto clickProduto : aux) {
                 produtos.add(clickProduto.getProduto());
             }
+            if(produtos.isEmpty()){
+                produtos.addAll(produtoRepository.recomendarProdutosParaUsuariosNovos(limite));
+            }else{
+                int idProduto = produtos.stream().findAny().get().getId();
+                produtos.addAll(produtoRepository.recomendarParaUsuarioComVizinhos(usuarioVizinhoEsquerdo.getId(),usuarioVizinhoDireito.getId(),idProduto));
+                Collections.shuffle(produtos);
+            }
         }
-        //se o nodo for nulo
-        if(node == null){
+       //se o nodo for nulo
+       if(node == null){
             produtos = produtoRepository.recomendarProdutosParaUsuariosNovos(limite);
+           Collections.shuffle(produtos);
         }
         return produtos;
     }

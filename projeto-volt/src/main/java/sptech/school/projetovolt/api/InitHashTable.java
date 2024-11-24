@@ -1,4 +1,4 @@
-package sptech.school.projetovolt.utils;
+package sptech.school.projetovolt.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.annotation.PostConstruct;
