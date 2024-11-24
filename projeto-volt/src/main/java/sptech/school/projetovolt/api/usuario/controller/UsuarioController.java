@@ -59,7 +59,6 @@ public class UsuarioController {
         Usuario usuarioCriado = usuarioService.criarConta(UsuarioMapper.toEntity(novoUsuario), novoUsuario.getSenha());
 
         hashTableService.inserir(usuarioCriado);
-        hashTableService.gravarHashTable();
 
         return ResponseEntity
                 .created(URI.create("/usuarios/" + usuarioCriado.getId()))

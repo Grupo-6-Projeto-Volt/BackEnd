@@ -31,11 +31,6 @@ public class HashTableService {
         this.hashTable = hashTable;
         this.usuarioService = usuarioService;
         this.produtoRepository = produtoRepository;
-        try {
-            lerArquivoHash();
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void inserir(Usuario usuarioInserido){

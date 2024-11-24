@@ -20,12 +20,11 @@ import sptech.school.projetovolt.service.graficoskpis.dto.CategoriasGraficosDto;
 import sptech.school.projetovolt.service.graficoskpis.dto.GraficoKpisMapper;
 import sptech.school.projetovolt.service.graficoskpis.dto.ProdutosAcessadosDto;
 import sptech.school.projetovolt.service.graficoskpis.dto.TaxaRetornoDto;
-import sptech.school.projetovolt.service.hashtable.HashTableService;
 import sptech.school.projetovolt.service.produto.ProdutoService;
 import sptech.school.projetovolt.service.produto.dto.ProdutoConsultaDTO;
 import sptech.school.projetovolt.service.produto.dto.ProdutoMapper;
 import sptech.school.projetovolt.service.usuario.UsuarioService;
-import sptech.school.projetovolt.service.usuario.dto.UsuarioMapper;
+
 
 import java.net.URI;
 import java.util.List;
