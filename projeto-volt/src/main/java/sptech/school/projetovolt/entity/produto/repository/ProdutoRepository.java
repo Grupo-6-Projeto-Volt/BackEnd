@@ -58,18 +58,34 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
     List<Produto> produtosMaisClicados();
 
     // Produtos recomendados
-    @Query(value = "SELECT p.* " +
-            "FROM tb_produto p " +
-            "LEFT JOIN tb_favoritos f ON p.id = f.fk_produto AND f.fk_usuario = :usuarioId " +
-            "LEFT JOIN tb_click_produto cp ON p.id = cp.fk_produto AND cp.fk_usuario = :usuarioId " +
-            "JOIN tb_produto p2 ON p.fk_categoria = p2.fk_categoria " +
-            "WHERE p.id != p2.id " +
-            "GROUP BY p.id " +
-            "ORDER BY " +
-            "COUNT(CASE WHEN f.fk_produto IS NOT NULL THEN 1 END) DESC, " +
-            "COUNT(CASE WHEN cp.fk_produto IS NOT NULL THEN 1 END) DESC " +
-            "LIMIT :limite" , nativeQuery = true)
-    List<Produto> buscaProdutosRecomendados(@Param("usuarioId") int usuarioId, @Param("limite") int limite);
+//    @Query(value = "SELECT p.* " +
+//            "FROM tb_produto p " +
+//            "LEFT JOIN tb_favoritos f ON p.id = f.fk_produto AND f.fk_usuario = :usuarioId " +
+//            "LEFT JOIN tb_click_produto cp ON p.id = cp.fk_produto AND cp.fk_usuario = :usuarioId " +
+//            "JOIN tb_produto p2 ON p.fk_categoria = p2.fk_categoria " +
+//            "WHERE p.id != p2.id " +
+//            "GROUP BY p.id " +
+//            "ORDER BY " +
+//            "COUNT(CASE WHEN f.fk_produto IS NOT NULL THEN 1 END) DESC, " +
+//            "COUNT(CASE WHEN cp.fk_produto IS NOT NULL THEN 1 END) DESC " +
+//            "LIMIT :limite" , nativeQuery = true)
+//    List<Produto> buscaProdutosRecomendados(@Param("usuarioId") int usuarioId, @Param("limite") int limite);
+    //query para usuarios recem cadastrados
+    @Query(value = "(SELECT p.* FROM tb_produto p LEFT JOIN tb_click_produto cp" +
+            "ON p.id = cp.fk_produto GROUP BY p.id ORDER BY COUNT(cp.id) DESC" +
+            "LIMIT :limite" +
+            ") UNION (SELECT p.* FROM tb_produto p WHERE p.estado_geral IN ('Novo','Semi novo')" +
+            "AND p.qtd_estoque >= 10 LIMIT :limite) ORDER BY RAND()" +
+            "LIMIT :limite",nativeQuery = true
+    )
+    List<Produto> recomendarProdutosParaUsuariosNovos(@Param("limite")int limite);
+    //query para usuarios sem vizinhos na hash table
+    @Query(value = "SELECT p.* FROM tb_produto p WHERE p.estado_geral = (SELECT estado_geral FROM tb_produto WHERE id = :idProduto)" +
+            "AND p.preco BETWEEN (SELECT preco * 0.5 FROM tb_produto WHERE id = :idProduto)" +
+            "AND (SELECT preco * 1.25 FROM tb_produto WHERE id = :idProduto)" +
+            "ORDER BY RAND(),ABS(p.preco - (SELECT preco FROM tb_produto WHERE id = :idProduto)) ASC," +
+            "p.qtd_estoque DESC LIMIT :limite",nativeQuery = true)
+    List<Produto> recomendarParaUsuariosUnicos(@Param("limite")int limite,@Param("idProduto")int idProduto);
 
     @Query(value = "SELECT p.* " +
             "FROM tb_produto p " +

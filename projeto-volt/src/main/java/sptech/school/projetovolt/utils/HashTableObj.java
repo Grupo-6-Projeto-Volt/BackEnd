@@ -62,7 +62,7 @@ public class HashTableObj {
         return false;
     }
     public int[] size(){
-        int[] bucketSizes = new int[26];
+        int[] bucketSizes = new int[8];
         for (int i = 0; i < tab.length; i++) {
             bucketSizes[i] = tab[i].getSize();
         }

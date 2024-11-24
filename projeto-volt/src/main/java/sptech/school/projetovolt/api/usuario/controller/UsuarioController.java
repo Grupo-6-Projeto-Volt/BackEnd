@@ -30,6 +30,8 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
     private final PasswordEncoder passwordEncoder;
+    private final HashTableService hashTableService;
+
 
     @PostMapping
     @SecurityRequirement(name = "Bearer")
@@ -55,6 +57,10 @@ public class UsuarioController {
         novoUsuario.setSenha(passwordEncoder.encode(novoUsuario.getSenha()));
 
         Usuario usuarioCriado = usuarioService.criarConta(UsuarioMapper.toEntity(novoUsuario), novoUsuario.getSenha());
+
+        hashTableService.inserir(usuarioCriado);
+        hashTableService.gravarHashTable();
+
         return ResponseEntity
                 .created(URI.create("/usuarios/" + usuarioCriado.getId()))
                 .body(UsuarioMapper.toUsuarioConsultaDto(usuarioCriado));

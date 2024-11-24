@@ -39,7 +39,6 @@ public class ClickProdutoController {
     private final ProdutoService produtoService;
     private final UsuarioService usuarioService;
     private final GraficoKpisService graficoKpisService;
-    private final HashTableService hashTableService;
 
 
     @GetMapping("/mais-clicados")
@@ -63,8 +62,6 @@ public class ClickProdutoController {
     @Operation(summary = "Cadastrar um click de produto", method = "POST", description = "Responsável por cadastrar um click de produto", tags = {"Clicks de Produtos"})
     public ResponseEntity<ClickProdutoConsultaDTO> criar(@RequestBody @Valid ClickProdutoCriacaoDTO novoClick) {
         if (novoClick.getIdUsuario() != null) {
-            hashTableService.inserir(usuarioService.buscarUsuarioPorId(novoClick.getIdUsuario()));
-            hashTableService.gravarHashTable();
             return ResponseEntity.created(URI.create("/clicks-produto")).body(
                     ClickProdutoMapper.toDto(
                             service.criar(

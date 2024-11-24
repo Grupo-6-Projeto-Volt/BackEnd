@@ -3,10 +3,9 @@ package sptech.school.projetovolt.service.hashtable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import sptech.school.projetovolt.entity.clickProduto.ClickProduto;
+import sptech.school.projetovolt.entity.favoritos.Favoritos;
 import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.entity.produto.repository.ProdutoRepository;
 import sptech.school.projetovolt.entity.usuario.Usuario;
@@ -18,8 +17,6 @@ import sptech.school.projetovolt.utils.NodeObj;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,10 +24,12 @@ import java.util.List;
 public class HashTableService {
     private final HashTableObj hashTable;
     private final UsuarioService usuarioService;
+    private final ProdutoRepository produtoRepository;
 
-    public HashTableService(HashTableObj hashTable, UsuarioService usuarioService) {
+    public HashTableService(HashTableObj hashTable, UsuarioService usuarioService, ProdutoRepository produtoRepository) {
         this.hashTable = hashTable;
         this.usuarioService = usuarioService;
+        this.produtoRepository = produtoRepository;
         try {
             lerArquivoHash();
         } catch (JsonProcessingException e) {
@@ -102,48 +101,67 @@ public class HashTableService {
     public List<Produto> listarProdutosUsuario(UsuarioConsultaDto usuarioFormatado){
         List<Produto> produtos = new ArrayList<>();
         NodeObj<UsuarioConsultaDto> node = hashTable.get(usuarioFormatado);
-        if(node.getNext() != null){
-            UsuarioConsultaDto usuarioSeguinte = (UsuarioConsultaDto) node.getNext().getInfo();
-            List<ClickProduto> cliques = usuarioService.buscarUsuarioPorId(usuarioSeguinte.getId()).getClickProdutos();
-            for (ClickProduto clique : cliques) {
-                produtos.add(clique.getProduto());
-            }
-        }else{
-            List<ClickProduto> cliquesDoUsuario = usuarioService.buscarUsuarioPorId(node.getInfo().getId()).getClickProdutos();
-            if(!cliquesDoUsuario.isEmpty()){
-                for (ClickProduto clickProduto : cliquesDoUsuario) {
+        int limite = 25;
+        // usuario sozinho na lista
+        if(node.getNext().getInfo() == null && node.getPrev().getInfo() == null){
+            Usuario usuarioRecomendado = usuarioService.buscarUsuarioPorId(node.getInfo().getId());
+            //validar favoritos
+            if(usuarioRecomendado.getFavoritos().isEmpty()){
+                List<ClickProduto> aux = usuarioRecomendado.getClickProdutos().stream().toList();
+                if(aux.isEmpty()){
+                    produtos = produtoRepository.recomendarProdutosParaUsuariosNovos(limite);
+                }else{
+                    int paramProduto = aux.stream().findAny().get().getProduto().getId();
+                    produtos = produtoRepository.recomendarParaUsuariosUnicos(limite,paramProduto);
+                }
+            }else{
+                for (Favoritos favoritos : usuarioRecomendado.getFavoritos().stream().toList()) {
+                    produtos.add(favoritos.getProduto());
+                }
+                for (ClickProduto clickProduto : usuarioRecomendado.getClickProdutos().stream().toList()) {
                     produtos.add(clickProduto.getProduto());
                 }
+                int paramProduto = produtos.get(produtos.size()-1).getId();
+                produtos.addAll(produtoRepository.recomendarParaUsuariosUnicos(limite,paramProduto));
             }
+        }
+        //validar se possui vizinhos
+        if(node.getNext().getInfo() == null && node.getPrev().getInfo() != null){
+            UsuarioConsultaDto usuarioVizinho = (UsuarioConsultaDto) node.getPrev().getInfo();
+            Usuario usuarioRecomendado = usuarioService.buscarUsuarioPorId(usuarioVizinho.getId());
+            Usuario usuarioSelecionado = usuarioService.buscarUsuarioPorId(node.getInfo().getId());
+            List<ClickProduto> aux = usuarioRecomendado.getClickProdutos();
+            aux.addAll(usuarioSelecionado.getClickProdutos());
+            for (ClickProduto clickProduto : aux) {
+                produtos.add(clickProduto.getProduto());
+            }
+            //adicionar produtos vindos da query
+        } else if (node.getNext().getInfo() != null && node.getPrev().getInfo() == null) {
+            UsuarioConsultaDto usuarioVizinho = (UsuarioConsultaDto) node.getNext().getInfo();
+            Usuario usuarioRecomendado = usuarioService.buscarUsuarioPorId(usuarioVizinho.getId());
+            Usuario usuarioSelecionado = usuarioService.buscarUsuarioPorId(node.getInfo().getId());
+            List<ClickProduto> aux = usuarioRecomendado.getClickProdutos();
+            aux.addAll(usuarioSelecionado.getClickProdutos());
+            for (ClickProduto clickProduto : aux) {
+                produtos.add(clickProduto.getProduto());
+            }
+        }else if(node.getNext().getInfo() != null && node.getPrev().getInfo() != null){
+            UsuarioConsultaDto usuarioNext = (UsuarioConsultaDto) node.getNext().getInfo();
+           UsuarioConsultaDto usuarioPrev = (UsuarioConsultaDto) node.getPrev().getInfo();
+
+            Usuario usuarioVizinhoDireito = usuarioService.buscarUsuarioPorId(usuarioNext.getId());
+            Usuario usuarioVizinhoEsquerdo = usuarioService.buscarUsuarioPorId(usuarioPrev.getId());
+
+            List<ClickProduto> aux = usuarioVizinhoDireito.getClickProdutos();
+            aux.addAll(usuarioVizinhoEsquerdo.getClickProdutos());
+            for (ClickProduto clickProduto : aux) {
+                produtos.add(clickProduto.getProduto());
+            }
+        }
+        //se o nodo for nulo
+        if(node == null){
+            produtos = produtoRepository.recomendarProdutosParaUsuariosNovos(limite);
         }
         return produtos;
     }
-//    public void inserirProdutos(){
-//        if(!hashTable.isEmpty()){
-//            throw new IllegalStateException("Hash table já está preenchida");
-//        }
-//        produtoRepository.findAll().stream().forEach(produto -> {
-//            hashTable.put(produto.getNome().toLowerCase());
-//        });
-//    }
-//
-//    public String buscarProdutoPorNome(String nomeProduto){
-//        if(hashTable.isEmpty()){
-//            throw new IllegalStateException("Tabela Hash vazia!");
-//        }
-//        return hashTable.get(nomeProduto.toLowerCase());
-//    }
-//    public Boolean removerProdutoPorNome(String nomeProduto){
-//        if(hashTable.isEmpty()){
-//            throw new IllegalStateException("Tabela Hash vazia!");
-//        }
-//        return hashTable.remove(nomeProduto);
-//    }
-//    public void exibirProdutos(){
-//        if(hashTable.isEmpty()){
-//            throw new IllegalStateException("Tabela Hash vazia!");
-//        }
-//        hashTable.show();
-//    }
-
 }
