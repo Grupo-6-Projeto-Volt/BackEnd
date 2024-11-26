@@ -80,7 +80,7 @@ public class HashTableService {
             }
         }
     }
-    public void temp(){
+    public void popularHash(){
         List<Usuario> users = usuarioService.listarUsuarios();
         for (Usuario user : users) {
             inserir(user);
@@ -114,9 +114,11 @@ public class HashTableService {
         }
         //validar se possui vizinhos
         if(node.getNext().getInfo() == null && node.getPrev().getInfo() != null){
+            //ultimo da lista
             UsuarioConsultaDto usuarioVizinho = (UsuarioConsultaDto) node.getPrev().getInfo();
             Usuario usuarioRecomendado = usuarioService.buscarUsuarioPorId(usuarioVizinho.getId());
             Usuario usuarioSelecionado = usuarioService.buscarUsuarioPorId(node.getInfo().getId());
+
             List<ClickProduto> aux = usuarioRecomendado.getClickProdutos();
             aux.addAll(usuarioSelecionado.getClickProdutos());
             for (ClickProduto clickProduto : aux) {
@@ -126,7 +128,7 @@ public class HashTableService {
                 produtos.addAll(produtoRepository.recomendarProdutosParaUsuariosNovos(limite));
             }else{
                 //adicionar produtos complementares vindos da query
-                int idProduto = produtos.stream().findAny().get().getId();
+                int idProduto = produtos.get(produtos.size()-1).getId();
                 produtos.addAll(produtoRepository.recomendarParaUsuarioComVizinhoUnico(usuarioRecomendado.getId(),idProduto));
 
                 //embaralha a lista
@@ -145,7 +147,7 @@ public class HashTableService {
             if(produtos.isEmpty()){
                 produtos.addAll(produtoRepository.recomendarProdutosParaUsuariosNovos(limite));
             }else{
-                int idProduto = produtos.stream().findAny().get().getId();
+                int idProduto = produtos.get(produtos.size()-1).getId();
                 produtos.addAll(produtoRepository.recomendarParaUsuarioComVizinhoUnico(usuarioRecomendado.getId(),idProduto));
                 Collections.shuffle(produtos);
             }
@@ -167,7 +169,7 @@ public class HashTableService {
             if(produtos.isEmpty()){
                 produtos.addAll(produtoRepository.recomendarProdutosParaUsuariosNovos(limite));
             }else{
-                int idProduto = produtos.stream().findAny().get().getId();
+                int idProduto = produtos.get(produtos.size()-1).getId();
                 produtos.addAll(produtoRepository.recomendarParaUsuarioComVizinhos(usuarioVizinhoEsquerdo.getId(),usuarioVizinhoDireito.getId(),idProduto));
                 Collections.shuffle(produtos);
             }

@@ -71,9 +71,8 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
 //            "LIMIT :limite" , nativeQuery = true)
 //    List<Produto> buscaProdutosRecomendados(@Param("usuarioId") int usuarioId, @Param("limite") int limite);
     //query para usuarios recem cadastrados
-    @Query(value = "(SELECT p.* FROM tb_produto p LEFT JOIN tb_click_produto cp" +
-            "ON p.id = cp.fk_produto GROUP BY p.id ORDER BY COUNT(cp.id) DESC" +
-            "LIMIT :limite" +
+    @Query(value = "(SELECT p.* FROM tb_produto p LEFT JOIN tb_click_produto cp ON p.id = cp.fk_produto GROUP BY p.id ORDER BY COUNT(cp.id) " +
+            "DESC LIMIT :limite" +
             ") UNION (SELECT p.* FROM tb_produto p WHERE p.estado_geral IN ('Novo','Semi novo')" +
             "AND p.qtd_estoque >= 10 LIMIT :limite) ORDER BY RAND()" +
             "LIMIT :limite",nativeQuery = true

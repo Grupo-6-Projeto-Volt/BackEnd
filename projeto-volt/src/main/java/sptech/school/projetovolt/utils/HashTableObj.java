@@ -11,7 +11,7 @@ public class HashTableObj {
     private ListaEncadeadaObj[] tab;
 
     public HashTableObj() {
-        this.tab = new ListaEncadeadaObj[4];
+        this.tab = new ListaEncadeadaObj[5];
         for (int i = 0; i < tab.length; i++) {
             tab[i] = new ListaEncadeadaObj();
         }

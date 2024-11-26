@@ -18,7 +18,7 @@ public class InitHashTable {
     }
 
     public void init() {
-        hashTableService.temp();
+        hashTableService.popularHash();
         hashTableService.exibir();
     }
 }
