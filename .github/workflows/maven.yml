@@ -9,35 +9,38 @@ jobs:
 
     steps:
     - name: Atualizar código
-      uses: actions/checkout@v2
-    
+      uses: actions/checkout@v4
+
     - name: Travar versão do Java
       uses: actions/setup-java@v4
       with:
         distribution: 'corretto' 
         java-version: '17'
 
-    - name : Gerenciar maven e criar jar
+    - name : Baixar dependências
       run: | 
         cd projeto-volt
         mvn -B package --file pom.xml
-        mvn clean package -Dmaven.test.skip=true
+        mvn clean package -Dmaven.test.skip
         
-    - name: Gerar artefato Github com os arquivos de build
-      uses: actions/upload-artifact@v4
-      with:
-        name: projeto-volt
-        path: projeto-volt/target/*jar
+    # - name: Gerar artefato Github com os arquivos de build
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: projeto-volt
+    #     path: projeto-volt/target/*jar
 
-  deploy:
-        needs: build
-        runs-on: ubuntu-latest
+    
+    
+      
+  # deploy:
+  #       needs: build
+  #       runs-on: ubuntu-latest
 
-        steps:
-        - name: Recuperar artefato do build
-          uses: actions/download-artifact@v4
-          with:
-            name: projeto-volt
-            path: projeto-volt/target/*jar
+  #       steps:
+  #       - name: Recuperar artefato do build
+  #         uses: actions/download-artifact@v4
+  #         with:
+  #           name: projeto-volt
+  #           path: projeto-volt/target/*jar
             
          
