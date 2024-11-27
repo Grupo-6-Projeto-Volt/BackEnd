@@ -12,7 +12,6 @@ jobs:
     - uses: actions/checkout@v2
     
     - name: Travar versão do Java
-    - uses: actions/checkout@v4
     - uses: actions/setup-java@v4
       with:
         distribution: 'corretto' 
