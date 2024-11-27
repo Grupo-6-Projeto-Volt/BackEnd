@@ -21,9 +21,7 @@ jobs:
     - name : Baixar dependências
       run: |
         cd projeto-volt
-        mvn clean install
-        env:
-          MAVEN_OPTS: "--add-opens jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED"
+        run: mvn clean install --batch-mode --quiet -DargLine="--add-opens jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED"
 
     
     - name: Gerar artefato Github com os arquivos de build
