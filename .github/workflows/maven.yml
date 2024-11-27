@@ -19,7 +19,7 @@ jobs:
         cache : maven
 
     - name : Baixar dependências
-      run: mvn -B package --file .\projeto-volt\pom.xml
+      run: mvn -B package --file ./projeto-volt/pom.xml
 
     - name : Gerar arquivo jar
       run: mvn clean package -Dmaven.test.skip=true
