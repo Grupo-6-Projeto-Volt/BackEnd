@@ -2,7 +2,7 @@ name: Backend CI Maven
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: [ "desenvolvimento" ]
 jobs:
   build:
     runs-on: ubuntu-latest
