@@ -18,15 +18,8 @@ jobs:
         java-version: '17'
         cache : maven
 
-    - name: Verificar caminho
-      run: pwd
-
-    - name: Verificar conteudo
-      run: ls -la
-      
-
     - name : Baixar dependências
-      run: mvn -B package --file pom.xml
+      run: mvn -B package --file .\projeto-volt\pom.xml
 
     - name : Gerar arquivo jar
       run: mvn clean package -Dmaven.test.skip=true
