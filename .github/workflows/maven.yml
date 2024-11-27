@@ -17,11 +17,11 @@ jobs:
         distribution: 'corretto' 
         java-version: '17'
 
-    - name : Baixar dependências
+    - name : Acessar diretorio
       run: | 
-        ENV_VARS="DB_DRIVER=com.mysql.cj.jdbc.Driver;DB_PASSWORD=sptech;DB_URL=jdbc:mysql://localhost:3306/bd_volt;DB_USERNAME=sptech;JWT_SECRET=1D08EWyxTWMzgPWZL2FNcQjOSfLLyrDISspdBkWFxJUOadpcNNblmbNT1kF2zR22AWcMUF1HPMkCSApDGyiO6eFqfwCFPxd6"
-        export $ENV_VARS
-        mvn clean package -e -X --file ./projeto-volt/pom.xml -Dmaven.test.skip=true
+        cd projeto-volt
+        pwd
+        ls -la
         
     - name : Gerar arquivo jar
       run: mvn clean package -Dmaven.test.skip=true
