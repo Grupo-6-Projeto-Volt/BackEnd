@@ -9,10 +9,10 @@ jobs:
 
     steps:
     - name: Atualizar código
-    - uses: actions/checkout@v2
+      uses: actions/checkout@v2
     
     - name: Travar versão do Java
-    - uses: actions/setup-java@v4
+      uses: actions/setup-java@v4
       with:
         distribution: 'corretto' 
         java-version: '17'
