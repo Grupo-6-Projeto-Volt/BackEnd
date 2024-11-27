@@ -20,6 +20,7 @@ jobs:
 
     - name: Verificar caminho
       run: pwd
+      run: ls -la
 
     - name : Baixar dependências
       run: mvn -B package --file pom.xml
