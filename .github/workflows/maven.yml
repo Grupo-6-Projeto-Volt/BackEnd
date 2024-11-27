@@ -21,12 +21,12 @@ jobs:
     - name : Baixar dependências
       run: mvn --batch-mode --update-snapshots verify
 
-    - name: Validar criação do maven
-    - run: mkdir staging && cp target/*.jar staging
-    - uses: actions/upload-artifact@v4
-      with:
-        name: Package
-        path: staging
+    # - name: Validar criação do maven
+    #   run: mkdir staging && cp target/*.jar staging
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: Package
+    #     path: staging
 
     
     # - name: Gerar artefato Github com os arquivos de build
