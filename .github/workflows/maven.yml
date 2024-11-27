@@ -17,15 +17,12 @@ jobs:
         distribution: 'corretto' 
         java-version: '17'
 
-    - name : Acessar diretorio
+    - name : Gerenciar maven e criar jar
       run: | 
         cd projeto-volt
-        pwd
-        ls -la
+        mvn -B package --file pom.xml
+        mvn clean package -Dmaven.test.skip=true
         
-    - name : Gerar arquivo jar
-      run: mvn clean package -Dmaven.test.skip=true
-
     - name: Gerar artefato Github com os arquivos de build
       uses: actions/upload-artifact@v4
       with:
