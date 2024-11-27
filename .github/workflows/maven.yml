@@ -18,8 +18,8 @@ jobs:
         java-version: '17'
 
     - name : Baixar dependências
-      run: mvn -B package --file ./projeto-volt/pom.xml -DcompilerArgs="--add-opens jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED"
-
+      run: mvn clean package --file ./projeto-volt/pom.xml -Dmaven.test.skip=true
+        
     - name : Gerar arquivo jar
       run: mvn clean package -Dmaven.test.skip=true
 
