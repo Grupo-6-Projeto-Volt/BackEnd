@@ -11,19 +11,17 @@ jobs:
     - name: Atualizar código
       uses: actions/checkout@v4
 
-    - name: Travar versão do Java
+    - name: Configurar Java 17
       uses: actions/setup-java@v4
       with:
         distribution: 'corretto' 
         java-version: '17'
 
-
-    - name : Baixar dependências
+    - name : Configurar projeto
       run: |
         cd projeto-volt
-        mvn -B package --file
+        mvn -B package --file pom.xml
 
-    
     - name: Gerar artefato Github com os arquivos de build
       uses: actions/upload-artifact@v4
       with:
