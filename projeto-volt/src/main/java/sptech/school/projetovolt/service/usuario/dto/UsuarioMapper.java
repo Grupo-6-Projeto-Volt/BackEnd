@@ -38,7 +38,7 @@ public class UsuarioMapper {
         dto.setTelefone(entity.getTelefone());
         Short categoria = entity.getCategoria();
 
-        if (categoria == 0) {
+        if (categoria == 1) {
             dto.setCategoria("Admin");
         } else {
             dto.setCategoria("Cliente");
