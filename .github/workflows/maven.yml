@@ -12,9 +12,9 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Configurar Java 17
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v3
       with:
-        distribution: 'corretto' 
+        distribution: 'oracle' 
         java-version: '17'
 
     - name : Configurar projeto
