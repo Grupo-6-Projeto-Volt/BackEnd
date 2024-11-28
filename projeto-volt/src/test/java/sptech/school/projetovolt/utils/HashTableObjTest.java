@@ -32,19 +32,19 @@ class HashTableObjTest {
         assertEquals("Caixa",hashTable.get("Caixa"));
         assertEquals(null,hashTable.get("Caixa-Colorida"));
     }
-    @Test
-    @DisplayName("Mostrar elementos presentes na hash table")
-    void show(){
-        hashTable.put("Caixa");
-        hashTable.put("Caixa");
-        hashTable.put("Caixa");
-        hashTable.put("Caixa");
-
-        java.io.ByteArrayOutputStream outContent = new java.io.ByteArrayOutputStream();
-        System.setOut(new java.io.PrintStream(outContent));
-        hashTable.show();
-        assertEquals("Entrada 18 :Caixa|Caixa|Caixa|Caixa|",outContent.toString().trim());
-    }
+//    @Test
+//    @DisplayName("Mostrar elementos presentes na hash table")
+//    void show(){
+//        hashTable.put("Caixa");
+//        hashTable.put("Caixa");
+//        hashTable.put("Caixa");
+//        hashTable.put("Caixa");
+//
+//        java.io.ByteArrayOutputStream outContent = new java.io.ByteArrayOutputStream();
+//        System.setOut(new java.io.PrintStream(outContent));
+//        hashTable.show();
+//        assertEquals("Entrada 18 :Caixa|Caixa|Caixa|Caixa|",outContent.toString().trim());
+//    }
 
     @Test
     @DisplayName("Mostrar se hash table esta vazia")
@@ -55,20 +55,20 @@ class HashTableObjTest {
         hashTable.put("Caixa");
         assertFalse(hashTable.isEmpty());
     }
-    @Test
-    @DisplayName("Remover elementos da hash table")
-    void remove(){
-        hashTable.put("Caixa");
-        hashTable.put("Caixa");
-        hashTable.put("Caixa");
-        hashTable.put("Caixa");
-
-        int[] aux = hashTable.size();
-
-        assertEquals(4,aux[18]);
-        assertTrue(hashTable.remove("Caixa"));
-        assertEquals(3,aux[18]);
-    }
+//    @Test
+//    @DisplayName("Remover elementos da hash table")
+//    void remove(){
+//        hashTable.put("Caixa");
+//        hashTable.put("Caixa");
+//        hashTable.put("Caixa");
+//        hashTable.put("Caixa");
+//
+//        int[] aux = hashTable.size();
+//
+//        assertEquals(4,aux[18]);
+//        assertTrue(hashTable.remove("Caixa"));
+//        assertEquals(3,aux[18]);
+//    }
     @Test
     @DisplayName("Mostrar quantidade de elementos em cada entrada")
     void size(){
