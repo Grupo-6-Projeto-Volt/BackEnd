@@ -17,10 +17,16 @@ jobs:
         distribution: 'oracle' 
         java-version: '17'
 
+    - name: Verificar versões
+      run: |
+        mvn --version
+        java -version
+
+
     - name : Configurar projeto
       run: |
         cd projeto-volt
-        mvn clean install -Dmaven.test.skip=true
+        mvn clean install -Dmaven.test.skip=true -e
 
     - name: Gerar artefato Github com os arquivos de build
       uses: actions/upload-artifact@v4
