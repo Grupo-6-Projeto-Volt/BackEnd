@@ -29,17 +29,17 @@ public class GraficoKpisService {
     public List<VwChamadosGraficos> capturarChamadosCanceladosConcluidos(){
         return vwChamadosGraficosRepository.chamadosCanceladosConcluidos();
     }
-    public List<VwCategoriasAcessos> capturarCategoriasMaisAcessadas(LocalDate data){
-        return vwCategoriasAcessosRepository.categoriasMaisAcessadas(data);
+    public List<VwCategoriasAcessos> capturarCategoriasMaisAcessadas(LocalDate dataInicio, LocalDate dataFim){
+        return vwCategoriasAcessosRepository.categoriasMaisAcessadas(dataInicio, dataFim);
     }
-    public List<VwProdutosMaisAcessados> capturarProdutosMaisAcessados(LocalDate data){
-        return vwProdutosMaisAcessadosRepository.produtosMaisAcessados(data);
+    public List<VwProdutosMaisAcessados> capturarProdutosMaisAcessados(LocalDate dataInicio, LocalDate dataFim){
+        return vwProdutosMaisAcessadosRepository.produtosMaisAcessados(dataInicio, dataFim);
     }
-    public List<VwUltimosAcessosSeteDias> capturarAcessosUltimosSeteDias(LocalDate data){
-        return vwUltimosAcessosRepository.ultimosAcessosNosSeteDias(data);
+    public List<VwUltimosAcessosSeteDias> capturarAcessosUltimosSeteDias(LocalDate dataInicio, LocalDate dataFim){
+        return vwUltimosAcessosRepository.ultimosAcessosNosSeteDias(dataInicio, dataFim);
     }
 
-    public List<VwTaxaRetorno> capturarTaxaDeRetorno(LocalDate data){
-        return vwTaxaRetornoRepository.taxaDeRetorno(data);
+    public List<VwTaxaRetorno> capturarTaxaDeRetorno(LocalDate dataInicio, LocalDate dataFim){
+        return vwTaxaRetornoRepository.taxaDeRetorno(dataInicio, dataFim);
     }
 }

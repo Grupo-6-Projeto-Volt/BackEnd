@@ -115,8 +115,8 @@ public class ProdutoChamadoService {
 
         return filaObj;
     }
-    public Double obterFaturamento(LocalDate data){
-        return produtoChamadoRepository.faturamento(data);
+    public Double obterFaturamento(LocalDate dataInicio, LocalDate dataFim){
+        return produtoChamadoRepository.faturamento(dataInicio, dataFim);
     }
     public List<ProdutoChamado> obterProdutoComChamadoConcluidoCancelado(){
         return produtoChamadoRepository.listarProdutosComChamadosCanceladosConcluidos();

@@ -14,9 +14,9 @@ public interface VwTaxaRetornoRepository extends JpaRepository<VwTaxaRetorno,Int
                     vw.usuario,
                     COUNT(vw.dataClick) AS cliques
                 FROM vwtaxaretorno AS vw
-                WHERE vw.dataClick = :data
+                WHERE vw.dataClick BETWEEN :dataInicio AND :dataFim
                 GROUP BY vw.id HAVING cliques > 1
                 ORDER BY cliques DESC;
             """,nativeQuery = true)
-    List<VwTaxaRetorno> taxaDeRetorno(LocalDate data);
+    List<VwTaxaRetorno> taxaDeRetorno(LocalDate dataInicio, LocalDate dataFim);
 }

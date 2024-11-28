@@ -14,8 +14,8 @@ public interface VwUltimosAcessosRepository extends JpaRepository<VwUltimosAcess
                     COUNT(vw.dataClick) AS qtd,
                     vw.id
                 FROM vwacessossetedias as vw
-                WHERE vw.dataClick BETWEEN DATE_SUB(:data, INTERVAL 7 DAY) AND :data
+                WHERE vw.dataClick BETWEEN :dataInicio AND :dataFim
                 GROUP BY vw.id;
             """,nativeQuery = true)
-    List<VwUltimosAcessosSeteDias> ultimosAcessosNosSeteDias(LocalDate data);
+    List<VwUltimosAcessosSeteDias> ultimosAcessosNosSeteDias(LocalDate dataInicio, LocalDate dataFim);
 }

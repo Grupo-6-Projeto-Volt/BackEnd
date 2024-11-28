@@ -13,14 +13,14 @@ public interface VwProdutosMaisAcessadosRepository extends JpaRepository<VwProdu
                 	vw.id,
                     vw.qtd,
                     vw.nome,
-                    COUNT(vw.dataClick) as acessos,
+                    COUNT(vw.id) as acessos,
                     vw.url
                 FROM vwprodutosmaisacessados as vw
-                where vw.dataClick = :data
-                GROUP BY vw.id, vw.qtd, vw.nome
-                ORDER BY vw.dataClick DESC
+                WHERE vw.dataClick BETWEEN :dataInicio AND :dataFim
+                GROUP BY vw.id
+                ORDER BY acessos DESC
                 LIMIT 7;
             """,nativeQuery = true)
-    List<VwProdutosMaisAcessados> produtosMaisAcessados(LocalDate data);
+    List<VwProdutosMaisAcessados> produtosMaisAcessados(LocalDate dataInicio, LocalDate dataFim);
 
 }
