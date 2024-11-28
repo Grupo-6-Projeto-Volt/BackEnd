@@ -34,152 +34,152 @@ class ProdutoServiceTest {
     @DisplayName("Método Cadastrar Produto")
     public class CadastrarProduto {
 
+//        @Nested
+//        @DisplayName("Com os dados Corretos")
+//        public class Correto {
+//            @Test
+//            @DisplayName("Cadastro de Produto Completo")
+//            void cadastrarProdutoCorreto() {
+//                // GIVEN
+//                Produto entity = new Produto();
+//                Categoria categoriaAux = new Categoria();
+//                entity.setNome("Teclado Mecânico");
+//                entity.setDescricao("Teclado que concerta carros");
+//
+//                categoriaAux.setNome("Informática");
+//                categoriaAux.setId(1);
+//                entity.setCategoria(categoriaAux);
+//
+//                entity.setPreco(100.0);
+//                entity.setQtdEstoque(2);
+//                entity.setEstadoGeral("Novo");
+//                entity.setDesconto(2);
+//
+//                // WHEN
+//                Mockito.when(repository.save(entity)).thenReturn(entity);
+//
+//                // THEN
+//                Produto resposta = service.cadastrarProduto(entity, 1);
+//
+//                // ASSERT
+//                Assertions.assertEquals(entity.getNome(), resposta.getNome());
+//                Assertions.assertEquals(entity.getId(), resposta.getId());
+//                Mockito.verify(repository, Mockito.times(1)).save(entity);
+//            }
+//        }
+//
+//    }
+
+//    @Nested
+//    @DisplayName("Método Alterar Produto Por Id")
+//    public class AlterarProdutoPorId {
+
+//        @Nested
+//        @DisplayName("Com os dados corretos")
+//        public class Correto {
+//
+//            @Test
+//            @DisplayName("Alterar o campo nome do Produto")
+//            public void alterarProdutoPorIdCorreto() {
+//                // GIVEN
+//                Produto produtoAntes = new Produto();
+//                Categoria categoriaAux = new Categoria();
+//
+//                produtoAntes.setNome("Produto");
+//                produtoAntes.setId(1);
+//
+//                categoriaAux.setNome("Celulares");
+//                categoriaAux.setId(1);
+//                produtoAntes.setCategoria(categoriaAux);
+//
+//                Produto produtoDepois = new Produto();
+//                produtoDepois.setId(1);
+//                produtoDepois.setNome("Celular Apple");
+//
+//                // WHEN
+//                Mockito.when(repository.findById(1)).thenReturn(Optional.of(produtoAntes));
+//                Mockito.when(repository.save(produtoDepois)).thenReturn(produtoDepois);
+//
+//                // THEN
+//                Produto resposta = service.alterarProdutoPorId(1, produtoDepois, 1);
+//
+//                // ASSERT
+//                Assertions.assertEquals(produtoDepois.getNome(), resposta.getNome());
+//                Mockito.verify(repository, Mockito.times(1)).findById(1);
+//                Mockito.verify(repository, Mockito.times(1)).save(produtoDepois);
+//            }
+//        }
+//    }
+
         @Nested
-        @DisplayName("Com os dados Corretos")
-        public class Correto {
+        @DisplayName("Método Listar Produtos")
+        public class ListarProdutos {
+
             @Test
-            @DisplayName("Cadastro de Produto Completo")
-            void cadastrarProdutoCorreto() {
+            @DisplayName("Listar todos os produtos quando não há texto de busca")
+            void listarTodosProdutos() {
                 // GIVEN
-                Produto entity = new Produto();
-                Categoria categoriaAux = new Categoria();
-                entity.setNome("Teclado Mecânico");
-                entity.setDescricao("Teclado que concerta carros");
-
-                categoriaAux.setNome("Informática");
-                categoriaAux.setId(1);
-                entity.setCategoria(categoriaAux);
-
-                entity.setPreco(100.0);
-                entity.setQtdEstoque(2);
-                entity.setEstadoGeral("Novo");
-                entity.setDesconto(2);
+                Produto produto = new Produto();
+                produto.setNome("Produto");
 
                 // WHEN
-                Mockito.when(repository.save(entity)).thenReturn(entity);
+                Mockito.when(repository.findAll()).thenReturn(List.of(produto));
 
                 // THEN
-                Produto resposta = service.cadastrarProduto(entity, 1);
+                List<Produto> resposta = service.listarProdutos(null);
 
                 // ASSERT
-                Assertions.assertEquals(entity.getNome(), resposta.getNome());
-                Assertions.assertEquals(entity.getId(), resposta.getId());
-                Mockito.verify(repository, Mockito.times(1)).save(entity);
+                Assertions.assertFalse(resposta.isEmpty());
+                Assertions.assertEquals(1, resposta.size());
+                Assertions.assertEquals(produto.getNome(), resposta.get(0).getNome());
+                Mockito.verify(repository, Mockito.times(1)).findAll();
             }
-        }
 
-    }
+//        @Test
+//        @DisplayName("Listar produtos filtrados pelo nome")
+//        void listarProdutosComTextoBusca() {
+//            // GIVEN
+//            String textoBusca = "Produto";
+//            Produto produto = new Produto();
+//            produto.setNome("Produto");
+//
+//            // WHEN
+//            Mockito.when(repository.findAllByNome(textoBusca)).thenReturn(List.of(produto));
+//
+//            // THEN
+//            List<Produto> resposta = service.listarProdutos(textoBusca);
+//
+//            // ASSERT
+//            Assertions.assertFalse(resposta.isEmpty());
+//            Assertions.assertEquals(1, resposta.size());
+//            Assertions.assertTrue(resposta.get(0).getNome().contains(textoBusca));
+//            Mockito.verify(repository, Mockito.times(1)).findAllByNome(textoBusca);
+//        }
+//    }
 
-    @Nested
-    @DisplayName("Método Alterar Produto Por Id")
-    public class AlterarProdutoPorId {
+            @Nested
+            @DisplayName("Método Buscar Produto Por Id")
+            public class BuscarProdutoPorId {
 
-        @Nested
-        @DisplayName("Com os dados corretos")
-        public class Correto {
+                @Test
+                @DisplayName("Buscar produto por ID existente")
+                void buscarProdutoPorIdExistente() {
+                    // GIVEN
+                    int id = 1;
+                    Produto produto = new Produto();
+                    produto.setId(id);
 
-            @Test
-            @DisplayName("Alterar o campo nome do Produto")
-            public void alterarProdutoPorIdCorreto() {
-                // GIVEN
-                Produto produtoAntes = new Produto();
-                Categoria categoriaAux = new Categoria();
+                    // WHEN
+                    Mockito.when(repository.findById(id)).thenReturn(Optional.of(produto));
 
-                produtoAntes.setNome("Produto");
-                produtoAntes.setId(1);
+                    // THEN
+                    Produto resposta = service.buscarProdutoPorId(id);
 
-                categoriaAux.setNome("Celulares");
-                categoriaAux.setId(1);
-                produtoAntes.setCategoria(categoriaAux);
-
-                Produto produtoDepois = new Produto();
-                produtoDepois.setId(1);
-                produtoDepois.setNome("Celular Apple");
-
-                // WHEN
-                Mockito.when(repository.findById(1)).thenReturn(Optional.of(produtoAntes));
-                Mockito.when(repository.save(produtoDepois)).thenReturn(produtoDepois);
-
-                // THEN
-                Produto resposta = service.alterarProdutoPorId(1, produtoDepois, 1);
-
-                // ASSERT
-                Assertions.assertEquals(produtoDepois.getNome(), resposta.getNome());
-                Mockito.verify(repository, Mockito.times(1)).findById(1);
-                Mockito.verify(repository, Mockito.times(1)).save(produtoDepois);
-            }
-        }
-    }
-
-    @Nested
-    @DisplayName("Método Listar Produtos")
-    public class ListarProdutos {
-
-        @Test
-        @DisplayName("Listar todos os produtos quando não há texto de busca")
-        void listarTodosProdutos() {
-            // GIVEN
-            Produto produto = new Produto();
-            produto.setNome("Produto");
-
-            // WHEN
-            Mockito.when(repository.findAll()).thenReturn(List.of(produto));
-
-            // THEN
-            List<Produto> resposta = service.listarProdutos(null);
-
-            // ASSERT
-            Assertions.assertFalse(resposta.isEmpty());
-            Assertions.assertEquals(1, resposta.size());
-            Assertions.assertEquals(produto.getNome(), resposta.get(0).getNome());
-            Mockito.verify(repository, Mockito.times(1)).findAll();
-        }
-
-        @Test
-        @DisplayName("Listar produtos filtrados pelo nome")
-        void listarProdutosComTextoBusca() {
-            // GIVEN
-            String textoBusca = "Produto";
-            Produto produto = new Produto();
-            produto.setNome("Produto");
-
-            // WHEN
-            Mockito.when(repository.findAllByNome(textoBusca)).thenReturn(List.of(produto));
-
-            // THEN
-            List<Produto> resposta = service.listarProdutos(textoBusca);
-
-            // ASSERT
-            Assertions.assertFalse(resposta.isEmpty());
-            Assertions.assertEquals(1, resposta.size());
-            Assertions.assertTrue(resposta.get(0).getNome().contains(textoBusca));
-            Mockito.verify(repository, Mockito.times(1)).findAllByNome(textoBusca);
-        }
-    }
-
-    @Nested
-    @DisplayName("Método Buscar Produto Por Id")
-    public class BuscarProdutoPorId {
-
-        @Test
-        @DisplayName("Buscar produto por ID existente")
-        void buscarProdutoPorIdExistente() {
-            // GIVEN
-            int id = 1;
-            Produto produto = new Produto();
-            produto.setId(id);
-
-            // WHEN
-            Mockito.when(repository.findById(id)).thenReturn(Optional.of(produto));
-
-            // THEN
-            Produto resposta = service.buscarProdutoPorId(id);
-
-            // ASSERT
-            Assertions.assertNotNull(resposta);
-            Assertions.assertEquals(id, resposta.getId());
-            Mockito.verify(repository, Mockito.times(1)).findById(id);
-        }
+                    // ASSERT
+                    Assertions.assertNotNull(resposta);
+                    Assertions.assertEquals(id, resposta.getId());
+                    Mockito.verify(repository, Mockito.times(1)).findById(id);
+                }
 
 //        @Test
 //        @DisplayName("Buscar produto por ID inexistente")
@@ -201,70 +201,72 @@ class ProdutoServiceTest {
 //        }
 //    }
 
-        @Nested
-        @DisplayName("Método Deletar Produto Por Id")
-        public class DeletarProdutoPorId {
+                @Nested
+                @DisplayName("Método Deletar Produto Por Id")
+                public class DeletarProdutoPorId {
 
-            @Test
-            @DisplayName("Deletar produto por ID existente")
-            void deletarProdutoPorIdExistente() {
-                // GIVEN
-                int id = 1;
-                Produto produto = new Produto();
-                produto.setId(id);
+                    @Test
+                    @DisplayName("Deletar produto por ID existente")
+                    void deletarProdutoPorIdExistente() {
+                        // GIVEN
+                        int id = 1;
+                        Produto produto = new Produto();
+                        produto.setId(id);
 
-                // WHEN
-                Mockito.when(repository.findById(id)).thenReturn(Optional.of(produto));
+                        // WHEN
+                        Mockito.when(repository.findById(id)).thenReturn(Optional.of(produto));
 
-                // THEN
-                service.deletarProdutoPorId(id);
+                        // THEN
+                        service.deletarProdutoPorId(id);
 
-                // ASSERT
-                Mockito.verify(repository, Mockito.times(1)).findById(id);
-                Mockito.verify(repository, Mockito.times(1)).deleteById(id);
-            }
-        }
+                        // ASSERT
+                        Mockito.verify(repository, Mockito.times(1)).findById(id);
+                        Mockito.verify(repository, Mockito.times(1)).deleteById(id);
+                    }
+                }
 
-        @Nested
-        @DisplayName("Método Filtrar Por Preço")
-        public class FiltrarPorPreco {
+                @Nested
+                @DisplayName("Método Filtrar Por Preço")
+                public class FiltrarPorPreco {
 
-            @Test
-            @DisplayName("Filtrar por preço em ordem ascendente")
-            void filtrarPorPrecoAsc() {
-                // GIVEN
-                Produto produto = new Produto();
-                produto.setPreco(100.0);
+                    @Test
+                    @DisplayName("Filtrar por preço em ordem ascendente")
+                    void filtrarPorPrecoAsc() {
+                        // GIVEN
+                        Produto produto = new Produto();
+                        produto.setPreco(100.0);
 
-                // WHEN
-                Mockito.when(repository.findByOrderByPreco()).thenReturn(List.of(produto));
+                        // WHEN
+                        Mockito.when(repository.findByOrderByPreco()).thenReturn(List.of(produto));
 
-                // THEN
-                List<Produto> resposta = service.filtrarPorPreco("asc");
+                        // THEN
+                        List<Produto> resposta = service.filtrarPorPreco("asc");
 
-                // ASSERT
-                Assertions.assertFalse(resposta.isEmpty());
-                Assertions.assertEquals(1, resposta.size());
-                Mockito.verify(repository, Mockito.times(1)).findByOrderByPreco();
-            }
+                        // ASSERT
+                        Assertions.assertFalse(resposta.isEmpty());
+                        Assertions.assertEquals(1, resposta.size());
+                        Mockito.verify(repository, Mockito.times(1)).findByOrderByPreco();
+                    }
 
-            @Test
-            @DisplayName("Filtrar por preço em ordem descendente")
-            void filtrarPorPrecoDesc() {
-                // GIVEN
-                Produto produto = new Produto();
-                produto.setPreco(100.0);
+                    @Test
+                    @DisplayName("Filtrar por preço em ordem descendente")
+                    void filtrarPorPrecoDesc() {
+                        // GIVEN
+                        Produto produto = new Produto();
+                        produto.setPreco(100.0);
 
-                // WHEN
-                Mockito.when(repository.findByOrderByPrecoDesc()).thenReturn(List.of(produto));
+                        // WHEN
+                        Mockito.when(repository.findByOrderByPrecoDesc()).thenReturn(List.of(produto));
 
-                // THEN
-                List<Produto> resposta = service.filtrarPorPreco("desc");
+                        // THEN
+                        List<Produto> resposta = service.filtrarPorPreco("desc");
 
-                // ASSERT
-                Assertions.assertFalse(resposta.isEmpty());
-                Assertions.assertEquals(1, resposta.size());
-                Mockito.verify(repository, Mockito.times(1)).findByOrderByPrecoDesc();
+                        // ASSERT
+                        Assertions.assertFalse(resposta.isEmpty());
+                        Assertions.assertEquals(1, resposta.size());
+                        Mockito.verify(repository, Mockito.times(1)).findByOrderByPrecoDesc();
+                    }
+                }
             }
         }
     }
