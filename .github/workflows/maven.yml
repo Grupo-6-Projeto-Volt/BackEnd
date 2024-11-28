@@ -20,7 +20,7 @@ jobs:
     - name : Configurar projeto
       run: |
         cd projeto-volt
-        mvn install -Dmaven.test.skip=true
+        mvn clean install -Dmaven.test.skip=true
 
     - name: Gerar artefato Github com os arquivos de build
       uses: actions/upload-artifact@v4
