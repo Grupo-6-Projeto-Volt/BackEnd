@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sptech.school.projetovolt.api.util.ResponseUtil;
 import sptech.school.projetovolt.entity.produto.Produto;
+import sptech.school.projetovolt.entity.usuario.Usuario;
 import sptech.school.projetovolt.service.hashtable.HashTableService;
 import sptech.school.projetovolt.service.produto.dto.*;
 import sptech.school.projetovolt.service.produto.ProdutoService;
+import sptech.school.projetovolt.service.usuario.UsuarioService;
 
 import java.util.List;
 
@@ -27,6 +30,7 @@ import java.util.List;
 public class ProdutoController {
 
     private final ProdutoService produtoService;
+    private final UsuarioService usuarioService;
     private final HashTableService hashTableService;
 
     @PostMapping("/estoque")
@@ -49,26 +53,26 @@ public class ProdutoController {
         return ResponseUtil.respondIfNotEmpty(ProdutoMapper.toDto(produtosEncontrados));
     }
 
-    @GetMapping("/loja/hash")
-    @Operation(summary = "Lista todos os produtos da loja por meio da hash table",method = "GET",description = "Responsável por listar todos os nomes dos produtos cadastrados na loja",tags = {"Produtos"})
-    public ResponseEntity<String> buscarProdutoHashTable(@RequestParam String textoBusca){
-        String produtoEncontrado = hashTableService.buscarProdutoPorNome(textoBusca);
-        return ResponseEntity.ok(produtoEncontrado);
-    }
-
-    @PostMapping("loja/hash")
-    @Operation(summary = "Inserção de todos os produtos da loja na hash table",method = "POST",description = "Responsável por inserir os produtos na tabela hash",tags = {"Produtos"})
-    public ResponseEntity<Void> inserirProdutosHashTable(){
-        hashTableService.inserirProdutos();
-        return ResponseEntity.noContent().build();
-    }
-
-    @DeleteMapping("loja/hash")
-    @Operation(summary = "Deleta um produto da hash table pelo nome",method = "DELETE",description = "Responsável por deletar o produto da hash table a  partir de seu nome",tags = {"Produtos"})
-    public ResponseEntity<Void> deletarProdutoHashTable(@RequestParam String textoBusca){
-        hashTableService.removerProdutoPorNome(textoBusca);
-        return ResponseEntity.noContent().build();
-    }
+//    @GetMapping("/loja/hash")
+//    @Operation(summary = "Lista todos os produtos da loja por meio da hash table",method = "GET",description = "Responsável por listar todos os nomes dos produtos cadastrados na loja",tags = {"Produtos"})
+//    public ResponseEntity<String> buscarProdutoHashTable(@RequestParam String textoBusca){
+//        String produtoEncontrado = hashTableService.buscarProdutoPorNome(textoBusca);
+//        return ResponseEntity.ok(produtoEncontrado);
+//    }
+//
+//    @PostMapping("loja/hash")
+//    @Operation(summary = "Inserção de todos os produtos da loja na hash table",method = "POST",description = "Responsável por inserir os produtos na tabela hash",tags = {"Produtos"})
+//    public ResponseEntity<Void> inserirProdutosHashTable(){
+//        hashTableService.inserirProdutos();
+//        return ResponseEntity.noContent().build();
+//    }
+//
+//    @DeleteMapping("loja/hash")
+//    @Operation(summary = "Deleta um produto da hash table pelo nome",method = "DELETE",description = "Responsável por deletar o produto da hash table a  partir de seu nome",tags = {"Produtos"})
+//    public ResponseEntity<Void> deletarProdutoHashTable(@RequestParam String textoBusca){
+//        hashTableService.removerProdutoPorNome(textoBusca);
+//        return ResponseEntity.noContent().build();
+//    }
 
     @GetMapping("/loja/{id}")
     @Operation(summary = "Busca um produto pelo ID", method = "GET", description = "Responsável por buscar um produto a partir do seu ID", tags = {"Produtos"})
@@ -172,7 +176,6 @@ public class ProdutoController {
     @Operation(summary = "Lista os produtos recomendados", method = "GET", description = "Responsável por listar os produtos recomendados", tags = {"Produtos"})
     public ResponseEntity<List<ProdutoConsultaDTO>> buscarProdutosRecomendados(@RequestParam(required = false) Integer idUser, @RequestParam(required = false) Integer limite) {
         if(limite == null) limite = 25;
-
         List<Produto> produtosEncontrados = produtoService.buscarProdutosRecomendados(idUser, limite);
         return ResponseUtil.respondIfNotEmpty(ProdutoMapper.toDto(produtosEncontrados));
     }
