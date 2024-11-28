@@ -20,7 +20,7 @@ jobs:
     - name : Configurar projeto
       run: |
         cd projeto-volt
-        mvn -B package --file pom.xml
+        mvn -B package --file pom.xml -e
 
     - name: Gerar artefato Github com os arquivos de build
       uses: actions/upload-artifact@v4
