@@ -12,7 +12,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Configurar Java 17
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         distribution: 'oracle' 
         java-version: '17'
@@ -26,9 +26,9 @@ jobs:
     - name : Configurar projeto
       run: |
         cd projeto-volt
-        mvn clean install -Dmaven.test.skip=true -e
+        mvn -B package --file pom.xml
 
-    - name: Gerar artefato Github com os arquivos de build
+    - name: Gerar artefato
       uses: actions/upload-artifact@v4
       with:
          name: projeto-volt
