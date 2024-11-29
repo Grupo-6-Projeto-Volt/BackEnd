@@ -51,6 +51,5 @@ jobs:
              cd projeto-volt
              ls -la
              cd target
-             ls -la
-            
+             tar -czf projeto-volt.tar.gz build
          
