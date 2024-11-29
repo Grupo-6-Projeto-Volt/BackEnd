@@ -44,5 +44,9 @@ jobs:
             with:
                name: projeto-volt
                path: projeto-volt/target/*jar
+
+          - name: Compactar artefato
+            run: |
+             tar -czf projeto-volt.jar.gz build 
             
          
