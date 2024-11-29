@@ -13,7 +13,7 @@ public class UsuarioMapper {
         entity.setNome(dto.getNome());
         entity.setEmail(dto.getEmail());
         entity.setTelefone(dto.getTelefone());
-        entity.setCategoria((short) 0);
+        entity.setCategoria(dto.getCategoria());
         return entity;
     }
 
@@ -24,7 +24,7 @@ public class UsuarioMapper {
         entity.setNome(dto.getNome());
         entity.setEmail(dto.getEmail());
         entity.setTelefone(dto.getTelefone());
-        entity.setCategoria((short) 0);
+        entity.setCategoria(dto.getCategoria());
         return entity;
     }
 
@@ -38,7 +38,7 @@ public class UsuarioMapper {
         dto.setTelefone(entity.getTelefone());
         Short categoria = entity.getCategoria();
 
-        if (categoria == 0) {
+        if (categoria == 1) {
             dto.setCategoria("Admin");
         } else {
             dto.setCategoria("Cliente");

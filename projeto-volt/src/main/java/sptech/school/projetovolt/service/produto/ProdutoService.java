@@ -12,10 +12,12 @@ import sptech.school.projetovolt.entity.exception.NotFoundException;
 import sptech.school.projetovolt.entity.produto.Produto;
 import sptech.school.projetovolt.entity.produto.repository.ProdutoRepository;
 import sptech.school.projetovolt.service.categoria.CategoriaService;
+import sptech.school.projetovolt.service.hashtable.HashTableService;
 import sptech.school.projetovolt.service.produto.dto.ProdutoConsultaDTO;
 import sptech.school.projetovolt.service.produto.dto.ProdutoExportacaoDto;
 import sptech.school.projetovolt.service.produto.dto.ProdutoMapper;
-import sptech.school.projetovolt.utils.HashTableObj;
+import sptech.school.projetovolt.service.usuario.UsuarioService;
+import sptech.school.projetovolt.service.usuario.dto.UsuarioConsultaDto;
 
 
 import java.io.*;
@@ -39,13 +41,13 @@ public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
     private final CategoriaService categoriaService;
-    private final HashTableObj<String> hashTable;
+    private final HashTableService hashTableService;
+    private final UsuarioService usuarioService;
 
     public Produto cadastrarProduto(Produto produto, Integer idCategoria) {
         Categoria categoria = categoriaService.buscarCategoriaPorId(idCategoria);
 
         produto.setCategoria(categoria);
-        hashTable.put(produto.getNome().toLowerCase());
         return produtoRepository.save(produto);
     }
 
@@ -283,10 +285,10 @@ public class ProdutoService {
 
     public List<Produto> buscarProdutosRecomendados(Integer idUser, Integer limite) {
         if(idUser == null) return produtoRepository.buscarProdutosMaioresPromocoes(limite);
-        return produtoRepository.buscaProdutosRecomendados(idUser, limite);
+        UsuarioConsultaDto usuarioEncontrado = hashTableService.buscar(usuarioService.buscarUsuarioPorId(idUser));
+        List<Produto> produtosEncontrados = hashTableService.listarProdutosUsuario(usuarioEncontrado,limite);
+        return produtosEncontrados;
     }
-
-
     public byte[] exportarParquet(List<ProdutoExportacaoDto> produtos) {
         StringBuilder sb = new StringBuilder();
 
