@@ -47,6 +47,8 @@ jobs:
 
           - name: Compactar artefato
             run: |
-             tar -czf projeto-volt.jar.gz build 
+             ls -la
+             cd projeto-volt
+             ls -la
             
          
