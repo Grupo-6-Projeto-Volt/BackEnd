@@ -11,6 +11,7 @@ import sptech.school.projetovolt.service.usuario.UsuarioService;
 import sptech.school.projetovolt.utils.FilaObj;
 import sptech.school.projetovolt.utils.StatusChamado;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -114,8 +115,8 @@ public class ProdutoChamadoService {
 
         return filaObj;
     }
-    public Double obterFaturamento(){
-        return produtoChamadoRepository.faturamento();
+    public Double obterFaturamento(LocalDate dataInicio, LocalDate dataFim){
+        return produtoChamadoRepository.faturamento(dataInicio, dataFim);
     }
     public List<ProdutoChamado> obterProdutoComChamadoConcluidoCancelado(){
         return produtoChamadoRepository.listarProdutosComChamadosCanceladosConcluidos();

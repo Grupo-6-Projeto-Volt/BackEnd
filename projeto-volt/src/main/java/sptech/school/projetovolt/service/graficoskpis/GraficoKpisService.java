@@ -14,6 +14,7 @@ import sptech.school.projetovolt.entity.vwultimosacessossetedias.VwUltimosAcesso
 import sptech.school.projetovolt.entity.vwultimosacessossetedias.repository.VwUltimosAcessosRepository;
 import sptech.school.projetovolt.service.usuario.UsuarioService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -24,22 +25,21 @@ public class GraficoKpisService {
     private final VwProdutosMaisAcessadosRepository vwProdutosMaisAcessadosRepository;
     private final VwUltimosAcessosRepository vwUltimosAcessosRepository;
     private final VwTaxaRetornoRepository vwTaxaRetornoRepository;
-    private final UsuarioService usuarioService;
 
     public List<VwChamadosGraficos> capturarChamadosCanceladosConcluidos(){
         return vwChamadosGraficosRepository.chamadosCanceladosConcluidos();
     }
-    public List<VwCategoriasAcessos> capturarCategoriasMaisAcessadas(){
-        return vwCategoriasAcessosRepository.categoriasMaisAcessadas();
+    public List<VwCategoriasAcessos> capturarCategoriasMaisAcessadas(LocalDate dataInicio, LocalDate dataFim){
+        return vwCategoriasAcessosRepository.categoriasMaisAcessadas(dataInicio, dataFim);
     }
-    public List<VwProdutosMaisAcessados> capturarProdutosMaisAcessados(){
-        return vwProdutosMaisAcessadosRepository.produtosMaisAcessados();
+    public List<VwProdutosMaisAcessados> capturarProdutosMaisAcessados(LocalDate dataInicio, LocalDate dataFim){
+        return vwProdutosMaisAcessadosRepository.produtosMaisAcessados(dataInicio, dataFim);
     }
-    public List<VwUltimosAcessosSeteDias> capturarAcessosUltimosSeteDias(){
-        return vwUltimosAcessosRepository.ultimosAcessosNosSeteDias();
+    public List<VwUltimosAcessosSeteDias> capturarAcessosUltimosSeteDias(LocalDate dataInicio, LocalDate dataFim){
+        return vwUltimosAcessosRepository.ultimosAcessosNosSeteDias(dataInicio, dataFim);
     }
 
-    public List<VwTaxaRetorno> capturarTaxaDeRetorno(){
-        return vwTaxaRetornoRepository.taxaDeRetorno();
+    public List<VwTaxaRetorno> capturarTaxaDeRetorno(LocalDate dataInicio, LocalDate dataFim){
+        return vwTaxaRetornoRepository.taxaDeRetorno(dataInicio, dataFim);
     }
 }

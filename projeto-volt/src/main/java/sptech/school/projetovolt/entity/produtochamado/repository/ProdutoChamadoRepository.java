@@ -1,9 +1,11 @@
 package sptech.school.projetovolt.entity.produtochamado.repository;
 
+import org.springframework.cglib.core.Local;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import sptech.school.projetovolt.entity.produtochamado.ProdutoChamado;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;    
 
@@ -11,8 +13,12 @@ public interface ProdutoChamadoRepository extends JpaRepository<ProdutoChamado, 
     List<ProdutoChamado> findByOrderByDataHoraAberturaAsc();
     List<ProdutoChamado> findByOrderByDataHoraAberturaDesc();
 
-    @Query(value = "SELECT * FROM vwfaturamento", nativeQuery = true)
-    Double faturamento();
+    @Query(value = """
+                SELECT SUM(vw.preco) AS faturamento
+                FROM vwfaturamento as vw
+                WHERE vw.dataClick BETWEEN :dataInicio AND :dataFim
+            """, nativeQuery = true)
+    Double faturamento(LocalDate dataInicio, LocalDate dataFim);
 
     @Query(value = "SELECT tb_produto.nome AS produto,tb_produto_chamado AS chamado FROM " +
             "tb_produto_chamado JOIN tb_produto ON fk_produto = tb_produto.id WHERE tb_produto_status_chamado >= 1",nativeQuery = true)

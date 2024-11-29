@@ -24,6 +24,7 @@ import sptech.school.projetovolt.utils.FilaObj;
 import sptech.school.projetovolt.utils.StatusChamado;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -269,8 +270,8 @@ public class ProdutoChamadoController {
     }
 
     @GetMapping("/capturar-dados/acessos-ultimos-dias")
-    public ResponseEntity<UltimosAcessosDto> listarAcessosNosUltimosSeteDias() {
-        List<VwUltimosAcessosSeteDias> ultimosAcessosSeteDias = graficoKpisService.capturarAcessosUltimosSeteDias();
+    public ResponseEntity<UltimosAcessosDto> listarAcessosNosUltimosSeteDias(@RequestParam LocalDate dataInicio, @RequestParam LocalDate dataFim) {
+        List<VwUltimosAcessosSeteDias> ultimosAcessosSeteDias = graficoKpisService.capturarAcessosUltimosSeteDias(dataInicio, dataFim);
 
         if (ultimosAcessosSeteDias.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -279,8 +280,8 @@ public class ProdutoChamadoController {
     }
 
     @GetMapping("/capturar-dados/faturamento")
-    public ResponseEntity<FaturamentoDto> obterFaturamento() {
-        Double faturamento = produtoChamadoService.obterFaturamento();
+    public ResponseEntity<FaturamentoDto> obterFaturamento(@RequestParam LocalDate dataInicio, @RequestParam LocalDate dataFim) {
+        Double faturamento = produtoChamadoService.obterFaturamento(dataInicio, dataFim);
         if (faturamento == null) {
             return ResponseEntity.noContent().build();
         }
@@ -288,9 +289,9 @@ public class ProdutoChamadoController {
     }
 
     @GetMapping("/capturar-dados/matriz")
-    public void obterMatriz() {
-        List<VwCategoriasAcessos> categoriasAcessos = graficoKpisService.capturarCategoriasMaisAcessadas();
-        List<VwProdutosMaisAcessados> produtosMaisAcessados = graficoKpisService.capturarProdutosMaisAcessados();
+    public void obterMatriz(@RequestParam LocalDate dataInicio, @RequestParam LocalDate dataFim) {
+        List<VwCategoriasAcessos> categoriasAcessos = graficoKpisService.capturarCategoriasMaisAcessadas(dataInicio, dataFim);
+        List<VwProdutosMaisAcessados> produtosMaisAcessados = graficoKpisService.capturarProdutosMaisAcessados(dataInicio, dataFim);
 
         if (categoriasAcessos.isEmpty() || produtosMaisAcessados.isEmpty()) {
             System.out.println("As listas estão vazias!");
