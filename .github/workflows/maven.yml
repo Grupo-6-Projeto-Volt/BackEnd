@@ -50,5 +50,7 @@ jobs:
              ls -la
              cd projeto-volt
              ls -la
+             cd target
+             ls -la
             
          
