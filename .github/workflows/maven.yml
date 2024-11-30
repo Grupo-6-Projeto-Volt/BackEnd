@@ -45,8 +45,9 @@ jobs:
         run: |
           cd projeto-volt
           mvn test
+          mvn package 
 
-      - name: veficar jar
+      - name: Veficar jar
         run: |
           cd projeto-volt/target
           ls -la
@@ -57,7 +58,7 @@ jobs:
               exit 1
           fi
 
-      - name: Gerar artefato se encontrar jar
+      - name: Gerar artefato
         uses: actions/upload-artifact@v4
         with: 
           name: projeto-volt
