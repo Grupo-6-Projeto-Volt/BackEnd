@@ -73,3 +73,39 @@ jobs:
         run: |
           cd projeto-volt/target
           tar -czf projeto-volt.tar.gz *jar
+
+      - name: Configurar arquivo .PEM
+        id: geracao-arquivo-pem 
+        run: |
+          echo "${{ secrets.DEPLOY_KEY }}" >> $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
+          chmod 400 $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
+      - name: Criar diretório no servidor remoto
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_PRIVATE_IP }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            sudo chown -R ubuntu:ubuntu /var/www
+            sudo mkdir -p /var/www/projeto-volt/
+            sudo chown -R ubuntu:ubuntu /var/www/projeto-volt/
+
+      - name: Deploy para EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_PRIVATE_IP }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          source: projeto-volt.tar.gz
+          target: /var/www/projeto-volt/
+          timeout : "60s"
+        
+      - name: Criar diretório no servidor remoto
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_PRIVATE_IP }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            cd /var/www/Cliente/
+            tar -xzf projeto-volt.tar.gz
