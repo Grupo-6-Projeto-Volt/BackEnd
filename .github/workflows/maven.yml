@@ -46,15 +46,28 @@ jobs:
           cd projeto-volt
           mvn test
 
-      - name: Gerar artefato
+      - name: veficar jar
+        run: |
+          cd projeto-volt/target
+          ls -la
+           if [ -f projeto-volt/target/*.jar ]; then
+              echo "Arquivo jar encontrado"
+          else
+              echo "Erro: Nenhum arquivo .jar encontrado em projeto-volt/target/"
+              exit 1
+          fi
+
+      - name: Gerar artefato se encontrar jar
         uses: actions/upload-artifact@v4
-        with:
+        with: 
           name: projeto-volt
           path: projeto-volt/target/*jar
-
+          
+          
   deploy:
     needs: test  
     runs-on: ubuntu-latest
+    if: ${{sucess()}}
 
     steps:
       - name: Recuperar artefato do build
