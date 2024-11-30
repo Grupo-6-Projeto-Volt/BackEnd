@@ -3,36 +3,30 @@ name: Backend CI Maven
 on:
   pull_request:
     branches: [ "main" ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Atualizar código
-      uses: actions/checkout@v4
+      - name: Atualizar código
+        uses: actions/checkout@v4
 
-    - name: Configurar Java 17
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'oracle' 
-        java-version: '17'
+      - name: Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'oracle' 
+          java-version: '17'
 
-    - name: Verificar versões
-      run: |
-        mvn --version
-        java -version
+      - name: Verificar versões
+        run: |
+          mvn --version
+          java -version
 
-
-    - name : Configurar projeto
-      run: |
-        cd projeto-volt
-        mvn -B package -DskipTests
-
-    # - name: Gerar artefato
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #      name: projeto-volt
-    #      path: projeto-volt/target/*jar
+      - name: Configurar projeto
+        run: |
+          cd projeto-volt
+          mvn -B package -DskipTests
 
   test:
     runs-on: ubuntu-latest
@@ -41,16 +35,16 @@ jobs:
       - name: Verificar código
         uses: actions/checkout@v4
 
-      -  name: Configurar Java 17
-         uses: actions/setup-java@v4
-         with:
-           distribution: 'oracle'
-           java-version: '17'
+      - name: Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'oracle'
+          java-version: '17'
 
-      -  name: Testar projeto
-         run: |
-           cd projeto-volt
-           mvn test
+      - name: Testar projeto
+        run: |
+          cd projeto-volt
+          mvn test
 
       - name: Gerar artefato
         uses: actions/upload-artifact@v4
@@ -59,24 +53,23 @@ jobs:
           path: projeto-volt/target/*jar
 
   deploy:
-      needs: build
-      runs-on: ubuntu-latest
+    needs: test  
+    runs-on: ubuntu-latest
 
-      steps:
-          - name: Recuperar artefato do build
-            uses: actions/download-artifact@v4
-            with:
-               name: projeto-volt
-               path: projeto-volt/target/*jar
+    steps:
+      - name: Recuperar artefato do build
+        uses: actions/download-artifact@v4
+        with:
+          name: projeto-volt
+          path: projeto-volt/target/*jar
 
-          - name: Verificar arquivos baixados
-            run: |
-              ls -la
-              cd projeto-volt/target
-              ls -la
+      - name: Verificar arquivos baixados
+        run: |
+          ls -la
+          cd projeto-volt/target
+          ls -la
              
-          - name: Compactar artefato
-            run: |
-              cd projeto-volt/target
-              tar -czf projeto-volt.tar.gz *jar
-         
+      - name: Compactar artefato
+        run: |
+          cd projeto-volt/target
+          tar -czf projeto-volt.tar.gz *jar
