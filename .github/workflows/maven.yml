@@ -27,6 +27,13 @@ jobs:
         run: |
           cd projeto-volt
           mvn -B package -DskipTests
+          mvn package
+
+      - name: Gerar artefato
+        uses: actions/upload-artifact@v4
+        with: 
+          name: projeto-volt
+          path: projeto-volt/target/*jar
 
   test:
     runs-on: ubuntu-latest
@@ -44,26 +51,7 @@ jobs:
       - name: Testar projeto
         run: |
           cd projeto-volt
-          mvn test
-          mvn package 
-
-      - name: Veficar jar
-        run: |
-          cd projeto-volt/target
-          ls -la
-           if [ -f projeto-volt/target/projeto-volt-0.0.1-SNAPSHOT.jar]; then
-              echo "Arquivo jar encontrado"
-          else
-              echo "Erro: Nenhum arquivo .jar encontrado em projeto-volt/target/"
-              exit 1
-          fi
-
-      - name: Gerar artefato
-        uses: actions/upload-artifact@v4
-        with: 
-          name: projeto-volt
-          path: projeto-volt/target/*jar
-          
+          mvn test        
           
   deploy:
     needs: test  
