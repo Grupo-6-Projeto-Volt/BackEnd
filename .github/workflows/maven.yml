@@ -49,8 +49,14 @@ jobs:
 
       -  name: Testar projeto
          run: |
-           cd projeto-volt/src/test/java
+           cd projeto-volt
            mvn test
+
+      - name: Gerar artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: projeto-volt
+          path: projeto-volt/target/*jar
 
   deploy:
       needs: build
