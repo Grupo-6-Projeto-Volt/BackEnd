@@ -67,8 +67,6 @@ jobs:
   deploy:
     needs: test  
     runs-on: ubuntu-latest
-    if: ${{sucess()}}
-
     steps:
       - name: Recuperar artefato do build
         uses: actions/download-artifact@v4
