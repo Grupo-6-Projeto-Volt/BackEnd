@@ -87,8 +87,8 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
             sudo chown -R ubuntu:ubuntu /var/www
-            sudo mkdir -p /var/www/projeto-volt/
-            sudo chown -R ubuntu:ubuntu /var/www/projeto-volt/
+            sudo mkdir -p /var/www/backend/
+            sudo chown -R ubuntu:ubuntu /var/www/backend/
 
       - name: Deploy para EC2
         uses: appleboy/scp-action@v0.1.7
@@ -97,7 +97,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           source: projeto-volt.tar.gz
-          target: /var/www/projeto-volt/
+          target: /var/www/backend/
           timeout : "60s"
         
       - name: Criar diretório no servidor remoto
@@ -107,5 +107,5 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
-            cd /var/www/Cliente/
+            cd /var/www/backend/
             tar -xzf projeto-volt.tar.gz
