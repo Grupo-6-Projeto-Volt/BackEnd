@@ -45,9 +45,14 @@ jobs:
                name: projeto-volt
                path: projeto-volt/target/*jar
 
+          - name: Verificar arquivos baixados
+            run: |
+              ls -la
+              cd projeto-volt/target
+              ls -la
+             
           - name: Compactar artefato
             run: |
-             cd projeto-volt/target
-             tar -czf projeto-volt.tar.gz *.jar
-            
+              cd projeto-volt/target
+              tar -czf projeto-volt.tar.gz *jar
          
