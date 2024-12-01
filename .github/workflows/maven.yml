@@ -98,7 +98,7 @@ jobs:
           host: ${{ secrets.EC2_PRIVATE_IP }} # ip da ec2 pública
           username: ubuntu
           key: ${{ secrets.DEPLOY_KEY }} # conteúdo pem que permite acesso à ec2 pública
-          source: "./*.jar" # enviando todos os .jar (estão lá graças ao step 'Recuperar jars')
+          source: "projeto-volt/target/*jar" # enviando todos os .jar (estão lá graças ao step 'Recuperar jars')
           target: "/home/ubuntu/deploy-api/" # diretório de destino na ec2 pública
 
       - name: Enviar os Scripts para EC2
