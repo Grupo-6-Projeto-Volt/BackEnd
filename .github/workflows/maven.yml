@@ -29,7 +29,7 @@ jobs:
           mvn -B package -DskipTests
           mvn package
 
-      -name: Verificar conteúdo
+      - name: Verificar conteúdo
         run: |
           ls -la
           cd projeto-volt
@@ -153,3 +153,4 @@ jobs:
       #     script: |
       #       cd /var/www/backend/
       #       tar -xzf projeto-volt.tar.gz
+
