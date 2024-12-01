@@ -95,24 +95,24 @@ jobs:
       - name: Enviar o JAR para EC2
         uses: appleboy/scp-action@master # esta action abstrai o uso do comando scp, permitindo o envio de arquivos via ssh
         with:
-          host: ${{ secrets.EC2_PRIVATE_IP }} # ip da ec2 pública
+          host: ${{ secrets.EC2_PUBLIC_IP }} # ip da ec2 pública
           username: ubuntu
-          key: ${{ secrets.DEPLOY_KEY }} # conteúdo pem que permite acesso à ec2 pública
+          key: ${{ secrets.NOME_ARQUIVO_PEM_PUB}} # conteúdo pem que permite acesso à ec2 pública
           source: "projeto-volt/target/*jar" # enviando todos os .jar (estão lá graças ao step 'Recuperar jars')
           target: "/home/ubuntu/deploy-api/" # diretório de destino na ec2 pública
 
       - name: Enviar os Scripts para EC2
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.EC2_PRIVATE_IP }}
+          host: ${{ secrets.EC2_PUBLIC_IP }}
           username: ubuntu
-          key: ${{ secrets.DEPLOY_KEY }}
+          key: ${{ secrets.NOME_ARQUIVO_PEM_PUB }}
           source: "./*.sh"  # enviando todos os .jar (estão lá graças ao step 'Recuperar scripts')
           target: "/home/ubuntu/deploy-api/" # diretório de destino na ec2 pública
 
       - name: Conectar com EC2 e executar o script
         run: |
-          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_KEY }} '
+          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.EC2_PUBLIC_KEY }} ubuntu@${{ secrets.EC2_PUBLIC_IP}} '
           scp -i ${{ secrets.NOME_ARQUIVO_PEM }} deploy-api/${{ secrets.NOME_ARQUIVO_JAR }} ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
           scp -i ${{ secrets.NOME_ARQUIVO_PEM }} deploy-api/*.sh ubuntu@${{ secrets.EC2_PRIVATE_IP}}:/home/ubuntu/deploy-api
           ssh -i ${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.EC2_PRIVATE_IP }} "sh /home/ubuntu/deploy-api/api-restart.sh"            
