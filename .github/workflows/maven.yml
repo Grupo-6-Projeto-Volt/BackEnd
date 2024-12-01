@@ -29,6 +29,13 @@ jobs:
           mvn -B package -DskipTests
           mvn package
 
+      -name: Verificar conteúdo
+        run: |
+          ls -la
+          cd projeto-volt
+          cd target
+          ls -la    
+
       - name: Gerar artefato
         uses: actions/upload-artifact@v4
         with: 
@@ -89,33 +96,33 @@ jobs:
       - name: Configurar arquivo .PEM
         id: geracao-arquivo-pem 
         run: |
-          echo "${{ secrets.EC2_PUBLIC_KEY }}" >> $HOME/${{ secrets.NOME_ARQUIVO_PEM_PUB }}
-          chmod 400 $HOME/${{ secrets.NOME_ARQUIVO_PEM_PUB }}
+          echo "${{ secrets.DEPLOY_KEY }}" >> $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
+          chmod 400 $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
 
       - name: Enviar o JAR para EC2
         uses: appleboy/scp-action@master # esta action abstrai o uso do comando scp, permitindo o envio de arquivos via ssh
         with:
-          host: ${{ secrets.EC2_PUBLIC_IP }} # ip da ec2 pública
-          username: ubuntu
-          key: ${{ secrets.NOME_ARQUIVO_PEM_PUB}} # conteúdo pem que permite acesso à ec2 pública
+          host: ${{ secrets.DEPLOY_HOST }} # ip da ec2 pública
+          username: ${{secrets.EC2_USERNAME}}
+          key: ${{ secrets.DEPLOY_KEY}} # conteúdo pem que permite acesso à ec2 pública
           source: "projeto-volt/target/*jar" # enviando todos os .jar (estão lá graças ao step 'Recuperar jars')
           target: "/home/ubuntu/deploy-api/" # diretório de destino na ec2 pública
 
       - name: Enviar os Scripts para EC2
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.EC2_PUBLIC_IP }}
-          username: ubuntu
-          key: ${{ secrets.NOME_ARQUIVO_PEM_PUB }}
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{secrets.EC2_USERNAME}}
+          key: ${{ secrets.DEPLOY_KEY }}
           source: "./*.sh"  # enviando todos os .jar (estão lá graças ao step 'Recuperar scripts')
           target: "/home/ubuntu/deploy-api/" # diretório de destino na ec2 pública
 
       - name: Conectar com EC2 e executar o script
         run: |
-          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.EC2_PUBLIC_KEY }} ubuntu@${{ secrets.EC2_PUBLIC_IP}} '
-          scp -i ${{ secrets.NOME_ARQUIVO_PEM_PUB  }} deploy-api/${{ secrets.NOME_ARQUIVO_JAR }} ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
-          scp -i ${{ secrets.NOME_ARQUIVO_PEM_PUB  }} deploy-api/*.sh ubuntu@${{ secrets.EC2_PRIVATE_IP}}:/home/ubuntu/deploy-api
-          ssh -i ${{ secrets.NOME_ARQUIVO_PEM_PUB  }} ubuntu@${{ secrets.EC2_PRIVATE_IP }} "sh /home/ubuntu/deploy-api/api-restart.sh"            
+          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST}} '
+          scp -i ${{ secrets.NOME_ARQUIVO_PEM }} deploy-api/${{ secrets.NOME_ARQUIVO_JAR }} ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
+          scp -i ${{ secrets.NOME_ARQUIVO_PEM }} deploy-api/*.sh ubuntu@${{ secrets.EC2_PRIVATE_IP}}:/home/ubuntu/deploy-api
+          ssh -i ${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.EC2_PRIVATE_IP }} "sh /home/ubuntu/deploy-api/api-restart.sh"            
       # - name: Criar diretório no servidor remoto
       #   uses: appleboy/ssh-action@v0.1.7
       #   with:
