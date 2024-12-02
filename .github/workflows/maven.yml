@@ -40,7 +40,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with: 
           name: projeto-volt
-          path: projeto-volt/target/*.jar
+          path: projeto-volt/target/api-ichiban.jar
 
       - name: Gerar artefato Github com os arquivos .sh
         uses: actions/upload-artifact@v4        
@@ -91,7 +91,7 @@ jobs:
       - name: Compactar artefato
         run: |
           cd projeto-volt/target
-          tar -czf projeto-volt.tar.gz *.jar
+          tar -czf projeto-volt.tar.gz api-ichiban.jar
 
       - name: Configurar arquivo .PEM
         id: geracao-arquivo-pem 
@@ -105,7 +105,7 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }} # ip da ec2 pública
           username: ${{secrets.EC2_USERNAME}}
           key: ${{ secrets.DEPLOY_KEY}} # conteúdo pem que permite acesso à ec2 pública
-          source: "projeto-volt/target/*.jar" # enviando todos os .jar (estão lá graças ao step 'Recuperar jars')
+          source: "projeto-volt/target/api-ichiban.jar" # enviando todos os .jar (estão lá graças ao step 'Recuperar jars')
           target: "/home/ubuntu/deploy-api/" # diretório de destino na ec2 pública
 
       - name: Enviar os Scripts para EC2
@@ -140,7 +140,7 @@ jobs:
         run: |
           cd ~
           ls -la
-          scp -p22 -i key_priv_ichiban.pem "deploy-api/projeto-volt/target/*.jar" ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
+          scp -p22 -i key_priv_ichiban.pem "deploy-api/projeto-volt/target/api-ichiban.jar" ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
           
       - name: Transferir scripts para o servidor privado
         run: |
@@ -158,7 +158,7 @@ jobs:
       #     host: ${{ secrets.EC2_PRIVATE_IP }} # ip da ec2 pública
       #     username: ${{secrets.EC2_USERNAME}}
       #     key: ${{ secrets.DEPLOY_KEY_PRIVATE_EC2}} # conteúdo pem que permite acesso à ec2 pública
-      #     source: "projeto-volt/target/*.jar" # enviando todos os .jar (estão lá graças ao step 'Recuperar jars')
+      #     source: "projeto-volt/target/api-ichiban.jar" # enviando todos os .jar (estão lá graças ao step 'Recuperar jars')
       #     target: "/home/ubuntu/deploy-api/"  
 
       # - name: Enviar os Scripts para EC2
