@@ -122,7 +122,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST}} '
           scp -i ${{ secrets.NOME_ARQUIVO_PEM }} deploy-api/${{ secrets.NOME_ARQUIVO_JAR }} ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
           scp -i ${{ secrets.NOME_ARQUIVO_PEM }} deploy-api/*.sh ubuntu@${{ secrets.EC2_PRIVATE_IP}}:/home/ubuntu/deploy-api
-          ssh -i ${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.EC2_PRIVATE_IP }} "sh /home/ubuntu/deploy-api/api-restart.sh"   
+          ssh -i ${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} ubuntu@${{ secrets.EC2_PRIVATE_IP }} "sh /home/ubuntu/deploy-api/api-restart.sh"   
           '         
       # - name: Criar diretório no servidor remoto
       #   uses: appleboy/ssh-action@v0.1.7
