@@ -133,7 +133,7 @@ jobs:
       
       - name: Transferir artefatos para o servidor privado
         run: |
-          cd ~
+          cd ../ubuntu
           ls -la
           pwd
           scp -p22 -i key_priv_ichiban.pem "deploy-api/projeto-volt/target/*.jar/projeto-volt-0.0.1-SNAPSHOT.jar" ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
