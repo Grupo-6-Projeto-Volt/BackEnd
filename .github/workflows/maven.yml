@@ -137,10 +137,8 @@ jobs:
           ls deploy-api"
       
       - name: Transferir artefatos para o servidor privado
-        with:
-          timeout: 120s
-          run: |
-            scp -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} deploy-api/${{ secrets.NOME_ARQUIVO_JAR }} ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
+        run: |
+          scp -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} deploy-api/${{ secrets.NOME_ARQUIVO_JAR }} ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
       
       - name: Transferir scripts para o servidor privado
         run: |
