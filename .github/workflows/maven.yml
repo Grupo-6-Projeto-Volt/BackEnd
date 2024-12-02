@@ -74,7 +74,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: projeto-volt
-          path: projeto-volt/target/*jar
+          path: projeto-volt/target/*.jar
 
       - name: Recuperar scripts
         uses: actions/download-artifact@v4
@@ -91,7 +91,7 @@ jobs:
       - name: Compactar artefato
         run: |
           cd projeto-volt/target
-          tar -czf projeto-volt.tar.gz *jar
+          tar -czf projeto-volt.tar.gz *.jar
 
       - name: Configurar arquivo .PEM
         id: geracao-arquivo-pem 
@@ -105,7 +105,7 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }} # ip da ec2 pública
           username: ${{secrets.EC2_USERNAME}}
           key: ${{ secrets.DEPLOY_KEY}} # conteúdo pem que permite acesso à ec2 pública
-          source: "projeto-volt/target/*jar" # enviando todos os .jar (estão lá graças ao step 'Recuperar jars')
+          source: "projeto-volt/target/*.jar" # enviando todos os .jar (estão lá graças ao step 'Recuperar jars')
           target: "/home/ubuntu/deploy-api/" # diretório de destino na ec2 pública
 
       - name: Enviar os Scripts para EC2
