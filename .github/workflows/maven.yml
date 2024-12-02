@@ -133,6 +133,7 @@ jobs:
       
       - name: Transferir artefatos para o servidor privado
         run: |
+          sudo su
           pwd
           ls -la
           cd /home/ubuntu
