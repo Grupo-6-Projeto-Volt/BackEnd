@@ -134,14 +134,8 @@ jobs:
       - name: Transferir artefatos para o servidor privado
         run: |
           ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} "
-          sudo su
           pwd
-          ls -la
-          cd projeto-volt
-          ls -la
-          cd target
-          ls -la
-          scp -p22 -i key_priv_ichiban.pem "projeto-volt/target/*.jar/projeto-volt-0.0.1-SNAPSHOT.jar" ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
+          scp -p22 -i key_priv_ichiban.pem "deploy-api/projeto-volt/target/*.jar/projeto-volt-0.0.1-SNAPSHOT.jar" ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
           
       - name: Transferir scripts para o servidor privado
         run: |
