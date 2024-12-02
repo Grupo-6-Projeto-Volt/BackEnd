@@ -137,11 +137,18 @@ jobs:
           pwd
           scp -p22 -i key_priv_ichiban.pem "deploy-api/projeto-volt/target/*.jar/projeto-volt-0.0.1-SNAPSHOT.jar" ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api "
           
+      # - name: Transferir scripts para o servidor privado
+      #   run: |
+      #     ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} "
+      #     scp -i ${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} deploy-api/*.sh ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api "
       - name: Transferir scripts para o servidor privado
-        run: |
-          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} "
-          scp -i ${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} deploy-api/*.sh ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api "
-      
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: 'ubuntu'
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: scp -i ${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} deploy-api/*.sh ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
+          
       - name: Executar script remoto no servidor privado
         run: |
           ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} ubuntu@${{ secrets.EC2_PRIVATE_IP }} "
