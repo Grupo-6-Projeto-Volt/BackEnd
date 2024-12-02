@@ -122,8 +122,9 @@ jobs:
       - name: Conectar com EC2 e configurar chave privada
         run: |
           ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} "
-          echo '${{ secrets.DEPLOY_KEY_PRIVATE_EC2 }}' >> $HOME/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }}
-          chmod 400 $HOME/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }}"
+          mkdir -p /home/ubuntu
+          echo '${{ secrets.DEPLOY_KEY_PRIVATE_EC2 }}' >> /home/ubuntu/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }}
+          chmod 400 /home/ubuntu/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }}"
           
       - name: Ajustar permissões dos scripts e artefatos
         run: |
