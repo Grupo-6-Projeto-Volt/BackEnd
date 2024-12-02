@@ -116,19 +116,38 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           source: "./*.sh"  # enviando todos os .jar (estão lá graças ao step 'Recuperar scripts')
           target: "/home/ubuntu/deploy-api/" # diretório de destino na ec2 pública
-
-      - name: Conectar com EC2 e executar o script
+      
+      #Dividi as etapas para conseguir rastrear
+      
+      - name: Conectar com EC2 e configurar chave privada
         run: |
-          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST}} '
-          echo "${{ secrets.DEPLOY_KEY_PRIVATE_EC2 }}" >> $HOME/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }}
-          chmod 777 deploy-api/*
-          chmod 400 $HOME/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }}
-          ls
-          scp -i ${{ secrets.NOME_ARQUIVO_PEM }} deploy-api/${{ secrets.NOME_ARQUIVO_JAR }} ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
-          ls -l
-          scp -i ${{ secrets.NOME_ARQUIVO_PEM }} deploy-api/*.sh ubuntu@${{ secrets.EC2_PRIVATE_IP}}:/home/ubuntu/deploy-api
-          ssh -i $HOME/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} ubuntu@${{ secrets.EC2_PRIVATE_IP }} "sh /home/ubuntu/deploy-api/api-restart.sh"   
-          '         
+          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} "
+          echo '${{ secrets.DEPLOY_KEY_PRIVATE_EC2 }}' >> $HOME/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }}
+          chmod 400 $HOME/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }}"
+          
+      - name: Ajustar permissões dos scripts e artefatos
+        run: |
+          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} "
+          chmod 777 deploy-api/*"
+      
+      - name: Listar arquivos no servidor remoto
+        run: |
+          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} "
+          ls deploy-api"
+      
+      - name: Transferir artefatos para o servidor privado
+        run: |
+          scp -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} deploy-api/${{ secrets.NOME_ARQUIVO_JAR }} ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
+      
+      - name: Transferir scripts para o servidor privado
+        run: |
+          scp -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} deploy-api/*.sh ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
+      
+      - name: Executar script remoto no servidor privado
+        run: |
+          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} ubuntu@${{ secrets.EC2_PRIVATE_IP }} "
+          sh /home/ubuntu/deploy-api/api-restart.sh"
+         
       # - name: Criar diretório no servidor remoto
       #   uses: appleboy/ssh-action@v0.1.7
       #   with:
