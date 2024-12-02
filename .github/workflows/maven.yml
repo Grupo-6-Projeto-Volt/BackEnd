@@ -121,6 +121,8 @@ jobs:
 
       - name: Conectar com EC2 e executar o script
         run: |
+          chmod 600 $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
+          chmod 600 $HOME/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }}
           ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST}} '
           scp -i ${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} deploy-api/${{ secrets.NOME_ARQUIVO_JAR }} ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
           scp -i ${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} deploy-api/*.sh ubuntu@${{ secrets.EC2_PRIVATE_IP}}:/home/ubuntu/deploy-api
