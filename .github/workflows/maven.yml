@@ -121,7 +121,6 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST}} '
           echo "${{ secrets.DEPLOY_KEY_PRIVATE_EC2 }}" >> $HOME/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }}
-          chmod 777 deploy-api
           chmod 777 deploy-api/*
           chmod 400 $HOME/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }}
           ls
