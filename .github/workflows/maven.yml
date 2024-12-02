@@ -138,7 +138,7 @@ jobs:
       
       - name: Transferir artefatos para o servidor privado
         run: |
-          scp -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} deploy-api/${{ secrets.NOME_ARQUIVO_JAR }} ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
+          tar -czf - deploy-api/*.sh | ssh -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PRIVATE_IP }} "mkdir -p /home/ubuntu/deploy-api && tar -xzf - -C /home/ubuntu/deploy-api"
       
       - name: Transferir scripts para o servidor privado
         run: |
