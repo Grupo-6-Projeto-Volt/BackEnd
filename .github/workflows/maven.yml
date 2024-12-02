@@ -135,38 +135,39 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} "
           ls deploy-api"
-
-      - name: Enviar o JAR para EC2 privada
-        uses: appleboy/scp-action@master # esta action abstrai o uso do comando scp, permitindo o envio de arquivos via ssh
-        with:
-          host: ${{ secrets.EC2_PRIVATE_IP }} # ip da ec2 pública
-          username: ${{secrets.EC2_USERNAME}}
-          key: ${{ secrets.DEPLOY_KEY_PRIVATE_EC2}} # conteúdo pem que permite acesso à ec2 pública
-          source: "projeto-volt/target/*.jar" # enviando todos os .jar (estão lá graças ao step 'Recuperar jars')
-          target: "/home/ubuntu/deploy-api/"  
-
-      - name: Enviar os Scripts para EC2
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.EC2_PRIVATE_IP }}
-          username: ${{secrets.EC2_USERNAME}}
-          key: ${{ secrets.DEPLOY_KEY_PRIVATE_EC2 }}
-          source: "./*.sh"  # enviando todos os .jar (estão lá graças ao step 'Recuperar scripts')
-          target: "/home/ubuntu/deploy-api/" # 
       
-      # - name: Transferir artefatos para o servidor privado
-      #   run: |
-      #     scp -p 22 -i ../${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} deploy-api/*.jar ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
+      - name: Transferir artefatos para o servidor privado
+        run: |
+          scp -p22 -i key_priv_ichiban.pem deploy-api/projeto-volt/target/*.jar ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
           
-      # - name: Transferir scripts para o servidor privado
-      #   run: |
-      #     cd ..
-      #     scp -i ${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} deploy-api/*.sh ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
+      - name: Transferir scripts para o servidor privado
+        run: |
+          cd ..
+          scp -i ${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} deploy-api/*.sh ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
       
-      # - name: Executar script remoto no servidor privado
-      #   run: |
-      #     ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} ubuntu@${{ secrets.EC2_PRIVATE_IP }} "
-      #     sh /home/ubuntu/deploy-api/api-restart.sh"
+      - name: Executar script remoto no servidor privado
+        run: |
+          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} ubuntu@${{ secrets.EC2_PRIVATE_IP }} "
+          sh /home/ubuntu/deploy-api/api-restart.sh"
+
+                # - name: Enviar o JAR para EC2 privada
+                
+      #   uses: appleboy/scp-action@master # esta action abstrai o uso do comando scp, permitindo o envio de arquivos via ssh
+      #   with:
+      #     host: ${{ secrets.EC2_PRIVATE_IP }} # ip da ec2 pública
+      #     username: ${{secrets.EC2_USERNAME}}
+      #     key: ${{ secrets.DEPLOY_KEY_PRIVATE_EC2}} # conteúdo pem que permite acesso à ec2 pública
+      #     source: "projeto-volt/target/*.jar" # enviando todos os .jar (estão lá graças ao step 'Recuperar jars')
+      #     target: "/home/ubuntu/deploy-api/"  
+
+      # - name: Enviar os Scripts para EC2
+      #   uses: appleboy/scp-action@master
+      #   with:
+      #     host: ${{ secrets.EC2_PRIVATE_IP }}
+      #     username: ${{secrets.EC2_USERNAME}}
+      #     key: ${{ secrets.DEPLOY_KEY_PRIVATE_EC2 }}
+      #     source: "./*.sh"  # enviando todos os .jar (estão lá graças ao step 'Recuperar scripts')
+      #     target: "/home/ubuntu/deploy-api/" # 
          
       # - name: Criar diretório no servidor remoto
       #   uses: appleboy/ssh-action@v0.1.7
