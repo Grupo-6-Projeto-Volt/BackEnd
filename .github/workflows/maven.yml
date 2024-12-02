@@ -120,9 +120,11 @@ jobs:
       - name: Conectar com EC2 e executar o script
         run: |
           ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST}} '
+          echo "${{ secrets.DEPLOY_KEY_PRIVATE_EC2 }}" >> $HOME/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }}
+          chmod 400 $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
           scp -i ${{ secrets.NOME_ARQUIVO_PEM }} deploy-api/${{ secrets.NOME_ARQUIVO_JAR }} ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
           scp -i ${{ secrets.NOME_ARQUIVO_PEM }} deploy-api/*.sh ubuntu@${{ secrets.EC2_PRIVATE_IP}}:/home/ubuntu/deploy-api
-          ssh -i ${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} ubuntu@${{ secrets.EC2_PRIVATE_IP }} "sh /home/ubuntu/deploy-api/api-restart.sh"   
+          ssh -i $HOME/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} ubuntu@${{ secrets.EC2_PRIVATE_IP }} "sh /home/ubuntu/deploy-api/api-restart.sh"   
           '         
       # - name: Criar diretório no servidor remoto
       #   uses: appleboy/ssh-action@v0.1.7
