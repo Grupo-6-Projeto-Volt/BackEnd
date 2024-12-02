@@ -133,6 +133,7 @@ jobs:
       
       - name: Transferir artefatos para o servidor privado
         run: |
+          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} "
           sudo su
           pwd
           ls -la
@@ -144,6 +145,7 @@ jobs:
           
       - name: Transferir scripts para o servidor privado
         run: |
+          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} "
           scp -i ${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} deploy-api/*.sh ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
       
       - name: Executar script remoto no servidor privado
