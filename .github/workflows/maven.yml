@@ -134,7 +134,7 @@ jobs:
       #     key: ${{ secrets.DEPLOY_KEY }}
       #     script: |
       #       sudo chown -R ubuntu:ubuntu /var/www
-      #       sudo mkdir -p /var/www/backend/
+      #       sudo mkdir -p /var/www/backend/a
       #       sudo chown -R ubuntu:ubuntu /var/www/backend/
 
       # - name: Deploy para EC2
