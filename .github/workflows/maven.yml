@@ -138,7 +138,7 @@ jobs:
       
       - name: Transferir artefatos para o servidor privado
         run: |
-          cd ..
+          cd ~
           scp -p22 -i key_priv_ichiban.pem deploy-api/projeto-volt/target/*.jar ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
           
       - name: Transferir scripts para o servidor privado
