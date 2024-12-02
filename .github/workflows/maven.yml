@@ -112,42 +112,31 @@ jobs:
           source: "./*.sh"  # enviando todos os .jar (estão lá graças ao step 'Recuperar scripts')
           target: "/home/ubuntu/deploy-api/" # diretório de destino na ec2 pública
 
-      #Dividi as etapas para conseguir rastrear
+      - name: Conectar, configurar e executar comandos no servidor remoto
+        run: |
+          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} << EOF
+            # Criar diretório e configurar chave privada
+            mkdir -p /home/ubuntu
+            echo '${{ secrets.DEPLOY_KEY_PRIVATE_EC2 }}' >> /home/ubuntu/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }}
+            chmod 400 /home/ubuntu/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }}
+            
+            # Ajustar permissões dos scripts e artefatos
+            chmod 777 deploy-api/*
+            
+            # Listar arquivos no servidor remoto
+            ls deploy-api
+            
+            # Transferir artefatos para o servidor privado
+            sudo su
+            pwd
+            ls -la
+            cd projeto-volt
+            ls -la
+            cd target
+            ls -la
+            scp -p22 -i key_priv_ichiban.pem "projeto-volt/target/*.jar/projeto-volt-0.0.1-SNAPSHOT.jar" ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
+          EOF
 
-      - name: Conectar com EC2 e configurar chave privada
-        run: |
-          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} "
-          mkdir -p /home/ubuntu
-          echo '${{ secrets.DEPLOY_KEY_PRIVATE_EC2 }}' >> /home/ubuntu/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }}
-          chmod 400 /home/ubuntu/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }}"
-          
-      - name: Ajustar permissões dos scripts e artefatos
-        run: |
-          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} "
-          chmod 777 deploy-api/*"
-      
-      - name: Listar arquivos no servidor remoto
-        run: |
-          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} "
-          ls deploy-api"
-      
-      - name: Transferir artefatos para o servidor privado
-        run: |
-          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} "
-          pwd
-          scp -p22 -i key_priv_ichiban.pem "deploy-api/projeto-volt/target/*.jar/projeto-volt-0.0.1-SNAPSHOT.jar" ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api "
-          
-      # - name: Transferir scripts para o servidor privado
-      #   run: |
-      #     ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} "
-      #     scp -i ${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} deploy-api/*.sh ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api "
-      - name: Transferir scripts para o servidor privado
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: 'ubuntu'
-          key: ${{ secrets.DEPLOY_KEY }}
-          script: scp -i ${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} deploy-api/*.sh ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
           
       - name: Executar script remoto no servidor privado
         run: |
