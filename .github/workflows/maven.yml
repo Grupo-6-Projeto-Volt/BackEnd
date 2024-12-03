@@ -137,7 +137,7 @@ jobs:
             ls -la
             cd "*.jar"
             ls -la
-            scp -p22 -i key_priv_ichiban.pem "projeto-volt-0.0.1-SNAPSHOT.jar" ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
+            scp -p22 -i key_priv_ichiban.pem projeto-volt-0.0.1-SNAPSHOT.jar ubuntu@${{ secrets.EC2_PRIVATE_IP }}:/home/ubuntu/deploy-api
           EOF
 
           
