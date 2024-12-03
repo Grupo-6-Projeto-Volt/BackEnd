@@ -137,13 +137,13 @@ jobs:
             ls -la
             cd "*.jar"
             ls -la
-            scp -p22 -i key_priv_ichiban.pem projeto-volt-0.0.1-SNAPSHOT.jar ubuntu@$10.0.0.246:/home/ubuntu
+            scp -p22 -i key_priv_ichiban.pem projeto-volt-0.0.1-SNAPSHOT.jar ubuntu@10.0.0.246:/home/ubuntu
           EOF
 
           
       - name: Executar script remoto no servidor privado
         run: |
-          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} ubuntu@{{ secrets.EC2_PRIVATE_IP }} "
+          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM_PRIVADO }} ubuntu@${{ secrets.EC2_PRIVATE_IP }} "
           sh /home/ubuntu/deploy-api/api-restart.sh"
                 # - name: Enviar o JAR para EC2 privada
                 
