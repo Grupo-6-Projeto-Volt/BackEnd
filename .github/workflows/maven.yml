@@ -129,7 +129,7 @@ jobs:
             # Transferir artefatos para o servidor privado
             sudo su
             pwd
-            scp -p22 -i $HOME/key_priv_ichiban.pem '$HOME/deploy-api/projeto-volt/target/*.jar/projeto-volt-0.0.1-SNAPSHOT.jar' ubuntu@10.0.0.246:/home/ubuntu/
+            scp -p22 -i /home/ubuntu/key_priv_ichiban.pem '/home/ubuntu/deploy-api/projeto-volt/target/*.jar/projeto-volt-0.0.1-SNAPSHOT.jar' ubuntu@10.0.0.246:/home/ubuntu/
           EOF
 
           
