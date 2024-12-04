@@ -69,7 +69,7 @@ public class HashTableObj {
         return bucketSizes;
     }
     public List<UsuarioConsultaDto> getAll(){
-        List<UsuarioConsultaDto> objects = new ArrayList<>();
+        List<UsuarioConsultaDto> objects = new ArrayList<UsuarioConsultaDto>();
         for (int i = 0; i < tab.length; i++) {
             if(tab[i] != null){
                 objects.addAll(tab[i].getAll());
