@@ -13,11 +13,11 @@ public class VwProdutosMaisAcessados {
     @Id
     private Integer id;
     @Column
-    private int acessos;
+    private Integer acessos;
     @Column
     private String nome;
     @Column
-    private int qtd;
+    private Integer qtd;
     @Column
     private String url;
 }

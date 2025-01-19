@@ -15,6 +15,7 @@ import sptech.school.projetovolt.entity.usuario.Usuario;
 import sptech.school.projetovolt.service.login.dto.LoginMapper;
 import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioLoginDto;
 import sptech.school.projetovolt.service.login.autenticacao.dto.UsuarioTokenDto;
+import sptech.school.projetovolt.utils.JwtUtil;
 
 import java.util.List;
 
@@ -32,13 +33,14 @@ public class LoginService {
 
         final Authentication authentication = this.authenticationManager.authenticate(credentials);
 
-        Login usuarioAutenticado = loginRepository.findByEmail(usuarioLoginDto.getEmail())
+        Login usuarioAutenticado = loginRepository.findByEmailAndSenha(usuarioLoginDto.getEmail(), usuarioLoginDto.getSenha())
                 .orElseThrow(
                         () -> new NotFoundException("Login " + usuarioLoginDto.getEmail())
                 );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        final String token = gerenciadorTokenJwt.generateToken(authentication);
+        //final String token = gerenciadorTokenJwt.generateToken(authentication);
+        final String token = JwtUtil.generateToken(usuarioAutenticado.getEmail(), usuarioAutenticado.getUsuario().getCategoria().toString());
 
         return LoginMapper.of(usuarioAutenticado, token);
     }

@@ -12,6 +12,7 @@ public interface LoginRepository extends JpaRepository<Login, UUID> {
 
     Optional<Login> findById(String id);
     Optional<Login> findByEmail(String email);
+    Optional<Login> findByEmailAndSenha(String email, String senha);
     boolean existsByEmail(String email);
     boolean existsBySenha(String senha);
 }

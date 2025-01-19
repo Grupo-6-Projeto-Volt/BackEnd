@@ -8,7 +8,7 @@ import lombok.Setter;
 public class ProdutosAcessadosDto {
     private int id;
     private String nome;
-    private int quantidade;
-    private int acessos;
+    private Integer quantidade;
+    private Integer acessos;
     private String url;
 }
